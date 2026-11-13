@@ -1,0 +1,52 @@
+# --- Secrets ---
+.env
+.env.*
+!.env.example
+
+# --- Data: never commit raw or derived datasets ---
+ml/datasets/
+datasets/
+data/raw/
+*.csv
+*.parquet
+*.xlsx
+*.7z
+*.zip
+*.feather
+*.h5
+# Small, hand-written fixtures are allowed:
+!backend/tests/fixtures/**/*.csv
+!simulator/**/fixtures/**/*.csv
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/
+
+# --- Jupyter ---
+.ipynb_checkpoints/
+
+# --- Node / Next.js (web/, Phase 7) ---
+node_modules/
+.next/
+out/
+.vercel/
+
+# --- Firmware (Phase 8) ---
+.pio/
+
+# --- OS / editors ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+.cursor/
