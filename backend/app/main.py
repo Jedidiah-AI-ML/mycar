@@ -7,9 +7,10 @@ mounted at the root (`/health`, `/auth`, `/vehicles`, ...).
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api import access, account, auth, health, vehicles
+from app.api import access, account, admin, auth, health, vehicles
 from app.core.config import get_settings
 from app.core.logging import RequestIdMiddleware, configure_logging
+from app.jobs import handlers as _handlers  # noqa: F401 - registers handlers for enqueue()
 
 
 def create_app() -> FastAPI:
@@ -37,6 +38,7 @@ def create_app() -> FastAPI:
     app.include_router(account.router)
     app.include_router(vehicles.router)
     app.include_router(access.router)
+    app.include_router(admin.router)
     return app
 
 

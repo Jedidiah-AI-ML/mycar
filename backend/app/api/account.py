@@ -1,11 +1,13 @@
 """The signed-in user's own account: profile, consents, data export, deletion (NDPA)."""
 
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 
 from fastapi import APIRouter, HTTPException, Response, status
 from sqlalchemy import select, update
 
 from app.api.deps import CurrentUser, SessionDep
+from app.core.config import get_settings
+from app.jobs.queue import enqueue
 from app.models import (
     AuditEvent,
     Consent,
@@ -156,6 +158,16 @@ async def delete_my_account(user: CurrentUser, session: SessionDep) -> Response:
         .where(RefreshToken.user_id == user.id, RefreshToken.revoked_at.is_(None))
         .values(revoked_at=now)
     )
-    await audit.record(session, user.id, "account.deleted", "user", user.id)
+    purge_at = now + timedelta(days=get_settings().account_purge_days)
+    await enqueue(
+        session,
+        "account.purge",
+        {"user_id": str(user.id)},
+        run_at=purge_at,
+        dedupe_key=f"account.purge:{user.id}",
+    )
+    await audit.record(
+        session, user.id, "account.deleted", "user", user.id, purge_at=purge_at.isoformat()
+    )
     await session.commit()
     return Response(status_code=status.HTTP_204_NO_CONTENT)
