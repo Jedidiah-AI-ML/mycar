@@ -1,0 +1,9 @@
+# Railway config for the `worker` service (same image as api; set this file as the
+# service's "Config-as-code path" in Railway). No healthcheck: the worker has no HTTP port.
+[build]
+builder = "DOCKERFILE"
+dockerfilePath = "Dockerfile"
+
+[deploy]
+startCommand = "python -m app.jobs.worker"
+restartPolicyType = "ALWAYS"
