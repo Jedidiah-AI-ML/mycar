@@ -1,5 +1,7 @@
 # Phase 1 plan: Backend foundation (APPROVED 2026-11-13: open questions resolved as recommended)
 
+**Implementation notes (2026-11-14):** host DB port is 5433 (a local Postgres already uses 5432); email uniqueness ignores soft-deleted accounts and `vehicles.created_by` is nullable (needed for the 30-day purge); the Restfox list grew to 33 requests (`backend/restfox/`); viewers cannot list who else has access (managers and owners can); revoking the required `service_processing` consent returns 409 and points to account deletion.
+
 **Exit gate (PRD 13):** migrations run on Railway; auth and vehicle CRUD pass in pytest and in Restfox.
 **Starting point:** near zero (see `docs/phase0-audit.md`). Three files are adapted from `vpm-backend`.
 

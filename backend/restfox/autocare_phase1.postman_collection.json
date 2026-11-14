@@ -1,0 +1,669 @@
+{
+  "info": {
+    "name": "AutoCare Phase 1",
+    "_postman_id": "6d3088eb-74fa-5c53-b4c4-4cf26cd6923b",
+    "description": "Run in order. Change `run` before each full run.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "01 Liveness -> 200",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{base}}/health",
+        "description": "Expect HTTP 200."
+      }
+    },
+    {
+      "name": "02 Readiness (DB + migrations) -> 200",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{base}}/health/ready",
+        "description": "Expect HTTP 200."
+      }
+    },
+    {
+      "name": "03 Register owner A -> 201",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base}}/auth/register",
+        "description": "Expect HTTP 201.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{email_a}}\",\n  \"password\": \"restfox-pass-123\",\n  \"display_name\": \"email_a\",\n  \"consents\": [\n    \"service_processing\"\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "04 Register A again, different case -> 409",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base}}/auth/register",
+        "description": "Expect HTTP 409.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{email_a_upper}}\",\n  \"password\": \"restfox-pass-123\",\n  \"display_name\": \"email_a\",\n  \"consents\": [\n    \"service_processing\"\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "05 Log in A -> 200",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base}}/auth/login",
+        "description": "Expect HTTP 200. Then save: token = response.access_token, refresh = response.refresh_token.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{email_a}}\",\n  \"password\": \"restfox-pass-123\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "06 Log in A, wrong password -> 401",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base}}/auth/login",
+        "description": "Expect HTTP 401.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{email_a}}\",\n  \"password\": \"wrong-password-1\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "07 Me (with token) -> 200",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{base}}/me",
+        "description": "Expect HTTP 200."
+      }
+    },
+    {
+      "name": "08 Me (no token) -> 401",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{base}}/me",
+        "description": "Expect HTTP 401."
+      }
+    },
+    {
+      "name": "09 Refresh (rotates tokens) -> 200",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base}}/auth/refresh",
+        "description": "Expect HTTP 200. Then save: token = response.access_token, refresh = response.refresh_token. Save the old refresh token as old_refresh before running.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"refresh_token\": \"{{refresh}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "10 Refresh with the OLD token (reuse) -> 401",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base}}/auth/refresh",
+        "description": "Expect HTTP 401. Reuse revokes all A's sessions; log in again next.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"refresh_token\": \"{{old_refresh}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "11 Log in A again -> 200",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base}}/auth/login",
+        "description": "Expect HTTP 200. Then save: token = response.access_token, refresh = response.refresh_token.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{email_a}}\",\n  \"password\": \"restfox-pass-123\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "12 My consents -> 200",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{base}}/me/consents",
+        "description": "Expect HTTP 200."
+      }
+    },
+    {
+      "name": "13 Grant location consent -> 201",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{base}}/me/consents/location",
+        "description": "Expect HTTP 201."
+      }
+    },
+    {
+      "name": "14 Revoke location consent -> 204",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{base}}/me/consents/location",
+        "description": "Expect HTTP 204."
+      }
+    },
+    {
+      "name": "15 Add vehicle (Corolla 2010) -> 201",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{base}}/vehicles",
+        "description": "Expect HTTP 201. Then save: vid = response.id.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"make\": \"Toyota\",\n  \"model\": \"Corolla\",\n  \"year\": 2010,\n  \"engine\": \"2ZR-FE 1.8L I4\",\n  \"displacement_l\": \"1.8\",\n  \"cylinders\": 4,\n  \"odometer_at_install_km\": 145000\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "16 Add vehicle: diesel (rejected) -> 422",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{base}}/vehicles",
+        "description": "Expect HTTP 422.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"make\": \"Toyota\",\n  \"model\": \"Hilux\",\n  \"year\": 2012,\n  \"fuel_type\": \"diesel\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "17 Add vehicle: VIN with letter O (rejected) -> 422",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{base}}/vehicles",
+        "description": "Expect HTTP 422.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"make\": \"Toyota\",\n  \"model\": \"Corolla\",\n  \"year\": 2010,\n  \"vin\": \"1M8GDM9AXKPO42788\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "18 List my vehicles -> 200",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{base}}/vehicles",
+        "description": "Expect HTTP 200."
+      }
+    },
+    {
+      "name": "19 Rename vehicle -> 200",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{base}}/vehicles/{{vid}}",
+        "description": "Expect HTTP 200.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nickname\": \"Blue Corolla\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "20 Register B -> 201",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base}}/auth/register",
+        "description": "Expect HTTP 201. Then save: user_b_id = response.id.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{email_b}}\",\n  \"password\": \"restfox-pass-123\",\n  \"display_name\": \"email_b\",\n  \"consents\": [\n    \"service_processing\"\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "21 Log in B -> 200",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base}}/auth/login",
+        "description": "Expect HTTP 200. Then save: token_b = response.access_token.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{email_b}}\",\n  \"password\": \"restfox-pass-123\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "22 A shares vehicle with B as viewer -> 201",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{base}}/vehicles/{{vid}}/access",
+        "description": "Expect HTTP 201.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{email_b}}\",\n  \"role\": \"viewer\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "23 B reads the vehicle -> 200",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_b}}"
+          }
+        ],
+        "url": "{{base}}/vehicles/{{vid}}",
+        "description": "Expect HTTP 200."
+      }
+    },
+    {
+      "name": "24 B tries to rename it (viewer) -> 403",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_b}}"
+          }
+        ],
+        "url": "{{base}}/vehicles/{{vid}}",
+        "description": "Expect HTTP 403.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nickname\": \"Mine now\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "25 Register C (no access) -> 201",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base}}/auth/register",
+        "description": "Expect HTTP 201.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{email_c}}\",\n  \"password\": \"restfox-pass-123\",\n  \"display_name\": \"email_c\",\n  \"consents\": [\n    \"service_processing\"\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "26 Log in C -> 200",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base}}/auth/login",
+        "description": "Expect HTTP 200. Then save: token_c = response.access_token.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{email_c}}\",\n  \"password\": \"restfox-pass-123\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "27 C reads A's vehicle (hidden) -> 404",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_c}}"
+          }
+        ],
+        "url": "{{base}}/vehicles/{{vid}}",
+        "description": "Expect HTTP 404."
+      }
+    },
+    {
+      "name": "28 A removes B's access -> 204",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{base}}/vehicles/{{vid}}/access/{{user_b_id}}",
+        "description": "Expect HTTP 204."
+      }
+    },
+    {
+      "name": "29 B reads the vehicle again -> 404",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_b}}"
+          }
+        ],
+        "url": "{{base}}/vehicles/{{vid}}",
+        "description": "Expect HTTP 404."
+      }
+    },
+    {
+      "name": "30 Export my data -> 200",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{base}}/me/export",
+        "description": "Expect HTTP 200."
+      }
+    },
+    {
+      "name": "31 Delete vehicle -> 204",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{base}}/vehicles/{{vid}}",
+        "description": "Expect HTTP 204."
+      }
+    },
+    {
+      "name": "32 Delete my account -> 204",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{base}}/me",
+        "description": "Expect HTTP 204."
+      }
+    },
+    {
+      "name": "33 Log in as deleted A -> 401",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base}}/auth/login",
+        "description": "Expect HTTP 401.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{email_a}}\",\n  \"password\": \"restfox-pass-123\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base",
+      "value": "http://localhost:8000"
+    },
+    {
+      "key": "run",
+      "value": "r1"
+    },
+    {
+      "key": "email_a",
+      "value": "owner-{{run}}@example.com"
+    },
+    {
+      "key": "email_a_upper",
+      "value": "OWNER-{{run}}@EXAMPLE.COM"
+    },
+    {
+      "key": "email_b",
+      "value": "viewer-{{run}}@example.com"
+    },
+    {
+      "key": "email_c",
+      "value": "stranger-{{run}}@example.com"
+    }
+  ]
+}
