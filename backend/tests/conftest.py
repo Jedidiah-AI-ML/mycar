@@ -23,10 +23,17 @@ import httpx  # noqa: E402
 import pytest  # noqa: E402
 from alembic import command  # noqa: E402
 from alembic.config import Config  # noqa: E402
+from pwdlib import PasswordHash  # noqa: E402
+from pwdlib.hashers.argon2 import Argon2Hasher  # noqa: E402
 from sqlalchemy import text  # noqa: E402
 
+import app.core.security as security  # noqa: E402
 from app.db.base import Base  # noqa: E402
 from app.db.session import get_engine, get_sessionmaker  # noqa: E402
+
+# Cheap Argon2 settings for tests only (production keeps the strong defaults). Hashes
+# carry their own parameters, so verification of any hash still works.
+security._hasher = PasswordHash((Argon2Hasher(time_cost=1, memory_cost=8 * 1024, parallelism=1),))
 
 BACKEND_DIR = Path(__file__).resolve().parents[1]
 

@@ -7,7 +7,7 @@ mounted at the root (`/health`, `/auth`, `/vehicles`, ...).
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api import account, auth, health
+from app.api import access, account, auth, health, vehicles
 from app.core.config import get_settings
 from app.core.logging import RequestIdMiddleware, configure_logging
 
@@ -35,6 +35,8 @@ def create_app() -> FastAPI:
     app.include_router(health.router)
     app.include_router(auth.router)
     app.include_router(account.router)
+    app.include_router(vehicles.router)
+    app.include_router(access.router)
     return app
 
 
