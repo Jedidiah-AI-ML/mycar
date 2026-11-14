@@ -34,7 +34,10 @@ class Vehicle(TimestampMixin, Base):
     nickname: Mapped[str | None] = mapped_column(String(50))
     odometer_at_install_km: Mapped[int | None]
     installed_at: Mapped[date | None]
-    created_by: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id"))
+    # Who added it (informational). Ownership lives in vehicle_access, not here.
+    created_by: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("users.id", ondelete="SET NULL")
+    )
     deleted_at: Mapped[datetime | None]
 
     __table_args__ = (

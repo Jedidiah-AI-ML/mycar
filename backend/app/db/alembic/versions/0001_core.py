@@ -129,7 +129,11 @@ def upgrade() -> None:
         sa.PrimaryKeyConstraint("id", name=op.f("pk_users")),
     )
     op.create_index(
-        "uq_users_email_lower", "users", [sa.literal_column("lower(email)")], unique=True
+        "uq_users_email_lower",
+        "users",
+        [sa.literal_column("lower(email)")],
+        unique=True,
+        postgresql_where=sa.text("deleted_at IS NULL"),
     )
     op.create_table(
         "consents",
@@ -205,7 +209,7 @@ def upgrade() -> None:
         sa.Column("nickname", sa.String(length=50), nullable=True),
         sa.Column("odometer_at_install_km", sa.Integer(), nullable=True),
         sa.Column("installed_at", sa.Date(), nullable=True),
-        sa.Column("created_by", sa.Uuid(), nullable=False),
+        sa.Column("created_by", sa.Uuid(), nullable=True),
         sa.Column("deleted_at", sa.DateTime(timezone=True), nullable=True),
         sa.Column(
             "created_at",
@@ -234,7 +238,10 @@ def upgrade() -> None:
         ),
         sa.CheckConstraint("year >= 1996 AND year <= 2100", name=op.f("ck_vehicles_year_range")),
         sa.ForeignKeyConstraint(
-            ["created_by"], ["users.id"], name=op.f("fk_vehicles_created_by_users")
+            ["created_by"],
+            ["users.id"],
+            name=op.f("fk_vehicles_created_by_users"),
+            ondelete="SET NULL",
         ),
         sa.PrimaryKeyConstraint("id", name=op.f("pk_vehicles")),
     )

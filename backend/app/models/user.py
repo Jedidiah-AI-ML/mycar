@@ -22,7 +22,13 @@ class User(TimestampMixin, Base):
 
     __table_args__ = (
         # Case-insensitive uniqueness: "A@x.com" and "a@x.com" are the same person.
-        Index("uq_users_email_lower", func.lower(email), unique=True),
+        # Soft-deleted accounts (awaiting purge) don't block signing up again.
+        Index(
+            "uq_users_email_lower",
+            func.lower(email),
+            unique=True,
+            postgresql_where=text("deleted_at IS NULL"),
+        ),
     )
 
 

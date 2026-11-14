@@ -1,0 +1,31 @@
+# Consent purposes shown at sign-up and in settings (PRD Section 10, NDPA 2023).
+# SEED - validate (S1): wording is a first draft. Wisdom to review; ideally a legal check.
+# Changing any text means bumping `version`. Existing grants keep the version they
+# agreed to, so we can tell who needs to re-consent.
+version: "2026-11-v1"
+
+purposes:
+  service_processing:
+    required: true
+    title: "Process my car's data to run AutoCare"
+    text: >-
+      AutoCare stores the data your car's device sends (engine readings, fault codes,
+      trips) and links it to your account so it can show your car's health, remind you
+      about servicing and alert you to problems. Without this, AutoCare can't work.
+      You can delete your account and this data at any time.
+
+  location:
+    required: false
+    title: "Use my car's location"
+    text: >-
+      The device has GPS. With your permission we use location to measure distance
+      more accurately and to show where trips happened. If you say no, AutoCare still
+      works but distance comes only from the car's speed sensor and trip maps are off.
+
+  model_improvement:
+    required: false
+    title: "Help improve AutoCare's predictions"
+    text: >-
+      Allow AutoCare to use your car's data, with your name, email and exact locations
+      removed, to train and test the models that spot problems early. You can turn
+      this off at any time; data already used for training is not re-identified.
