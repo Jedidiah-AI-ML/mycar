@@ -95,6 +95,8 @@ Phase 2 **stores** DTC, Mode 06 and VIN records as they arrive; it doesn't inter
 
 **Gate:** pytest: models ⇄ schema round trip; the exported schema matches the committed file (drift test); a 60 s batch of typical data is under the size budget (about 4 KB gzipped, SEED).
 
+✅ **Done 2026-11-16:** 18 tests. Typical 60 s batch = 2.26 KB gzipped (≈ 132 KB per driving hour, ≈ 8 MB/month at 2 h/day). ADR-006 written.
+
 Sketch of a batch (columnar, so each signal name is sent once):
 ```json
 {"v":1,"device_id":"FM1-0001","fw":"0.1.0","boot":17,"trip":42,"seq":3,
