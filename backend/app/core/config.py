@@ -31,7 +31,7 @@ class Settings(BaseSettings):
     # --- Database (also hosts the job queue, ADR-003/004) ---
     database_url: str = "postgresql+asyncpg://autocare:autocare@localhost:5433/autocare"
     db_pool_size: int = 5
-    db_connect_timeout_s: float = 5.0
+    db_connect_timeout_s: float = 15.0  # Neon free tier can take ~5 s to wake from idle
 
     # --- Auth ---  # SEED - validate (S2): token lifetimes are a product trade-off
     jwt_secret: SecretStr = SecretStr(INSECURE_DEFAULT_SECRET)
