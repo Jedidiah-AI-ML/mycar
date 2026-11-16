@@ -26,6 +26,8 @@ All 54 weekly files are present (Nov 2017 to Nov 2018), with no gaps.
 - Vehicle types (static): **264 ICE**, 93 HEV, 24 PHEV, 3 EV. Ann Arbor, Michigan, USA. Static fields: engine configuration and displacement (e.g. `4-FI 2.0L T/C`, `6-FI 3.6L`), transmission, drive wheels, weight class. Mostly `NO DATA` for class and transmission. **No make, model or year.**
 - **Sampling:** irregular. Per-trip median step 900 ms, 10th percentile 100 ms, 90th percentile 1.9 s, with long gaps. Effectively about 1 Hz.
 - `Timestamp(ms)` is relative to the trip start; `DayNum` is days since 2017-11-01 00:00 (fractional).
+  **`DayNum` is UTC**, not Michigan time (notebook 01: read as local, the quietest hour would be 07:00; as UTC→Detroit it's 02:00, with peaks at 07:00 and 16:00–17:00).
+- **VED holds only part of each car's trips:** median 1 trip and 5.2 km per driving day for the ICE cars. Per-day usage figures from VED understate real driving.
 
 | Column | Non-null share | OBD-II PID |
 |---|---|---|

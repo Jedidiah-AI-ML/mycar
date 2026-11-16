@@ -115,6 +115,19 @@ Sketch of a batch (columnar, so each signal name is sent once):
 
 **Gate:** the notebook runs top to bottom from `DATASETS_DIR/raw` (read-only) and writes the yaml; the report lists every value with its source.
 
+✅ **Done 2026-11-16:** the notebook runs top to bottom (about 80 s, VED rebuilt from raw). Key results:
+- MAF ÷ physics formula = **1.004** per car (the airflow model holds).
+- Warm-up τ ≈ **437 s**; thermostat plateau **90 °C**.
+- Warm idle RPM std ≈ **86**.
+- ELM327 step ≈ **8 s**; ~**0.9 dropouts/h**.
+
+Findings:
+- VED DayNum is UTC, and VED holds only part of each car's trips.
+- KIT traffic tags aren't reliable.
+- Barreto's P0133 trace is a 2006 VW Polo.
+
+Separate `ml/` uv project (not a workspace member), so data-science packages stay out of the API image.
+
 ### Step 3: Simulator core
 | File | Purpose |
 |---|---|

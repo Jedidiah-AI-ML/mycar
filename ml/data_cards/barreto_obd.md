@@ -25,6 +25,7 @@ The `.xlsx` files appear to duplicate the CSVs. Use the CSVs.
 - **exp2:** 1 car, 19 drivers, same route. **exp3:** 1 car, 4 drivers, same route.
 - **Sampling:** about 0.1 to 0.25 Hz (exp1 median step **8 s**, 10th to 90th percentile 4 to 12 s). Slow, like a phone ELM327 logger.
 - **Trouble codes: yes, in exp1.** `TROUBLE_CODES` is non-null on 11,925 rows: `P0133` (O2 sensor slow response, B1S1) on 6,070 rows, `C0300` on 5,673, and a few multi-code strings (P0078/P0079/P007E/P2004/P2036/P3000…). These look like they may be unparsed concatenations or manufacturer codes, so validate them. `DTC_NUMBER` holds the Mode 01 PID 0x01 status text ("MIL is OFF1 codes"). exp2/exp3 contain raw hex in that column.
+  - **Which cars (notebook 01, 2026-11-16):** all 6,070 `P0133` rows are the **VW Polo 2006 (car6)**, a real slow-O2-sensor trace useful for checking the Phase 5 O2 indicator. All `C0300` rows are the Peugeot 208 (car9). The multi-code strings are the Citroën C3 (car13).
 - Values need cleaning: locale decimals (`"4,49"`), units inside the values (`82C`, `2124RPM`), percent strings, and mangled coordinates/timestamps in exp2/exp3 (`"1,51336E+12"`, `-58.321.307`).
 
 | Column | OBD-II PID |
