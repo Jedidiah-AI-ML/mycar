@@ -13,11 +13,12 @@ own Postgres and real traffic will use more, so the usage column adds headroom.
 |---|---|---|---|
 | `api` | 1 uvicorn process | 70 MB | ~$1 |
 | `worker` | `python -m app.jobs.worker` | 49 MB | ~$0.5 to 1 |
-| `Postgres` | Railway Postgres + 1 to 5 GB volume | 56 MB (empty DB) | ~$1.5 to 3 |
+| `Postgres` | **Moved to Neon (ADR-005)**: not on the Railway bill; Neon free tier, watch its compute usage | n/a | $0 on Railway |
 | CPU (mostly idle) + egress | | | ~$1 to 2 |
-| **Total usage** | | | **~$4 to 7** |
+| **Total usage** | | | **~$2.5 to 4** |
 
-**Expected bill: about $5 to 7/month.** The $5 Hobby fee counts toward usage, so a month
+**Expected Railway bill: $5/month** (usage now sits under the $5 included in the Hobby plan;
+plus Neon, $0 while within its free tier). The $5 Hobby fee counts toward usage, so a month
 under $5 of usage costs $5. There is no Redis service (ADR-004) and no separate
 time-series database (ADR-003).
 

@@ -4,7 +4,7 @@ Early-warning web app for petrol cars, fed by a cellular OBD-II device. Personal
 portfolio project. **Source of truth: [docs/PRD.md](docs/PRD.md).** Decisions are in
 [docs/decisions/](docs/decisions/), phase plans in [docs/plans/](docs/plans/).
 
-Status: **Phase 1 (backend foundation)**: auth, consents, vehicles, sharing, job queue.
+Status: **Phase 1 (backend foundation) done**: auth, consents, vehicles, sharing, job queue. Live on Railway with Neon Postgres (ADR-005); request list 33/33 against the live API (2026-11-16).
 
 ## Run it locally (Windows, PowerShell)
 

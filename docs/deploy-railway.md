@@ -41,6 +41,25 @@ gh repo create autocare --private --source . --push
 Each deploy runs `alembic upgrade head` (the pre-deploy command in `railway.toml`)
 before the new version takes traffic. A failed migration stops the deploy.
 
+## What actually happened in the first deploy (2026-11-16)
+
+- **Database is on Neon, not Railway** (ADR-005). `DATABASE_URL` is Neon's **direct**
+  connection string (pooling off). The app now accepts it as pasted; the hand-edited
+  form `postgresql+asyncpg://...?ssl=require` also works.
+- **Railway didn't pick up `railway.toml`**, so the builder showed Railpack and no
+  pre-deploy step ran. What fixed it:
+  - Root Directory `/backend`, so Railway finds the Dockerfile.
+  - On `api`: **Settings → Deploy → Add pre-deploy step** = `alembic upgrade head`,
+    Healthcheck Path `/health`. On `worker`: start command `python -m app.jobs.worker`,
+    no pre-deploy step.
+- **A failed deploy leaves the previous version serving.** If `/health/ready` still shows
+  an old error after a push, check the newest deployment's status before anything else.
+- `/health/ready` saying `migrations: behind (db=None, ...)` means the DB is reachable but
+  the pre-deploy migration never ran.
+- Admin flag on Neon: Neon console → **SQL Editor** (instead of Railway's Data tab).
+
+Result: request list 33/33 against `https://mycar-api-production.up.railway.app`.
+
 ## 3. Exit-gate checks
 
 ```powershell
