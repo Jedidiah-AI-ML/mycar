@@ -1,6 +1,7 @@
 # ADR-004: Postgres-backed job queue instead of Redis + Celery for v1
 
-- **Status:** Accepted (2026-11-13, with the Phase 1 plan)
+- **Status:** Accepted (2026-11-13, with the Phase 1 plan). **Amended by ADR-008:** the
+  worker now runs inside the API by default and doesn't poll or LISTEN while idle.
 - **Date:** 2026-11-13
 
 ## Context

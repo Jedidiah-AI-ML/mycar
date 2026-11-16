@@ -5,7 +5,11 @@ How it picks work safely when several workers run at once:
   worker has already locked is skipped instead of waited on, so no job is taken twice.
 The claimed job gets a *lease* (`locked_until`). If a worker dies mid-job, the lease
 expires and another worker's reclaim pass puts the job back in the queue.
-Workers sleep until Postgres `NOTIFY`s them about a new job, with a polling fallback.
+
+Sleep-friendly (ADR-008): when idle, the worker asks once when the next job is due and
+then sends nothing to the database until then, so a serverless Postgres (Neon) can
+scale to zero. New jobs wake it in-process (embedded in the API, the default) or via
+Postgres NOTIFY (standalone, only with WORKER_LISTEN=true, which keeps the DB awake).
 """
 
 import asyncio
@@ -72,6 +76,16 @@ _FAIL = text(
 )
 
 
+_NEXT_DUE = text(
+    """
+    SELECT EXTRACT(EPOCH FROM (LEAST(
+        (SELECT min(run_at) FROM jobs WHERE status IN ('queued', 'failed')),
+        (SELECT min(locked_until) FROM jobs WHERE status = 'running')
+    ) - now()))
+    """
+)
+
+
 class Worker:
     def __init__(
         self,
@@ -79,14 +93,18 @@ class Worker:
         *,
         worker_id: str | None = None,
         lease_s: float = 300,
-        poll_interval_s: float = 5.0,
         backoff_base_s: float = 10.0,  # SEED - validate (S10): retry n waits base * 2^(n-1)
+        max_idle_s: float = 6 * 3600,  # SEED - validate (S14): longest sleep with no wake
+        listen: bool = False,
+        error_retry_s: float = 30.0,
     ) -> None:
         self.sm = sessionmaker or get_sessionmaker()
         self.worker_id = worker_id or f"{socket.gethostname()}:{os.getpid()}:{uuid.uuid4().hex[:6]}"
         self.lease_s = lease_s
-        self.poll_interval_s = poll_interval_s
         self.backoff_base_s = backoff_base_s
+        self.max_idle_s = max_idle_s
+        self.listen = listen
+        self.error_retry_s = error_retry_s
         self._wake = asyncio.Event()
         self._stop = asyncio.Event()
 
@@ -164,24 +182,40 @@ class Worker:
             log.warning("LISTEN unavailable; falling back to polling", exc_info=True)
             return None
 
+    async def next_due_in(self) -> float | None:
+        """Seconds until the next job is due or a lease expires (None: nothing pending)."""
+        async with self.sm() as s:
+            secs = await s.scalar(_NEXT_DUE)
+        return None if secs is None else max(float(secs), 0.0)
+
     async def run(self) -> None:
-        log.info("worker started", extra={"worker_id": self.worker_id})
-        listener = await self._listen()
-        last_reclaim = 0.0
-        loop = asyncio.get_running_loop()
+        """Sleep-friendly loop (ADR-008).
+
+        Busy: run jobs back to back. Idle: one query to find when the next job is due,
+        then no database traffic at all until that time (capped at `max_idle_s`), an
+        in-process wake (embedded mode) or a NOTIFY (standalone with listen=True).
+        """
+        log.info("worker started", extra={"worker_id": self.worker_id, "listen": self.listen})
+        listener = await self._listen() if self.listen else None
         try:
             while not self._stop.is_set():
-                if loop.time() - last_reclaim > 30:
-                    await self.reclaim_expired()
-                    last_reclaim = loop.time()
                 self._wake.clear()
+                delay = self.max_idle_s
                 try:
-                    if await self.run_once():
-                        continue
+                    await self.reclaim_expired()
+                    while not self._stop.is_set() and await self.run_once():
+                        pass
+                    due = await self.next_due_in()
+                    if due is not None:
+                        # At least 1 s, so a job due "now" but locked elsewhere can't spin.
+                        delay = min(max(due, 1.0), self.max_idle_s)
                 except Exception:  # noqa: BLE001 - e.g. DB briefly unreachable
                     log.exception("worker loop error")
+                    delay = min(self.error_retry_s, self.max_idle_s)
+                if self._stop.is_set():
+                    break
                 try:
-                    await asyncio.wait_for(self._wake.wait(), self.poll_interval_s)
+                    await asyncio.wait_for(self._wake.wait(), delay)
                 except TimeoutError:
                     pass
         finally:
@@ -193,8 +227,9 @@ class Worker:
 def main() -> None:
     import app.jobs.handlers  # noqa: F401 - registers every handler
 
-    configure_logging(get_settings().log_level)
-    worker = Worker()
+    settings = get_settings()
+    configure_logging(settings.log_level)
+    worker = Worker(listen=settings.worker_listen, max_idle_s=settings.worker_max_idle_s)
 
     async def _main() -> None:
         loop = asyncio.get_running_loop()

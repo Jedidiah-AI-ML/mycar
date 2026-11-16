@@ -17,6 +17,7 @@ os.environ["DATABASE_URL"] = f"postgresql+asyncpg://{SERVER}/{TEST_DB}"
 os.environ["ENVIRONMENT"] = "test"
 os.environ["JWT_SECRET"] = "test-secret-not-for-production-0123456789abcdef"
 os.environ["LOG_LEVEL"] = "WARNING"
+os.environ["WORKER_MODE"] = "off"  # tests drive workers explicitly
 
 import asyncpg  # noqa: E402
 import httpx  # noqa: E402

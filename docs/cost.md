@@ -12,10 +12,10 @@ own Postgres and real traffic will use more, so the usage column adds headroom.
 | Service | What runs | Idle RAM measured | Est. monthly usage |
 |---|---|---|---|
 | `api` | 1 uvicorn process | 70 MB | ~$1 |
-| `worker` | `python -m app.jobs.worker` | 49 MB | ~$0.5 to 1 |
+| `worker` | **Now inside `api` (ADR-008)**: no separate service | n/a | $0 |
 | `Postgres` | **Moved to Neon (ADR-005)**: not on the Railway bill; Neon free tier, watch its compute usage | n/a | $0 on Railway |
 | CPU (mostly idle) + egress | | | ~$1 to 2 |
-| **Total usage** | | | **~$2.5 to 4** |
+| **Total usage** | | | **~$2 to 3** |
 
 **Expected Railway bill: $5/month** (usage now sits under the $5 included in the Hobby plan;
 plus Neon, $0 while within its free tier). The $5 Hobby fee counts toward usage, so a month
@@ -35,8 +35,8 @@ Not in this number:
 - The UI will read summary tables, never raw readings (Phase 2+).
 - Raw-reading retention job (Phase 2+, default 180 days, SEED S9).
 - The demo replays stored simulator data on a schedule; no always-on simulator.
-- Optional saving (about $1/month): run the worker inside the api container instead of
-  as its own service. Not done, because separate logs and restarts are worth more
-  while learning.
+- The worker runs inside the api (ADR-008) and leaves the database alone when idle, so
+  Neon's free compute (100 CU-h/month) is only used by real traffic plus about 4 short
+  wake-ups a day.
 
 Measure real usage in Railway's *Usage* tab after the first week and update this file.

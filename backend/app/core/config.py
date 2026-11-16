@@ -32,6 +32,17 @@ class Settings(BaseSettings):
     database_url: str = "postgresql+asyncpg://autocare:autocare@localhost:5433/autocare"
     db_pool_size: int = 5
     db_connect_timeout_s: float = 15.0  # Neon free tier can take ~5 s to wake from idle
+    # Close pooled connections after this long unused, so nothing holds a serverless
+    # database awake (ADR-008). 0 disables.
+    db_idle_release_s: float = 60.0
+
+    # --- Background jobs (ADR-004, ADR-008) ---
+    # embedded: worker runs inside the API process (default; one service, DB can sleep)
+    # standalone: run `python -m app.jobs.worker` as its own service
+    # off: no worker in this process (tests, or a standalone worker elsewhere)
+    worker_mode: Literal["embedded", "standalone", "off"] = "embedded"
+    worker_listen: bool = False  # standalone only; LISTEN keeps the DB awake
+    worker_max_idle_s: float = 6 * 3600  # SEED - validate (S14)
 
     # --- Auth ---  # SEED - validate (S2): token lifetimes are a product trade-off
     jwt_secret: SecretStr = SecretStr(INSECURE_DEFAULT_SECRET)

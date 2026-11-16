@@ -18,21 +18,18 @@ uv run alembic upgrade head            # create tables
 uv run uvicorn app.main:app --reload   # API on http://localhost:8000  (docs: /docs)
 ```
 
-In a second terminal, the background worker:
+The background worker runs inside the API process (ADR-008), so there's nothing else to
+start. To run it separately instead, set `WORKER_MODE=standalone` for the API and run
+`uv run python -m app.jobs.worker` in a second terminal.
 
-```powershell
-cd backend
-uv run python -m app.jobs.worker
-```
-
-Or everything in containers: `docker compose up --build -d` (db + api + worker).
+Or everything in containers: `docker compose up --build -d` (db + api).
 
 ## Tests
 
 ```powershell
 docker compose up -d db
 cd backend
-uv run pytest -q          # 99 tests; creates and drops its own autocare_test database
+uv run pytest -q          # 113 tests; creates and drops its own autocare_test database
 uv run ruff check .
 ```
 
@@ -58,7 +55,7 @@ backend/
     models/     SQLAlchemy models
     schemas/    Pydantic request/response models
     services/   consents, audit trail, VIN checks
-    jobs/       enqueue(), worker, handlers (ADR-004)
+    jobs/       enqueue(), worker (embedded in the API), handlers (ADR-004, ADR-008)
     config/     consents.yaml (SEED - validate)
   tests/
   restfox/      Phase 1 request list + Postman/Restfox export

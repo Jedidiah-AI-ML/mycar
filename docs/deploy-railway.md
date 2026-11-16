@@ -60,6 +60,25 @@ before the new version takes traffic. A failed migration stops the deploy.
 
 Result: request list 33/33 against `https://mycar-api-production.up.railway.app`.
 
+## Since ADR-008 (2026-11-16): one service, DB can sleep
+
+- The worker runs **inside `api`**. **Delete the `worker` service** in Railway
+  (service → Settings → Danger → Delete). Two workers wouldn't break anything (SKIP
+  LOCKED), but a standalone one keeps polling and stops Neon from sleeping.
+- `api` needs no new variables (defaults: `WORKER_MODE=embedded`,
+  `DB_IDLE_RELEASE_S=60`, `WORKER_MAX_IDLE_S=21600`).
+- The healthcheck path must stay **`/health`** (no DB). `/health/ready` would wake Neon.
+- Check: `api` logs show `"msg": "worker started", "listen": false`; the admin ping
+  succeeds; after about 5 quiet minutes, Neon's dashboard shows the compute as *Idle/Suspended*.
+
+## Moving to Render later (notes, not done yet)
+
+- One **Web Service** from the repo, root directory `backend`, runtime Docker.
+  Pre-deploy command `alembic upgrade head`, health check path `/health`.
+- Same variables as `api` here. Keep Neon; don't use Render's free Postgres (it expires).
+- The free web service spins down without HTTP traffic and takes time to cold-start. The
+  device's store-and-forward buffering (Phase 2/8) absorbs that for uploads.
+
 ## 3. Exit-gate checks
 
 ```powershell

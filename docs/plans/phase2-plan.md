@@ -1,4 +1,22 @@
-# Phase 2 plan: Simulator + device gateway (DRAFT, waiting for Wisdom's approval)
+# Phase 2 plan: Simulator + device gateway (APPROVED 2026-11-16)
+
+**Decisions (Wisdom, 2026-11-16):**
+- **Q0: stay on Neon** and let the database sleep. Hosting will move from Railway to
+  Render later, so the DB must not live on the app host. Done as **step 0 = ADR-008**: the
+  worker is embedded in the API, sends no queries while idle, wakes in-process on commit,
+  and idle pool connections are closed after 60 s. Railway's `worker` service is deleted.
+- **Q1 to Q8:** approved as recommended:
+  - uv workspace for the simulator
+  - our own payload v1
+  - unclaimed data acked and discarded
+  - GNSS only with consent
+  - no raw payload storage
+  - full gate locally, 1 car-day live
+  - ELM327 output in Phase 8
+  - `readings.value` as `real`
+- **Consequence for storage:** Neon free = 1 GB, which is about 10 car-months of readings.
+  The raw-reading retention job (S9) moves into Phase 3 at the latest.
+
 
 **Exit gate (PRD 13):** a simulated week for 5 cars is ingested with **zero duplicate rows**,
 replaying it is **idempotent**, and **late / out-of-order batches** are handled.

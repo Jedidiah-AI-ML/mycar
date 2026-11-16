@@ -1,6 +1,7 @@
 # Local development: Postgres only (ADR-003/004: no Redis, no TimescaleDB).
 #   docker compose up -d db          # just the database (for pytest / uvicorn --reload)
-#   docker compose up --build -d     # database + api + worker in containers
+#   docker compose up --build -d     # database + api (worker runs inside the api, ADR-008)
+#   docker compose --profile standalone up -d   # also a separate worker container
 services:
   db:
     image: postgres:16
@@ -31,11 +32,13 @@ services:
     # Apply migrations, then serve (on Railway this is the pre-deploy command).
     command: sh -c "alembic upgrade head && exec uvicorn app.main:app --host 0.0.0.0 --port 8000"
 
-  worker:
+  worker:  # optional: only for WORKER_MODE=standalone setups
+    profiles: ["standalone"]
     build: ./backend
     environment:
       DATABASE_URL: postgresql+asyncpg://autocare:autocare@db:5432/autocare
       ENVIRONMENT: development
+      WORKER_LISTEN: "true"
     depends_on:
       api:
         condition: service_started

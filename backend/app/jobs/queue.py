@@ -7,10 +7,11 @@ together with the data it refers to: a job can never point at rows that don't ex
 import json
 from datetime import datetime
 
-from sqlalchemy import text
+from sqlalchemy import event, text
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.jobs import wake
 from app.jobs.registry import get_job
 from app.models import Job
 
@@ -49,8 +50,16 @@ async def enqueue(
     )
     job_id = await session.scalar(stmt)
     if job_id is not None:
+        # Wake an embedded worker once this transaction commits (never before, or it
+        # would look for a job that isn't visible yet).
+        event.listen(session.sync_session, "after_commit", _wake_after_commit, once=True)
+        # Cross-process wake for a standalone worker with WORKER_LISTEN=true.
         # Postgres delivers NOTIFY only when the transaction commits.
         await session.execute(
             text("SELECT pg_notify(:ch, :id)"), {"ch": NOTIFY_CHANNEL, "id": str(job_id)}
         )
     return job_id
+
+
+def _wake_after_commit(_session) -> None:
+    wake.notify()

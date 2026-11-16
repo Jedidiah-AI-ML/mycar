@@ -1,9 +1,11 @@
 import asyncio
 from datetime import UTC, datetime, timedelta
 
-from sqlalchemy import func, select, text, update
+from sqlalchemy import event, func, select, text, update
 
-from app.db.session import get_sessionmaker
+from app.core.config import get_settings
+from app.db.session import IdlePoolReleaser, get_engine, get_sessionmaker, make_engine
+from app.jobs import wake
 from app.jobs.queue import enqueue
 from app.jobs.registry import job
 from app.jobs.worker import Worker
@@ -137,20 +139,134 @@ async def test_unknown_job_goes_dead(session):
     assert j.status == JobStatus.dead and "no handler" in j.last_error
 
 
-async def test_notify_wakes_the_long_running_worker(session):
-    w = Worker(worker_id="w", poll_interval_s=30)  # polling alone would take 30 s
-    task = asyncio.create_task(w.run())
-    await asyncio.sleep(0.5)  # let it LISTEN
-    await enqueue(session, "test.record", {"n": 1})
-    await session.commit()
-    for _ in range(50):
-        await asyncio.sleep(0.1)
-        if (await _jobs(session))[0].status == JobStatus.succeeded:
-            break
+async def _wait_succeeded(session, limit_s: float = 5.0) -> float:
+    """Polls (from the test, not the worker) until the first job succeeds; returns seconds."""
+    loop = asyncio.get_running_loop()
+    start = loop.time()
+    while loop.time() - start < limit_s:
         session.expire_all()
-    w.stop()
-    await asyncio.wait_for(task, 5)
-    assert (await _jobs(session))[0].status == JobStatus.succeeded
+        jobs = await _jobs(session)
+        if jobs and jobs[0].status == JobStatus.succeeded:
+            return loop.time() - start
+        await asyncio.sleep(0.05)
+    raise AssertionError("job did not succeed in time")
+
+
+class _QueryCounter:
+    def __init__(self):
+        self.n = 0
+        self.engine = get_engine().sync_engine
+        event.listen(self.engine, "before_cursor_execute", self._count)
+
+    def _count(self, *_):
+        self.n += 1
+
+    def close(self):
+        event.remove(self.engine, "before_cursor_execute", self._count)
+
+
+async def test_in_process_wake_after_commit(session):
+    w = Worker(worker_id="w", max_idle_s=60)  # without a wake it would sleep a minute
+    wake.install(w._wake)
+    task = asyncio.create_task(w.run())
+    try:
+        await asyncio.sleep(0.3)  # let it go idle
+        await enqueue(session, "test.record", {"n": 1})
+        assert not w._wake.is_set()  # nothing visible to the worker before commit
+        await session.commit()
+        assert await _wait_succeeded(session) < 2
+    finally:
+        w.stop()
+        wake.install(None)
+        await asyncio.wait_for(task, 5)
+
+
+async def test_rolled_back_enqueue_does_not_wake(session):
+    ev = asyncio.Event()
+    wake.install(ev)
+    try:
+        await enqueue(session, "test.record", {"n": 1})
+        await session.rollback()
+        assert not ev.is_set()
+    finally:
+        wake.install(None)
+
+
+async def test_idle_worker_sends_no_queries(session):
+    """The point of ADR-008: an idle worker must leave the database alone."""
+    w = Worker(worker_id="w", max_idle_s=60)
+    task = asyncio.create_task(w.run())
+    await asyncio.sleep(0.5)  # startup: reclaim + empty queue check + next-due query
+    counter = _QueryCounter()
+    try:
+        await asyncio.sleep(2.0)
+        assert counter.n == 0
+    finally:
+        counter.close()
+        w.stop()
+        await asyncio.wait_for(task, 5)
+
+
+async def test_idle_worker_wakes_for_scheduled_job(session):
+    await enqueue(
+        session, "test.record", {"n": 1}, run_at=datetime.now(UTC) + timedelta(seconds=1.5)
+    )
+    await session.commit()
+    w = Worker(worker_id="w", max_idle_s=60)  # no wake installed: it must use the due time
+    task = asyncio.create_task(w.run())
+    try:
+        took = await _wait_succeeded(session, limit_s=6)
+        assert 1.0 < took < 4.0
+    finally:
+        w.stop()
+        await asyncio.wait_for(task, 5)
+
+
+async def test_listen_wakes_standalone_worker(session):
+    w = Worker(worker_id="w", max_idle_s=60, listen=True)
+    task = asyncio.create_task(w.run())
+    try:
+        await asyncio.sleep(0.5)  # let it LISTEN
+        await enqueue(session, "test.record", {"n": 1})
+        await session.commit()
+        assert await _wait_succeeded(session) < 2
+    finally:
+        w.stop()
+        await asyncio.wait_for(task, 5)
+
+
+async def test_idle_pool_is_released():
+    engine = make_engine(get_settings().database_url, pool_size=2)
+    releaser = IdlePoolReleaser(engine, idle_s=0.2)
+    try:
+        async with engine.connect() as c:
+            await c.execute(text("SELECT 1"))
+        assert engine.pool.checkedin() == 1
+        assert await releaser.maybe_release() is False  # used just now
+        await asyncio.sleep(0.3)
+        assert await releaser.maybe_release() is True
+        assert engine.pool.checkedin() == 0
+        # Still works afterwards, and the listener survived the new pool.
+        async with engine.connect() as c:
+            await c.execute(text("SELECT 1"))
+        assert await releaser.maybe_release() is False
+    finally:
+        await engine.dispose()
+
+
+async def test_embedded_worker_runs_inside_the_api(session):
+    from app.main import create_app
+
+    settings = get_settings()
+    settings.worker_mode = "embedded"
+    try:
+        app = create_app()
+        async with app.router.lifespan_context(app):
+            await enqueue(session, "test.record", {"n": 1})
+            await session.commit()
+            assert await _wait_succeeded(session) < 2
+    finally:
+        settings.worker_mode = "off"
 
 
 # ---------------------------------------------------------------- account purge

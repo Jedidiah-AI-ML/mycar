@@ -30,9 +30,8 @@ off the Railway bill and has a free tier.
   West. Every query crosses the Atlantic. **Open:** recreate the project in AWS
   `eu-central-1` (Frankfurt) before real data arrives; a Neon project's region can't be
   changed afterwards.
-- **Free-tier compute:** the worker polls and holds a `LISTEN` connection, so the
-  database never scales to zero. That will probably use up the free tier's monthly
-  compute allowance. **Watch** Neon's usage page in the first week. If needed, make the
-  worker poll less often or only on a schedule (a change behind `app/jobs/`, nothing
-  else).
+- **Free-tier compute:** the free plan has 100 CU-hours/month and suspends compute when
+  they run out. The Phase 1 worker never let the DB sleep (≈ 183 CU-h/month). **Fixed by
+  ADR-008:** an embedded, sleep-friendly worker and idle connection release. Keep
+  watching Neon → Usage.
 - **Cold starts:** the first request after an idle period can take about 5 s.

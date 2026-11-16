@@ -1,5 +1,6 @@
-# Railway config for the `worker` service (same image as api; set this file as the
-# service's "Config-as-code path" in Railway). No healthcheck: the worker has no HTTP port.
+# NOT USED by default since ADR-008: the worker runs inside the api service.
+# Only for a standalone worker (WORKER_MODE=standalone on api), e.g. with an always-on DB.
+# Railway config for that `worker` service (same image as api). No healthcheck: no HTTP port.
 [build]
 builder = "DOCKERFILE"
 dockerfilePath = "Dockerfile"
