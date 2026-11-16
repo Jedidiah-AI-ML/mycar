@@ -38,6 +38,17 @@ def test_plain_urls(raw):
     assert s.raw_asyncpg_dsn == "postgresql://u:p@h:5432/db"
 
 
+def test_unknown_libpq_params_are_dropped():
+    # asyncpg raises TypeError on unknown connect() kwargs such as `options`.
+    s = Settings(database_url=NEON + "&options=endpoint%3Dep-cool&application_name=x")
+    assert s.database_url.endswith("/neondb?ssl=require")
+
+
+def test_copy_paste_quotes_are_stripped():
+    s = Settings(database_url=f'  "{NEON}" ')
+    assert s.database_url.startswith("postgresql+asyncpg://")
+
+
 def test_production_refuses_default_secret():
     with pytest.raises(ValueError, match="JWT_SECRET"):
         Settings(environment="production", jwt_secret="change-me")

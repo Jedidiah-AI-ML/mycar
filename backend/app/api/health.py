@@ -6,6 +6,7 @@ Alembic revision. If either fails it returns 503 so a bad deploy is visible.
 Adapted from vpm-backend's `health.py` (Redis check removed, readiness added).
 """
 
+import logging
 from functools import lru_cache
 from pathlib import Path
 
@@ -20,6 +21,7 @@ from app.core.config import get_settings
 from app.db.session import get_engine
 
 router = APIRouter(tags=["health"])
+log = logging.getLogger("app.health")
 
 BACKEND_DIR = Path(__file__).resolve().parents[2]
 
@@ -55,6 +57,8 @@ async def ready(engine: AsyncEngine = Depends(engine_dep)) -> JSONResponse:
             except Exception:
                 current = None
     except Exception as exc:  # noqa: BLE001 - any DB failure means "not ready"
+        # Full detail goes to the server log only (it can contain host names).
+        log.warning("readiness: database check failed", exc_info=True)
         checks["db"] = f"error: {type(exc).__name__}"
         return JSONResponse({"status": "unavailable", "checks": checks}, status_code=503)
 

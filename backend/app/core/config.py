@@ -55,19 +55,20 @@ class Settings(BaseSettings):
 
         - `postgres://` / `postgresql://` -> `postgresql+asyncpg://`
         - libpq's `sslmode=require` -> asyncpg's `ssl=require`
-        - `channel_binding` is dropped (libpq-only; asyncpg rejects it)
+        - every other query parameter (`channel_binding`, `options`, ...) is dropped:
+          SQLAlchemy passes them to asyncpg.connect() as keyword arguments, and asyncpg
+          raises TypeError on any it doesn't know.
+        - surrounding quotes/whitespace from copy-paste are removed
         """
-        v = v.strip()
+        v = v.strip().strip("'\"").strip()
         for prefix in ("postgres://", "postgresql://"):
             if v.startswith(prefix):
                 v = "postgresql+asyncpg://" + v[len(prefix) :]
                 break
         url = make_url(v)
-        query = dict(url.query)
-        sslmode = query.pop("sslmode", None)
-        query.pop("channel_binding", None)
-        if sslmode and "ssl" not in query:
-            query["ssl"] = sslmode
+        q = dict(url.query)
+        ssl = q.get("ssl") or q.get("sslmode")
+        query = {"ssl": ssl} if ssl and ssl != "disable" else {}
         return url.set(query=query).render_as_string(hide_password=False)
 
     @field_validator("datasets_dir", mode="before")
