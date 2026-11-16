@@ -291,11 +291,24 @@ def run(base: str) -> int:
             return {k: sub(v) for k, v in x.items()}
         return x
 
-    failures = 0
+    base = base.rstrip("/")
+    print(f"Target: {base}\n")
+    failures = skipped = 0
     with httpx.Client(base_url=base, timeout=20) as c:
         for r in REQUESTS:
-            if r["n"] == 9:
+            if r["n"] == 9 and "refresh" in env:
                 env["old_refresh"] = env["refresh"]
+            needed = set(re.findall(r"\{\{(\w+)\}\}", json.dumps([r["path"], r["body"]])))
+            if r["auth"]:
+                needed.add(r["auth"])
+            missing = sorted(needed - env.keys())
+            if missing:
+                skipped += 1
+                print(
+                    f"SKIP {r['n']:02d} {r['method']:6} {r['name']}: "
+                    f"needs {missing} from an earlier request that failed"
+                )
+                continue
             headers = {"Authorization": f"Bearer {env[r['auth']]}"} if r["auth"] else {}
             resp = c.request(r["method"], sub(r["path"]), json=sub(r["body"]), headers=headers)
             ok = resp.status_code == r["expect"]
@@ -304,12 +317,21 @@ def run(base: str) -> int:
                 f"{'PASS' if ok else 'FAIL'} {r['n']:02d} {r['method']:6} {r['name']}: "
                 f"{resp.status_code} (want {r['expect']})"
             )
-            if ok:
+            if not ok:
+                print(f"     body: {resp.text[:200]!r}")
+                if r["n"] == 1:
+                    print(
+                        "\n/health failed, so the URL is probably wrong (or the app is down). "
+                        "Open BASE/health in a browser to check. Stopping."
+                    )
+                    return 1
+            else:
                 for var, field in r["save"].items():
                     if field:
                         env[var] = str(resp.json()[field])
-    print(f"\n{len(REQUESTS) - failures}/{len(REQUESTS)} passed")
-    return 1 if failures else 0
+    passed = len(REQUESTS) - failures - skipped
+    print(f"\n{passed}/{len(REQUESTS)} passed, {failures} failed, {skipped} skipped")
+    return 1 if failures or skipped else 0
 
 
 if __name__ == "__main__":
