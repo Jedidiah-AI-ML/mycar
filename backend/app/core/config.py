@@ -10,6 +10,7 @@ from typing import Literal
 
 from pydantic import SecretStr, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from sqlalchemy.engine import make_url
 
 INSECURE_DEFAULT_SECRET = "change-me"  # noqa: S105 - placeholder, refused in production
 
@@ -50,11 +51,24 @@ class Settings(BaseSettings):
     @field_validator("database_url")
     @classmethod
     def _use_asyncpg_driver(cls, v: str) -> str:
-        # Railway (and most hosts) hand out postgres:// or postgresql:// URLs.
+        """Accept the URL exactly as a host (Railway, Neon) hands it out.
+
+        - `postgres://` / `postgresql://` -> `postgresql+asyncpg://`
+        - libpq's `sslmode=require` -> asyncpg's `ssl=require`
+        - `channel_binding` is dropped (libpq-only; asyncpg rejects it)
+        """
+        v = v.strip()
         for prefix in ("postgres://", "postgresql://"):
             if v.startswith(prefix):
-                return "postgresql+asyncpg://" + v[len(prefix) :]
-        return v
+                v = "postgresql+asyncpg://" + v[len(prefix) :]
+                break
+        url = make_url(v)
+        query = dict(url.query)
+        sslmode = query.pop("sslmode", None)
+        query.pop("channel_binding", None)
+        if sslmode and "ssl" not in query:
+            query["ssl"] = sslmode
+        return url.set(query=query).render_as_string(hide_password=False)
 
     @field_validator("datasets_dir", mode="before")
     @classmethod
@@ -69,6 +83,16 @@ class Settings(BaseSettings):
         ):
             raise ValueError("JWT_SECRET must be set in production")
         return self
+
+    @property
+    def raw_asyncpg_dsn(self) -> str:
+        """Plain DSN for `asyncpg.connect()` (the worker's LISTEN connection).
+        asyncpg's own DSN parser understands `sslmode`, not `ssl`."""
+        url = make_url(self.database_url).set(drivername="postgresql")
+        query = dict(url.query)
+        if "ssl" in query:
+            query["sslmode"] = query.pop("ssl")
+        return url.set(query=query).render_as_string(hide_password=False)
 
     @property
     def cors_origin_list(self) -> list[str]:
