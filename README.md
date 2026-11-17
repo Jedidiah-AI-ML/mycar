@@ -48,9 +48,18 @@ status and which response field to copy into which variable.
 
 ```powershell
 cd simulator
-uv run pytest -q                       # physics + calibration gate tests
+uv run pytest -q                       # physics, calibration and fault gate tests (~2 min)
 uv run python -c "from autocare_sim.run import simulate; tl = simulate('toyota_corolla_1_8_2009', days=7, seed=1); print(len(tl.trips), 'trips')"
 ```
+
+With a fault and its ground truth (when it started; when its DTC went pending, then confirmed):
+
+```powershell
+uv run python -c "from autocare_sim.run import simulate; from autocare_sim.faults import fault; import json; tl = simulate('toyota_corolla_1_8_2009', days=30, seed=1, faults=[fault('ageing_o2')]); print(json.dumps(tl.ground_truth()['faults'], indent=1))"
+```
+
+Nine faults in `simulator/faults/faults.yaml`; when the simulated ECU sets each DTC is in
+`simulator/faults/dtc_rules.yaml` (both SEED, ADR-009).
 
 Five car profiles in `simulator/profiles/` (SEED values for Wisdom to validate); drive
 cycles and the Lagos schedule in `simulator/profiles/cycles.yaml`; numbers measured from

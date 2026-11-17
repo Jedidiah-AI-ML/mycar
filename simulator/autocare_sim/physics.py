@@ -39,6 +39,7 @@ class Health:
     maf_scale: float = 1.0  # dirty MAF reads this fraction of true airflow
     o2_response_s: float = 0.1  # upstream sensor time constant (ageing: slower)
     misfire_rate: float = 0.0  # fraction of firing events lost on the weak cylinder
+    misfire_cylinder: int = 0  # which cylinder (1-based); 0 = none
     catalyst_efficiency: float = 1.0  # 1 = healthy, falls as the catalyst degrades
 
 
@@ -186,10 +187,13 @@ def simulate_trip(
         demand = 0.0 if is_cut else min(p_wheel / max(p_avail * 0.85, 1.0), 1.0)
 
         # Misfire: the weak cylinder drops firing events; at idle the crank slows each time.
+        # Draws are unconditional so a faulty and a clean run share one random stream
+        # (the fault tests compare them second by second).
         noise_sd = 15 if v < 1 else 6
-        if h.misfire_rate > 0 and rng.random() < h.misfire_rate * (1.5 if v < 1 else 0.6):
+        u_mf, u_drop = rng.random(), rng.uniform(25, 70) if v < 1 else rng.uniform(5, 20)
+        if u_mf < h.misfire_rate * (1.5 if v < 1 else 0.6):
             misfire_events += 1
-            rpm -= rng.uniform(25, 70) if v < 1 else rng.uniform(5, 20)
+            rpm -= u_drop
         rpm = max(rpm + rng.normal(0, noise_sd), 0.0)
 
         # ---- manifold, load, airflow ----------------------------------------------

@@ -1,0 +1,82 @@
+# Fault library: how each fault grows and which Health parameters it bends.
+# SEED - validate (P3): onset windows, ramp lengths and end values are plausible shapes
+# from general knowledge, not measured. Wisdom: sanity-check against mechanic experience.
+#
+# A fault is quiet until `onset`, then its severity s rises from 0 to 1 over `ramp`
+# (days or km, per `clock`): s = ((x - onset) / ramp) ** shape, capped at 1.
+#   shape 1 = steady wear; shape > 1 = slow at first, then accelerating.
+# Each Health parameter moves from its healthy value to `end` in proportion to s.
+# `onset` / `ramp` here are defaults; a scenario can override them.
+
+weak_battery:
+  system: battery
+  clock: days
+  onset: 5
+  ramp: 25
+  shape: 1.5
+  health: {battery_rest_v: 12.05, battery_crank_drop_v: 4.2}
+
+failing_alternator:
+  system: charging
+  clock: days
+  onset: 3
+  ramp: 20
+  shape: 1.3
+  health: {charging_v: 12.45, charging_sag_v_per_load: 0.6}
+
+stuck_open_thermostat:
+  system: cooling
+  clock: days
+  onset: 2
+  ramp: 6          # sticks open fairly quickly once it starts
+  shape: 1.0
+  health: {thermostat_stuck_open: 1.0}
+
+low_coolant:
+  system: cooling
+  clock: km        # slow leak: loses coolant with every drive
+  onset: 50
+  ramp: 900
+  shape: 1.6
+  health: {operating_offset_c: 15.0, cooling_capacity: 0.5}
+
+vacuum_leak:
+  system: air_fuel
+  clock: days      # a perished hose cracks open over weeks
+  onset: 3
+  ramp: 20
+  shape: 1.2
+  health: {vacuum_leak_gs: 2.0}   # V6 at idle hides a small leak: 1.4 g/s barely reached +25 %
+
+dirty_maf:
+  system: air_fuel
+  clock: km
+  onset: 50
+  ramp: 1200
+  shape: 1.0
+  health: {maf_scale: 0.78}
+
+ageing_o2:
+  system: exhaust_sensors
+  clock: km
+  onset: 50
+  ramp: 1000
+  shape: 1.4
+  health: {o2_response_s: 2.5}
+
+misfire:
+  system: ignition
+  clock: days      # an ignition coil breaking down
+  onset: 4
+  ramp: 18
+  shape: 2.0
+  health: {misfire_rate: 0.10}
+  cylinder: 2      # which cylinder misfires (P0302); a scenario can change it
+
+catalyst_degradation:
+  system: exhaust_sensors
+  clock: km
+  onset: 50
+  ramp: 1500
+  shape: 1.3
+  health: {catalyst_efficiency: 0.30}

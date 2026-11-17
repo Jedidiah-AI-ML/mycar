@@ -1,0 +1,86 @@
+# When the simulated ECU sets each DTC.
+# SEED - validate (P4): enabling conditions and thresholds vary by manufacturer and are
+# from general knowledge, not Toyota/Honda calibration data. Wisdom: compare with what a
+# real scan tool shows on these cars when the fault is present.
+#
+# How it works (generic OBD-II "two-trip" logic):
+#   - Each trip, a monitor runs only if its enabling conditions are met (warm engine,
+#     enough idle, long enough trip ...). Otherwise it is "not run" and nothing changes.
+#   - First failing run  -> code goes PENDING (Mode 07).
+#   - Next run also fails -> CONFIRMED (Mode 03) and the MIL comes on.
+#   - A pending code clears after one passing run; the MIL goes off after
+#     `passes_to_mil_off` passing runs; a confirmed code is erased after
+#     `warmups_to_erase` warm-up cycles without a failure.
+logic:
+  trips_to_confirm: 2
+  passes_to_mil_off: 3
+  warmups_to_erase: 40
+
+monitors:
+  thermostat:
+    codes: [P0128]                 # coolant below thermostat regulating temperature
+    metric: coolant_after_warmup
+    enable: {cold_start_below_operating_c: 30, min_duration_s: 1200, at_s: 1200}
+    fail_below_operating_c: 15     # fails if coolant at 20 min < operating - 15 °C
+    caused_by: [stuck_open_thermostat]
+
+  overheat:
+    codes: [P0217]                 # engine overtemperature (not every car sets a code)
+    metric: coolant_max
+    enable: {min_duration_s: 300}
+    fail_above_c: 112
+    caused_by: [low_coolant]
+
+  fuel_system_b1:
+    codes: [P0171]                 # system too lean, bank 1
+    metric: idle_total_trim_b1
+    enable: {min_samples: 60, min_coolant_c: 70}
+    fail_above_pct: 25
+    caused_by: [vacuum_leak, dirty_maf]
+
+  fuel_system_b2:
+    codes: [P0174]                 # system too lean, bank 2 (V6 only)
+    metric: idle_total_trim_b2
+    enable: {min_samples: 60, min_coolant_c: 70, needs_signal: stft_b2}
+    fail_above_pct: 25
+    caused_by: [vacuum_leak, dirty_maf]
+
+  maf:
+    codes: [P0101]                 # MAF circuit range/performance
+    metric: maf_rationality
+    enable: {min_samples: 120, min_coolant_c: 70}
+    fail_outside: [0.85, 1.15]     # MAF reading / airflow expected from MAP and RPM
+    caused_by: [dirty_maf]
+
+  o2_sensor:
+    codes: [P0133]                 # O2 sensor slow response, bank 1 sensor 1
+    metric: o2_activity
+    enable: {min_samples: 180, min_coolant_c: 70}
+    fail_below: 0.005              # median |change in lambda| per second, closed loop
+    caused_by: [ageing_o2]
+
+  misfire:
+    codes: [P0300]                 # replaced by P030N for the misfiring cylinder
+    per_cylinder: true
+    metric: misfires_per_1000_rev
+    enable: {min_revs: 1000}
+    fail_above: 4
+    caused_by: [misfire]
+
+  catalyst:
+    codes: [P0420]                 # catalyst efficiency below threshold, bank 1
+    metric: catalyst_downstream_sd
+    enable: {min_samples: 300, min_coolant_c: 75}
+    fail_above: 0.10               # downstream O2 voltage spread (healthy cat is flat)
+    caused_by: [catalyst_degradation]
+
+  system_voltage:
+    codes: [P0562]                 # system voltage low
+    metric: running_voltage
+    enable: {min_duration_s: 120}
+    fail_below_v: 12.6
+    caused_by: [failing_alternator]
+
+# Faults the ECU does not diagnose on these cars. AutoCare should still catch them from
+# the signals; that is the point of the product.
+no_dtc: [weak_battery]

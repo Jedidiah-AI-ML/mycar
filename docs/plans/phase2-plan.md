@@ -155,11 +155,36 @@ Catalogue gained `lambda_b1s1` (PID 0x34): these cars likely use wideband A/F se
 ### Step 4: Fault library + ground truth
 | File | Purpose |
 |---|---|
-| `simulator/faults/*.py` | Weak battery, failing alternator, stuck-open thermostat, low coolant / overheating, intake vacuum leak, dirty MAF, ageing upstream O2, ignition-coil misfire (one cylinder), catalyst degradation. Each has an onset, a degradation curve and the signal(s) it bends |
-| `simulator/faults/dtc_rules.yaml` | When each fault's DTC would go **pending**, then **confirmed** (e.g. P0128 for the thermostat, P0171 for the vacuum leak), **all SEED** |
+| `simulator/autocare_sim/faults.py` + `faults/faults.yaml` | Weak battery, failing alternator, stuck-open thermostat, low coolant / overheating, intake vacuum leak, dirty MAF, ageing upstream O2, ignition-coil misfire (one cylinder), catalyst degradation. Each has an onset, a degradation curve and the signal(s) it bends |
+| `simulator/faults/dtc_rules.yaml` + `autocare_sim/dtc.py` | When each fault's DTC would go **pending**, then **confirmed** (e.g. P0128 for the thermostat, P0171 for the vacuum leak), **all SEED** |
 | ground truth output | Per car: fault start, km/days to pending, km/days to confirmed |
 
 **Gate:** pytest: each fault moves its target signal in the right direction and only that system; a clean car emits no DTCs over 30 simulated days; the ground-truth file matches the emitted DTC events.
+
+✅ **Done 2026-11-17:** 35 new tests pass (48 simulator tests in total; `cd simulator; uv run pytest`). As built:
+- `simulator/faults/faults.yaml`: 9 fault curves (SEED P3); `autocare_sim/faults.py` turns them into `Health` changes.
+- `simulator/faults/dtc_rules.yaml`: 10 monitors (SEED P4); `autocare_sim/dtc.py` is the simulated ECU. It runs monitors on each trip's signals with two-trip pending/confirmed logic, MIL off after 3 passes, and erase after 40 warm-ups (ADR-009).
+- `simulate(..., faults=[fault("vacuum_leak")])`; `Timeline.ground_truth()` / `write_ground_truth(path)`.
+
+Measured:
+- Clean cars: **0 DTCs** in 30 days on all 5 cars, with every monitor completing.
+- Each fully failed fault moves only its own monitors, on an identical trip. The real side effects: a stuck-open thermostat stops the warm-engine monitors from running, and a misfire makes the O2 reading noisier.
+
+Lead time with the default curves (seed 2, 60 days; Corolla unless noted). This is the window AutoCare has to beat:
+
+| Fault | Starts | DTC pending → confirmed |
+|---|---|---|
+| Weak battery | day 5 | none (ECU doesn't diagnose it) |
+| Failing alternator | day 3 | P0562: day 21 → 22 |
+| Stuck-open thermostat | day 2 | P0128: day 5 → 8 |
+| Low coolant | day 3 | P0217: day 30 → 31 |
+| Vacuum leak (RX350) | day 4 | P0171: day 18 → 19; P0174: day 19 → 21 |
+| Dirty MAF | day 3 | P0101: day 27 → 27; P0171: day 37 → 37 |
+| Ageing O2 | day 3 | P0133: day 14 → 16 |
+| Misfire, cylinder 2 | day 4 | P0302: day 19 → 19 |
+| Catalyst | day 3 | P0420: day 33 → 33 |
+
+Tuning during the step: vacuum leak end value 1.4 → 2.0 g/s, because the V6 at idle barely reached +25 % trim; low coolant made more severe so it actually overheats; P0133 threshold 0.006 → 0.005 for margin over healthy cars (lowest healthy value 0.0069). The misfire draws in `physics.py` are now unconditional, so clean and faulty runs share one random stream.
 
 ### Step 5: Device emulation
 | File | Purpose |
@@ -268,7 +293,7 @@ No new services in Phase 2.
 |---|---|---|---|
 | P1 | The 5 vehicle profiles: displacement, gear ratios, final drive, tyre size, idle RPM, thermostat opening temperature, supported-PID sets | `simulator/profiles/*.yaml` | From general knowledge, not manufacturer data; Wisdom to check against service manuals or real scans |
 | P2 | Lagos heavy-traffic cycle: idle share ~40 to 50 %, mean speed ~12 to 18 km/h, trips/day, km/day | `simulator/cycles/` | No Lagos dataset; VED/Barreto are US/Brazil |
-| P3 | Fault degradation rates and onset windows (9 faults) | `simulator/faults/` | Plausible shapes, not measured |
+| P3 | Fault degradation rates and onset windows (9 faults) | `simulator/faults/faults.yaml` | Plausible shapes, not measured |
 | P4 | When each fault's DTC goes pending/confirmed (e.g. P0128 thermostat, P0171/P0174 lean, P0101 MAF, P0133 O2 slow response, P0301–P0306 misfire, P0420 catalyst, P0562/P0563 system voltage) | `simulator/faults/dtc_rules.yaml` | Enabling criteria vary by manufacturer |
 | P5 | Poll rates: fast 1 Hz, slow 7.5 s; cranking capture rate | `signals.yaml`, device | Real adapter throughput is measured in Phase 8 |
 | P6 | Batch size: 60 s or 4 KB gzipped, whichever comes first | device + ADR-006 | Trade-off between data and latency |
