@@ -4,7 +4,7 @@ Early-warning web app for petrol cars, fed by a cellular OBD-II device. Personal
 portfolio project. **Source of truth: [docs/PRD.md](docs/PRD.md).** Decisions are in
 [docs/decisions/](docs/decisions/), phase plans in [docs/plans/](docs/plans/).
 
-Status: **Phase 1 (backend foundation) done**: auth, consents, vehicles, sharing, job queue. Live on Railway with Neon Postgres (ADR-005); request list 33/33 against the live API (2026-11-16).
+Status: **Phase 2 in progress** (simulator, device emulation and the telemetry schema are done; the gateway is next). **Phase 1 (backend foundation) done**: auth, consents, vehicles, sharing, job queue. Live on Railway with Neon Postgres (ADR-005); request list 33/33 against the live API (2026-11-16).
 
 ## Run it locally (Windows, PowerShell)
 
@@ -14,9 +14,13 @@ Needs Docker Desktop and [uv](https://docs.astral.sh/uv/).
 docker compose up -d db                # Postgres on localhost:5433
 cd backend
 uv sync                                # installs Python 3.12 + dependencies
-uv run alembic upgrade head            # create tables
+uv run alembic upgrade head            # create tables (local DB only; see note below)
 uv run uvicorn app.main:app --reload   # API on http://localhost:8000  (docs: /docs)
 ```
+
+Alembic refuses to migrate a non-local database unless `ENVIRONMENT=production` (Railway's
+pre-deploy step) or `ALEMBIC_ALLOW_REMOTE=1` is set, so a `.env` pointing at Neon can't be
+migrated from a laptop by accident.
 
 The background worker runs inside the API process (ADR-008), so there's nothing else to
 start. To run it separately instead, set `WORKER_MODE=standalone` for the API and run
@@ -29,7 +33,7 @@ Or everything in containers: `docker compose up --build -d` (db + api).
 ```powershell
 docker compose up -d db
 cd backend
-uv run pytest -q          # 113 tests; creates and drops its own autocare_test database
+uv run pytest -q          # 160 tests; creates and drops its own autocare_test database
 uv run ruff check .
 ```
 

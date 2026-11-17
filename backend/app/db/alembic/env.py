@@ -19,8 +19,33 @@ if config.config_file_name is not None and config.attributes.get("configure_logg
 target_metadata = Base.metadata
 
 
+LOCAL_HOSTS = {"localhost", "127.0.0.1", "::1", "db", "host.docker.internal"}
+
+
 def _url() -> str:
-    return config.attributes.get("database_url") or get_settings().database_url
+    url = config.attributes.get("database_url") or get_settings().database_url
+    _refuse_remote_outside_production(url)
+    return url
+
+
+def _refuse_remote_outside_production(url: str) -> None:
+    """A developer's `.env` can point at the hosted database. Migrating it from a laptop
+    by accident changes production under the running app, so outside production Alembic
+    only touches a local database unless ALEMBIC_ALLOW_REMOTE=1 is set on purpose."""
+    import os
+
+    from sqlalchemy.engine import make_url
+
+    host = make_url(url).host or "localhost"
+    if get_settings().environment == "production" or host in LOCAL_HOSTS:
+        return
+    if os.environ.get("ALEMBIC_ALLOW_REMOTE") == "1":
+        return
+    raise SystemExit(
+        f"Refusing to run migrations against remote host {host!r} with "
+        f"ENVIRONMENT={get_settings().environment}. Point DATABASE_URL at the local "
+        "database, or set ALEMBIC_ALLOW_REMOTE=1 if you really mean the hosted one."
+    )
 
 
 def run_migrations_offline() -> None:

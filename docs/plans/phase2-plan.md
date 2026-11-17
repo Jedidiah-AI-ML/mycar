@@ -218,6 +218,21 @@ Not modelled yet: OTA updates; parked wake-ups (the device sleeps after 10 min, 
 ### Step 6: Migration `0002_devices_trips_readings`
 Tables below. **Gate:** upgrade / downgrade / upgrade round trip, `alembic check` clean, constraint tests (one active assignment per device and per vehicle; batch key unique).
 
+✅ **Done 2026-11-17:** 29 new backend tests (160 in total, all pass). Includes:
+- the round trip on a fresh database, with `alembic check` clean
+- one active assignment per device and per vehicle
+- the batch key stored once, and `ON CONFLICT DO NOTHING` telling a retry apart
+- DTC code format, Mode 06 byte ids, trip checks
+- `readings.value` stored as 4-byte `real`, and no foreign keys on `readings`/`positions`
+
+As built:
+- Models: `app/models/device.py` and `app/models/telemetry.py`. `readings` and `positions` are Core tables without primary keys.
+- `signals` is filled by `app.gateway.signals.sync_signals()`, an idempotent upsert that ingestion will call, so a new signal needs no migration.
+- Additions beyond the table above: `devices.disabled_at`, `device_commands.done_at`, `dtc_events.cleared_at` and `trip_id`, and `mode06_results.uasid` in place of `unit` (raw values, ADR-006).
+- The account purge job now deletes `readings`/`positions` explicitly (they don't cascade).
+
+**Incident:** while checking the migration I ran Alembic with the local `.env`, which points at Neon. That applied 0002 to the live database, then removed it, then applied it again. No Phase 1 data was affected: only the new, empty tables were created and dropped. The live API's readiness check then reported "migrations behind (db=0002, head=0001)" until 0002 is deployed. The fix: `app/db/alembic/env.py` now refuses a non-local database unless `ENVIRONMENT=production` or `ALEMBIC_ALLOW_REMOTE=1` (tested).
+
 ### Step 7: Device provisioning, claim, status
 | File | Purpose |
 |---|---|
@@ -283,7 +298,7 @@ The ack returns `{"ok":true,"dup":false,"cmds":[...]}`. Pending `device_commands
 | `readings` | `vehicle_id` uuid, `trip_id` uuid, `ts` timestamptz, `signal_id` smallint, `value` real | Narrow; **BRIN on `ts`**, B-tree `(trip_id, signal_id, ts)`. No FKs (ADR-003). `real` = 4 bytes, enough for OBD precision (Q8) |
 | `positions` | `vehicle_id`, `trip_id`, `ts`, `lat`, `lon` (double), `speed_kmh` | Kept apart from readings so location consent can switch it off and delete it on its own (PRD 10) |
 | `dtc_events` | `vehicle_id`, `code`, `status` (stored/pending/permanent), `first_seen`, `last_seen`, `freeze_frame` jsonb | Interpreted in Phase 4 |
-| `mode06_results` | `vehicle_id`, `trip_id`, `ts`, `mid`, `tid`, `value`, `min`, `max`, `unit` | Scored in Phase 5 |
+| `mode06_results` | `vehicle_id`, `trip_id`, `ts`, `mid`, `tid`, `uasid`, `value`, `min`, `max` | Raw (ADR-006); scaled and scored in Phase 5 |
 
 **Storage estimate:** a `readings` row ≈ 50 bytes on disk plus about 30 bytes of index. That's ≈ 1.2 M rows ≈ **~100 MB per car-month** at 2 h/day. The local gate run (week × 5 cars ≈ 1.5 M rows) ≈ 130 MB. This is why the live smoke test uses 1 car-day.
 

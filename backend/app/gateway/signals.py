@@ -52,3 +52,26 @@ def catalogue() -> Catalogue:
     if bad:
         raise RuntimeError(f"signals.yaml: bad group or range for {bad}")
     return Catalogue(version=data["version"], signals=sigs)
+
+
+async def sync_signals(session) -> int:
+    """Upsert the catalogue into the `signals` table (ids never change; idempotent).
+
+    Called by ingestion before storing readings (step 8), so a new signal in
+    signals.yaml needs no migration. Returns how many signals are in the catalogue.
+    """
+    from sqlalchemy.dialects.postgresql import insert
+
+    from app.models import Signal as SignalRow
+
+    rows = [
+        {"id": s.id, "name": s.name, "unit": s.unit, "pid": s.pid, "grp": s.group}
+        for s in catalogue().signals
+    ]
+    stmt = insert(SignalRow).values(rows)
+    stmt = stmt.on_conflict_do_update(
+        index_elements=[SignalRow.id],
+        set_={k: stmt.excluded[k] for k in ("name", "unit", "pid", "grp")},
+    )
+    await session.execute(stmt)
+    return len(rows)

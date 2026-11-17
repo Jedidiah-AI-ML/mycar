@@ -7,7 +7,7 @@ from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.jobs.registry import job
-from app.models import User, Vehicle, VehicleAccess, VehicleRole
+from app.models import User, Vehicle, VehicleAccess, VehicleRole, positions, readings
 from app.services import audit
 
 log = logging.getLogger("app.jobs.account")
@@ -26,9 +26,12 @@ async def purge_account(payload: dict, session: AsyncSession) -> None:
     owned = select(VehicleAccess.vehicle_id).where(
         VehicleAccess.user_id == user_id, VehicleAccess.role == VehicleRole.owner
     )
-    await session.execute(
-        delete(Vehicle).where(Vehicle.id.in_(owned), Vehicle.deleted_at.is_not(None))
-    )
+    doomed = select(Vehicle.id).where(Vehicle.id.in_(owned), Vehicle.deleted_at.is_not(None))
+    # readings/positions have no foreign keys (ADR-003), so they don't cascade: delete
+    # them explicitly. Devices, trips, DTCs and Mode 06 rows cascade from the vehicle.
+    for table in (readings, positions):
+        await session.execute(delete(table).where(table.c.vehicle_id.in_(doomed)))
+    await session.execute(delete(Vehicle).where(Vehicle.id.in_(doomed)))
     # Consents, refresh tokens and remaining access rows cascade from the user row.
     await session.delete(user)
     # The audit trail keeps only the (now meaningless) UUID, no personal data.

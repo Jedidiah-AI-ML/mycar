@@ -37,5 +37,29 @@ class JobStatus(enum.StrEnum):
     dead = "dead"  # out of attempts
 
 
+class DeviceCommandType(enum.StrEnum):
+    health_scan = "health_scan"
+    set_poll_rates = "set_poll_rates"
+
+
+class DeviceCommandStatus(enum.StrEnum):
+    queued = "queued"  # waiting for the device's next upload
+    sent = "sent"  # handed out in an ack
+    done = "done"
+    failed = "failed"  # device answered failed / unsupported
+
+
+class TripStatus(enum.StrEnum):
+    open = "open"  # data still arriving
+    complete = "complete"
+    late_data = "late_data"  # a batch arrived after it was complete; re-assembled
+
+
+class DtcStatus(enum.StrEnum):
+    stored = "stored"  # Mode 03 (confirmed, MIL)
+    pending = "pending"  # Mode 07
+    permanent = "permanent"  # Mode 0A
+
+
 def pg_enum(cls: type[enum.Enum], name: str) -> Enum:
     return Enum(cls, name=name, values_callable=lambda e: [m.value for m in e])

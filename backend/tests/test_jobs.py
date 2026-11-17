@@ -1,7 +1,8 @@
 import asyncio
+import uuid
 from datetime import UTC, datetime, timedelta
 
-from sqlalchemy import event, func, select, text, update
+from sqlalchemy import event, func, insert, select, text, update
 
 from app.core.config import get_settings
 from app.db.session import IdlePoolReleaser, get_engine, get_sessionmaker, make_engine
@@ -9,7 +10,16 @@ from app.jobs import wake
 from app.jobs.queue import enqueue
 from app.jobs.registry import job
 from app.jobs.worker import Worker
-from app.models import AuditEvent, Job, JobStatus, User, Vehicle, VehicleAccess
+from app.models import (
+    AuditEvent,
+    Job,
+    JobStatus,
+    User,
+    Vehicle,
+    VehicleAccess,
+    positions,
+    readings,
+)
 from app.services import audit
 from tests.helpers import signup
 from tests.test_vehicles import add_vehicle
@@ -281,6 +291,18 @@ async def test_delete_me_schedules_purge_and_purge_removes_data(client, session)
         json={"email": viewer.email, "role": "viewer"},
         headers=owner.headers,
     )
+    # Telemetry for this car and for someone else's car (no FKs on these tables).
+    other = uuid.uuid4()
+    now = datetime.now(UTC)
+    for vehicle in (uuid.UUID(vid), other):
+        await session.execute(
+            insert(readings),
+            [{"vehicle_id": vehicle, "ts": now, "signal_id": 1, "value": 800.0}],
+        )
+        await session.execute(
+            insert(positions), [{"vehicle_id": vehicle, "ts": now, "lat": 6.5, "lon": 3.4}]
+        )
+    await session.commit()
     assert (await client.delete("/me", headers=owner.headers)).status_code == 204
 
     (j,) = await _jobs(session)
@@ -296,6 +318,9 @@ async def test_delete_me_schedules_purge_and_purge_removes_data(client, session)
     assert await session.scalar(select(func.count()).select_from(User)) == 1  # viewer only
     assert await session.scalar(select(func.count()).select_from(Vehicle)) == 0
     assert await session.scalar(select(func.count()).select_from(VehicleAccess)) == 0
+    for table in (readings, positions):  # the car's telemetry is gone, the other car's stays
+        left = (await session.execute(select(table.c.vehicle_id))).scalars().all()
+        assert left == [other]
     # Viewer is untouched.
     assert (await client.get("/me", headers=viewer.headers)).status_code == 200
 
