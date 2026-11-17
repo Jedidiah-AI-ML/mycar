@@ -1,0 +1,68 @@
+# Freematics ONE+ emulation: how the AutoCare firmware polls, batches and uploads.
+# SEED - validate: every number here is a design choice or estimate. Real values are
+# measured on the test car in Phase 8 (PRD 7).
+
+polling:            # P5
+  fast_hz: 1.0      # rpm, speed, load, throttle
+  slow_s: 7.5       # coolant, iat, trims, maf, map, O2, ecu voltage, fuel ...
+  batt_v_s: 5.0     # device's own ADC on the OBD port
+  motion_hz: 1.0    # accelerometer (1 Hz summary; harsh events detected on the device)
+  device_temp_s: 60
+  gnss_s: 5.0       # GNSS fix interval
+  read_latency_ms: [20, 90]     # one PID request/response over CAN
+  read_fail_p: 0.004            # a single PID read times out (sample simply missing)
+  gnss_first_fix_s: [25, 60]    # cold-ish start after the device wakes
+
+batching:           # P6
+  max_span_s: 60
+  max_gzip_bytes: 4096
+  size_check_every_s: 20        # how often the device estimates the compressed size
+
+flash:
+  capacity_bytes: 4_000_000     # unsent batches kept on flash; oldest dropped when full
+
+power:
+  linger_after_ignition_off_s: 600   # stays awake to finish uploads, then sleeps
+  brownout_crank_v: 6.0              # cranking dip below this reboots the device
+  reboot_p_per_trip: 0.02            # other reboots (watchdog, OTA, power glitch)
+
+clock:
+  drift_ppm_sd: 20                   # RTC crystal error, per device
+  reset_on_reboot_p: 0.5             # RTC lost power: clock restarts at 0 (1970)
+  correction_error_ms: [50, 400]     # setting the clock from the ack's server_time
+
+critical:           # on-device "Stop safely" checks (PRD 5); one packet per kind per trip
+  coolant_high_c: 115
+  voltage_collapse_v: 11.8           # battery voltage while the engine runs
+  voltage_collapse_s: 20             # ... for this long
+
+harsh:
+  brake_g: 0.35
+  accel_g: 0.30
+  corner_g: 0.40
+
+# Mode 06 (on-board test results). MIDs are standard (SAE J1979); the TIDs, unit/scaling
+# ids and the raw scaling below are SEED, and manufacturer-specific on real cars.
+mode06:
+  o2_sensor: {mid: 0x01, tid: 0x87, uasid: 0x10, scale: 100000}   # o2 activity metric
+  catalyst:  {mid: 0x21, tid: 0x80, uasid: 0x01, scale: 1000}     # downstream O2 spread
+  misfire:   {mid_base: 0xA1, tid: 0x0B, uasid: 0x24, scale: 1}    # per-cylinder counts
+
+network:            # P7: Nigerian cellular coverage is unknown until the field test
+  outage_per_hour: 1.0               # short drop-outs (tunnels, congested cells)
+  outage_s: {p10: 15, p50: 60, p90: 400}
+  long_outage_per_day: 0.3           # hours-long dead zones (basement parking, network down)
+  long_outage_h: {p10: 0.5, p50: 2, p90: 8}
+  request_lost_p: 0.03               # request never reaches the server
+  ack_lost_p: 0.03                   # server stored it, but the reply was lost: device resends
+  retry_s: [5, 300]                  # backoff: doubles from 5 s, capped at 5 min
+  requests_per_s: 3                  # how fast a backlog drains when the link is up
+  freshest_first: true               # after an outage, send the newest batch first
+  rssi_dbm: [-105, -65]
+
+https:              # P13 data budget: bytes on the wire beyond the gzip body (estimate)
+  per_request_overhead_bytes: 700    # HTTP headers + TLS record framing, both directions
+  handshake_bytes: 5500              # TLS 1.2/1.3 handshake on a new connection
+  keepalive_s: 120                   # connection reused while uploads keep coming
+
+firmware: "0.1.0-sim"

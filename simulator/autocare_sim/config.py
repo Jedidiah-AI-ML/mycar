@@ -16,6 +16,7 @@ SIM_DIR = Path(__file__).resolve().parents[1]
 REPO = SIM_DIR.parent
 PROFILES_DIR = SIM_DIR / "profiles"
 CONTRACTS_DIR = REPO / "contracts"
+DEVICE_CONFIG = SIM_DIR / "config" / "device.yaml"
 
 # Standard-normal quantile for p90 (p10 is the negative): used to turn p10/p50/p90
 # summaries into distributions.
@@ -84,6 +85,11 @@ def cycles() -> dict:
 @lru_cache
 def calibration() -> dict:
     return yaml.safe_load((PROFILES_DIR / "calibration.yaml").read_text(encoding="utf-8"))
+
+
+@lru_cache
+def device_config() -> dict:
+    return yaml.safe_load(DEVICE_CONFIG.read_text(encoding="utf-8"))
 
 
 @lru_cache

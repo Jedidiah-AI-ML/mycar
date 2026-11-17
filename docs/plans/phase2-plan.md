@@ -196,6 +196,25 @@ Tuning during the step: vacuum leak end value 1.4 → 2.0 g/s, because the V6 at
 
 **Gate:** pytest: every emitted payload validates against the step-1 schema; with outages on, the set of delivered samples equals the set produced (nothing lost); capability switches remove exactly the right fields; **data budget** printed: KB per driving hour and MB per month for 2 h/day (target under 30 MB/month, SEED).
 
+✅ **Done 2026-11-17:** 23 new tests pass (71 simulator tests in total, about 5 min). As built:
+- Code lives under `simulator/autocare_sim/` (`device.py`, `network.py`, `capabilities.py`, `outputs/freematics.py`, `outputs/memory.py`).
+- SEED values (P5–P7, P13) are in `simulator/config/device.yaml`.
+- Upload order and clock handling are recorded in ADR-010.
+
+Measured, 5 cars × 7 days with Lagos coverage (outages 4–8 % of driving time):
+- Every payload validates against the contract.
+- **Delivered = produced**: 2,537 batches, nothing lost, with 79 duplicate sends and 69 out-of-order arrivals.
+- Delay from batch start to stored: median 60 s, p99 2.8 h (dead zones), max 5.6 h.
+- Each of 11 capability switches removes exactly its own data and nothing else.
+- Critical packets (overheat, voltage collapse) go out in the same second, once per kind per trip.
+- Remote commands (health scan, poll rates) are answered with `cmd_result`.
+
+**Data budget:**
+- Gzip body: about 172–181 KB per driving hour. That's above the 132 KB/h measured in step 1, because the trip-start events (crank trace, readiness, DTC lists) are counted here.
+- With HTTPS overhead (SEED: 700 B per request, 5.5 KB per new TLS connection): 227–241 KB/h, so **13.3–14.1 MB/month at 2 h/day**. Target < 30 MB (P13).
+
+Not modelled yet: OTA updates; parked wake-ups (the device sleeps after 10 min, and the backlog drains on the next drive).
+
 ### Step 6: Migration `0002_devices_trips_readings`
 Tables below. **Gate:** upgrade / downgrade / upgrade round trip, `alembic check` clean, constraint tests (one active assignment per device and per vehicle; batch key unique).
 
@@ -295,9 +314,9 @@ No new services in Phase 2.
 | P2 | Lagos heavy-traffic cycle: idle share ~40 to 50 %, mean speed ~12 to 18 km/h, trips/day, km/day | `simulator/cycles/` | No Lagos dataset; VED/Barreto are US/Brazil |
 | P3 | Fault degradation rates and onset windows (9 faults) | `simulator/faults/faults.yaml` | Plausible shapes, not measured |
 | P4 | When each fault's DTC goes pending/confirmed (e.g. P0128 thermostat, P0171/P0174 lean, P0101 MAF, P0133 O2 slow response, P0301–P0306 misfire, P0420 catalyst, P0562/P0563 system voltage) | `simulator/faults/dtc_rules.yaml` | Enabling criteria vary by manufacturer |
-| P5 | Poll rates: fast 1 Hz, slow 7.5 s; cranking capture rate | `signals.yaml`, device | Real adapter throughput is measured in Phase 8 |
-| P6 | Batch size: 60 s or 4 KB gzipped, whichever comes first | device + ADR-006 | Trade-off between data and latency |
-| P7 | Outage model: frequency, duration distribution | `simulator/network.py` | Real Nigerian coverage unknown until the field test |
+| P5 | Poll rates: fast 1 Hz, slow 7.5 s; cranking capture rate | `simulator/config/device.yaml` | Real adapter throughput is measured in Phase 8 |
+| P6 | Batch size: 60 s or 4 KB gzipped, whichever comes first | `simulator/config/device.yaml` + ADR-006 | Trade-off between data and latency |
+| P7 | Outage model: frequency, duration distribution | `simulator/config/device.yaml` (network) | Real Nigerian coverage unknown until the field test |
 | P8 | Clock-skew threshold before correcting: 2 s | `gateway/store.py` | Generic |
 | P9 | Device "online" = seen within 5 min | `devices` status | UX choice |
 | P10 | Ingest limits: 256 KB per request, 60 requests/min per device | `api/ingest.py` | Generic |

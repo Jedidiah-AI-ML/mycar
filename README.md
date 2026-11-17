@@ -48,7 +48,7 @@ status and which response field to copy into which variable.
 
 ```powershell
 cd simulator
-uv run pytest -q                       # physics, calibration and fault gate tests (~2 min)
+uv run pytest -q                       # physics, faults, device emulation (~5 min)
 uv run python -c "from autocare_sim.run import simulate; tl = simulate('toyota_corolla_1_8_2009', days=7, seed=1); print(len(tl.trips), 'trips')"
 ```
 
@@ -60,6 +60,16 @@ uv run python -c "from autocare_sim.run import simulate; from autocare_sim.fault
 
 Nine faults in `simulator/faults/faults.yaml`; when the simulated ECU sets each DTC is in
 `simulator/faults/dtc_rules.yaml` (both SEED, ADR-009).
+
+Emulate the Freematics device over Lagos coverage and see the data budget:
+
+```powershell
+uv run python -c "from autocare_sim.run import simulate; from autocare_sim.device import Device; from autocare_sim.network import Network; from autocare_sim.outputs.memory import MemorySink; tl = simulate('toyota_corolla_1_8_2009', days=7, seed=1); t = tl.trips; net = Network.lagos(int(t[0].t_ms[0]), int(t[-1].t_ms[-1]) + 3*86400000, seed=1); r = Device('FM1-0001', tl, seed=1, network=net, sink=MemorySink()).run(); print(len(r.produced), 'batches;', r.budget())"
+```
+
+Device settings (poll rates, batching, outages, HTTPS overhead) are SEED values in
+`simulator/config/device.yaml`; `autocare_sim/outputs/freematics.py` posts to a real
+gateway once step 8 exists.
 
 Five car profiles in `simulator/profiles/` (SEED values for Wisdom to validate); drive
 cycles and the Lagos schedule in `simulator/profiles/cycles.yaml`; numbers measured from
