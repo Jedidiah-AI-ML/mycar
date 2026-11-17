@@ -1,0 +1,30 @@
+# SEED - validate (P1): general knowledge, not a service manual.
+id: lexus_rx350_3_5_2010
+make: Lexus
+model: RX350
+years: [2010, 2015]
+engine: 2GR-FE 3.5L V6
+displacement_l: 3.5
+cylinders: 6
+power_kw: 202
+torque_nm: 346
+mass_kg: 2050
+cd_a_m2: 0.95
+tyre_radius_m: 0.370   # 235/60R18
+transmission: auto
+gear_ratios: [3.300, 1.900, 1.420, 1.000, 0.713, 0.608]   # 6-speed automatic (U660E)
+final_drive: 3.291
+upshift_kmh: [15, 28, 42, 58, 75]
+lockup_kmh: 50
+idle_rpm_warm: 650
+idle_rpm_cold: 1100
+redline_rpm: 6200
+thermostat_open_c: 82
+operating_c: 90
+idle_calc_load_pct: 25
+fuel_tank_l: 72
+# V6: both banks report fuel trims.
+supported:
+  [rpm, speed, load, throttle, coolant, iat, stft_b1, ltft_b1, stft_b2, ltft_b2, maf, map,
+   o2_b1s2_v, lambda_b1s1, ecu_voltage, fuel_level, ambient, baro, abs_load, timing_adv,
+   warmups_since_clear, dist_since_clear, dist_mil_on, runtime_since_start]

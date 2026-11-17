@@ -1,0 +1,73 @@
+# Drive cycles, daily schedule and climate.
+# SEED - validate (P2): no Lagos driving dataset exists in v1. Shapes come from the
+# calibration notebook (urban_mixed is matched to VED); Lagos levels are estimates.
+#
+# A trip is a chain of segments. Each segment picks a type by weight, then a duration
+# and a target speed uniformly from the ranges. The car follows the target with gentle
+# acceleration limits (accel_ms2 / decel_ms2).
+#
+# Expected Lagos heavy-traffic shares (time-weighted, from the weights below):
+#   standing ~45 %, mean speed ~12 km/h.
+
+presets:
+  lagos_heavy:
+    duration_min: {p10: 20, p50: 45, p90: 95}
+    accel_ms2: 1.0
+    decel_ms2: 1.8
+    segments:
+      stop:   {weight: 0.38, dur_s: [20, 240], speed_kmh: [0, 0]}
+      crawl:  {weight: 0.30, dur_s: [30, 180], speed_kmh: [3, 15]}
+      flow:   {weight: 0.25, dur_s: [30, 150], speed_kmh: [20, 45]}
+      cruise: {weight: 0.07, dur_s: [30, 120], speed_kmh: [50, 70]}
+
+  urban_mixed:
+    # Trip duration taken from VED (calibration.yaml usage_ved.trip_duration_min).
+    duration_min: calibration
+    accel_ms2: 1.5
+    decel_ms2: 2.2
+    segments:
+      stop:   {weight: 0.25, dur_s: [10, 60],  speed_kmh: [0, 0]}
+      crawl:  {weight: 0.10, dur_s: [20, 60],  speed_kmh: [5, 20]}
+      flow:   {weight: 0.45, dur_s: [30, 120], speed_kmh: [25, 50]}
+      cruise: {weight: 0.20, dur_s: [30, 150], speed_kmh: [50, 70]}
+
+  expressway:
+    duration_min: {p10: 20, p50: 35, p90: 70}
+    accel_ms2: 1.5
+    decel_ms2: 2.2
+    segments:
+      stop:   {weight: 0.05, dur_s: [10, 60],  speed_kmh: [0, 0]}
+      flow:   {weight: 0.20, dur_s: [30, 120], speed_kmh: [30, 60]}
+      cruise: {weight: 0.75, dur_s: [60, 400], speed_kmh: [70, 100]}
+
+  short_trip:
+    # Engine never fully warms: errands of a few minutes.
+    duration_min: {p10: 3, p50: 5, p90: 9}
+    accel_ms2: 1.3
+    decel_ms2: 2.0
+    segments:
+      stop:   {weight: 0.25, dur_s: [10, 60],  speed_kmh: [0, 0]}
+      crawl:  {weight: 0.20, dur_s: [20, 60],  speed_kmh: [5, 20]}
+      flow:   {weight: 0.55, dur_s: [20, 90],  speed_kmh: [20, 45]}
+
+schedule:
+  # How many trips a car makes on a driving day, and when they start (local time).
+  trips_per_day: {1: 0.15, 2: 0.45, 3: 0.25, 4: 0.15}
+  # Lagos rush hours: early morning (people leave before 07:00 to beat traffic) and
+  # 16:00-19:00. VED (US) peaks at 07:00 and 16:00-17:00 for comparison.
+  start_hour_weights: [0, 0, 0, 0, 1, 4, 10, 10, 6, 4, 4, 4, 5, 5, 5, 6, 9, 10, 9, 6, 4, 2, 1, 0]
+  cycle_mix: {lagos_heavy: 0.5, urban_mixed: 0.3, expressway: 0.1, short_trip: 0.1}
+  min_gap_between_trips_min: 20
+
+climate:
+  # Lagos: hot and humid all year.
+  ambient_min_c: 24     # around 06:00
+  ambient_max_c: 33     # around 14:00
+  peak_hour: 14
+  day_to_day_sd_c: 1.0
+  baro_kpa: 101
+
+location:
+  # Simulated GNSS starts here and wanders (no road map in v1).
+  lat: 6.5244
+  lon: 3.3792

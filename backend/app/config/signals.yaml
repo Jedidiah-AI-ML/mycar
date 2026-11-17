@@ -44,6 +44,10 @@ signals:
   - {id: 23, name: baro,         pid: "33", unit: kPa,  group: slow,  dp: 0, min: 0,    max: 255,      desc: Barometric pressure}
   - {id: 24, name: abs_load,     pid: "43", unit: "%",  group: slow,  dp: 1, min: 0,    max: 25700,    desc: Absolute load value}
   - {id: 25, name: timing_adv,   pid: "0E", unit: deg,  group: slow,  dp: 1, min: -64,  max: 63.5,     desc: Ignition timing advance (cylinder 1)}
+  # Added 2026-11-17 (Phase 2 step 3). Cars with a wideband air/fuel sensor upstream
+  # (most 2005+ Toyota/Lexus/Honda) report lambda here instead of an O2 voltage in 0x14.
+  # SEED - validate: which PIDs each target car actually reports (P1).
+  - {id: 26, name: lambda_b1s1,  pid: "34", unit: ratio, group: slow, dp: 3, min: 0,   max: 1.999,    desc: Equivalence ratio (lambda) bank 1 sensor 1 (wideband A/F sensor)}
 
   # ---- once per trip (trip start / end, and Quick Health Scan) ------------------
   - {id: 40, name: warmups_since_clear, pid: "30", unit: count, group: start, dp: 0, min: 0, max: 255,          desc: Warm-ups since codes cleared}

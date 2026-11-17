@@ -44,6 +44,18 @@ Restfox: import `backend/restfox/autocare_phase1.postman_collection.json` (Postm
 set `base` and `run`, and run the requests in order. Each description says the expected
 status and which response field to copy into which variable.
 
+## Simulator (Phase 2)
+
+```powershell
+cd simulator
+uv run pytest -q                       # physics + calibration gate tests
+uv run python -c "from autocare_sim.run import simulate; tl = simulate('toyota_corolla_1_8_2009', days=7, seed=1); print(len(tl.trips), 'trips')"
+```
+
+Five car profiles in `simulator/profiles/` (SEED values for Wisdom to validate); drive
+cycles and the Lagos schedule in `simulator/profiles/cycles.yaml`; numbers measured from
+real datasets in `simulator/profiles/calibration.yaml` (written by `ml/notebooks/01_...`).
+
 ## Layout
 
 ```

@@ -1,0 +1,32 @@
+# SEED - validate (P1): every number below is from general knowledge, not a service manual.
+# Wisdom: check against the Toyota repair manual or a real scan of a 2009-2013 Corolla.
+id: toyota_corolla_1_8_2009
+make: Toyota
+model: Corolla
+years: [2009, 2013]
+engine: 2ZR-FE 1.8L I4
+displacement_l: 1.8
+cylinders: 4
+power_kw: 98          # rated power
+torque_nm: 175        # peak torque
+mass_kg: 1300         # kerb + driver
+cd_a_m2: 0.66         # drag coefficient × frontal area
+tyre_radius_m: 0.317  # 195/65R15
+transmission: auto
+gear_ratios: [2.847, 1.552, 1.000, 0.700]   # 4-speed automatic (U341E)
+final_drive: 4.237
+upshift_kmh: [18, 40, 65]                   # light-throttle shift points
+lockup_kmh: 55                              # torque converter locks above this in top gears
+idle_rpm_warm: 700
+idle_rpm_cold: 1150
+redline_rpm: 6400
+thermostat_open_c: 82
+operating_c: 90       # calibration plateau (KIT) matches typical Toyota operating temp
+idle_calc_load_pct: 30
+fuel_tank_l: 50
+# Mode 01 signals this car reports (catalogue names). No o2_b1s1_v: the upstream sensor is
+# a wideband A/F sensor (lambda_b1s1). No bank 2 (inline 4). No odometer PID.
+supported:
+  [rpm, speed, load, throttle, coolant, iat, stft_b1, ltft_b1, maf, map, o2_b1s2_v,
+   lambda_b1s1, ecu_voltage, fuel_level, ambient, baro, abs_load, timing_adv,
+   warmups_since_clear, dist_since_clear, dist_mil_on, runtime_since_start]

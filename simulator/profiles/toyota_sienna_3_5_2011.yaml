@@ -1,0 +1,29 @@
+# SEED - validate (P1): general knowledge, not a service manual.
+id: toyota_sienna_3_5_2011
+make: Toyota
+model: Sienna
+years: [2011, 2016]
+engine: 2GR-FE 3.5L V6
+displacement_l: 3.5
+cylinders: 6
+power_kw: 198
+torque_nm: 340
+mass_kg: 2150
+cd_a_m2: 0.98
+tyre_radius_m: 0.357   # 235/60R17
+transmission: auto
+gear_ratios: [3.300, 1.900, 1.420, 1.000, 0.713, 0.608]   # 6-speed automatic (U660E)
+final_drive: 3.938
+upshift_kmh: [15, 28, 42, 58, 75]
+lockup_kmh: 50
+idle_rpm_warm: 650
+idle_rpm_cold: 1100
+redline_rpm: 6200
+thermostat_open_c: 82
+operating_c: 90
+idle_calc_load_pct: 25
+fuel_tank_l: 76
+supported:
+  [rpm, speed, load, throttle, coolant, iat, stft_b1, ltft_b1, stft_b2, ltft_b2, maf, map,
+   o2_b1s2_v, lambda_b1s1, ecu_voltage, fuel_level, ambient, baro, abs_load, timing_adv,
+   warmups_since_clear, dist_since_clear, dist_mil_on, runtime_since_start]

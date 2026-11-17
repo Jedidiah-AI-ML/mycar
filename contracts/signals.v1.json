@@ -223,6 +223,17 @@
       "desc": "Ignition timing advance (cylinder 1)"
     },
     {
+      "id": 26,
+      "name": "lambda_b1s1",
+      "pid": "34",
+      "unit": "ratio",
+      "group": "slow",
+      "dp": 3,
+      "min": 0,
+      "max": 1.999,
+      "desc": "Equivalence ratio (lambda) bank 1 sensor 1 (wideband A/F sensor)"
+    },
+    {
       "id": 40,
       "name": "warmups_since_clear",
       "pid": "30",

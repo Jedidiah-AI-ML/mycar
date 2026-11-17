@@ -142,6 +142,16 @@ Separate `ml/` uv project (not a workspace member), so data-science packages sta
 - trip and idle distributions within the calibration tolerances from step 2
 - the same seed gives byte-identical output
 
+✅ **Done 2026-11-17:** 13 simulator tests pass (`cd simulator; uv run pytest`). Measured:
+- urban cycle: 18.6 % idle and a 7.0 min median trip (VED: 19.1 %, 6.8 min)
+- Lagos heavy: 46 % standing, 12.3 km/h
+- warm-up τ within 35 % of KIT's
+- RPM within 3 % of gear ratios when locked; MAF tracks the physics formula (r > 0.98)
+
+One car-week simulates in under 10 s. Faults (step 4) act only through `physics.Health`.
+
+Catalogue gained `lambda_b1s1` (PID 0x34): these cars likely use wideband A/F sensors, so `o2_b1s1_v` is unsupported in all five profiles (SEED). Simulator is a separate uv project (ADR-007).
+
 ### Step 4: Fault library + ground truth
 | File | Purpose |
 |---|---|

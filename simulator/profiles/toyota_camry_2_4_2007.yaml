@@ -1,0 +1,29 @@
+# SEED - validate (P1): general knowledge, not a service manual.
+id: toyota_camry_2_4_2007
+make: Toyota
+model: Camry
+years: [2007, 2011]
+engine: 2AZ-FE 2.4L I4
+displacement_l: 2.4
+cylinders: 4
+power_kw: 118
+torque_nm: 218
+mass_kg: 1550
+cd_a_m2: 0.66
+tyre_radius_m: 0.332   # 215/60R16
+transmission: auto
+gear_ratios: [3.943, 2.197, 1.413, 1.020, 0.703]   # 5-speed automatic (U250E)
+final_drive: 3.425
+upshift_kmh: [16, 32, 50, 70]
+lockup_kmh: 55
+idle_rpm_warm: 700
+idle_rpm_cold: 1150
+redline_rpm: 6200
+thermostat_open_c: 82
+operating_c: 90
+idle_calc_load_pct: 28
+fuel_tank_l: 70
+supported:
+  [rpm, speed, load, throttle, coolant, iat, stft_b1, ltft_b1, maf, map, o2_b1s2_v,
+   lambda_b1s1, ecu_voltage, fuel_level, ambient, baro, abs_load, timing_adv,
+   warmups_since_clear, dist_since_clear, dist_mil_on, runtime_since_start]

@@ -1,0 +1,31 @@
+[project]
+name = "autocare-sim"
+version = "0.1.0"
+description = "AutoCare OBD-II + Freematics ONE+ simulator (Phase 2)"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "numpy>=2.5.5",
+    "pyyaml>=6.0.3",
+]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
+[dependency-groups]
+dev = [
+    "jsonschema>=4.26.0",
+    "pytest>=9.2.0",
+    "ruff>=0.17.5",
+    "scipy>=1.18.1",
+]
