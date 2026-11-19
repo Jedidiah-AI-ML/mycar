@@ -241,6 +241,15 @@ As built:
 
 **Gate:** pytest: token shown once and never stored in plain text; wrong claim code → 403; a device can't be claimed by two vehicles; claim/unclaim audited; role matrix for the device routes.
 
+✅ **Done 2026-11-19:** 21 new tests (181 backend tests in total, all pass). As built:
+- **Token and claim code are shown once.** The token is stored as SHA-256 of its 256-bit secret, checked in constant time.
+- **Claim codes** are 8 typeable characters (no 0/O, 1/I/L, U), about 39 bits. They're stored as an HMAC keyed with a secret derived from `JWT_SECRET`, not a plain hash, because a short code could be brute-forced from a leaked database. Changing `JWT_SECRET` invalidates claim codes that haven't been used.
+- An unknown device and a wrong code get the same 403, so device IDs can't be probed. A device in another car, or a second device for a car, gets 409. Claiming again for the same car is a no-op (200).
+- Device IDs are generated automatically (`FM1-0001`, …) unless the admin gives one. The QR label text is `autocare:claim:<id>:<code>`.
+- `GET /vehicles/{id}/device` shows: online (seen within 5 min, P9), last seen, RSSI band (SEED), data used this month, and effective capabilities (`app/gateway/capabilities.py`). GPS is off unless the owner has location consent.
+- Additions beyond the plan: deleting a car frees its device; `device.provisioned` is audited.
+- Not in v1: rate limiting on claim attempts. A 39-bit code needs ~10¹¹ guesses, and each guess needs a signed-in manager of a car.
+
 ### Step 8: Gateway, adapter, ingestion
 | File | Purpose |
 |---|---|

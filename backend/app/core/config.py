@@ -50,6 +50,10 @@ class Settings(BaseSettings):
     jwt_access_ttl_minutes: int = 30
     jwt_refresh_ttl_days: int = 30
 
+    # --- Devices ---
+    device_online_s: int = 300  # SEED - validate (P9): "online" = seen within 5 min
+    device_id_prefix: str = "FM1"  # auto-generated ids: FM1-0001, FM1-0002, ...
+
     # --- Privacy ---  # SEED - validate (S3): NDPA sets no fixed purge period
     account_purge_days: int = 30
 

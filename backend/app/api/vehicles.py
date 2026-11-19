@@ -7,7 +7,7 @@ from sqlalchemy import select, update
 from sqlalchemy.exc import IntegrityError
 
 from app.api.deps import AsManager, AsOwner, AsViewer, CurrentUser, SessionDep
-from app.models import Vehicle, VehicleAccess, VehicleRole
+from app.models import DeviceAssignment, Vehicle, VehicleAccess, VehicleRole
 from app.schemas.vehicle import VehicleCreate, VehicleOut, VehicleUpdate, VehicleWithRole
 from app.services import audit
 from app.services.vin import vin_warnings
@@ -98,6 +98,18 @@ async def delete_vehicle(ctx: AsOwner, session: SessionDep) -> Response:
         .where(VehicleAccess.vehicle_id == ctx.vehicle.id, VehicleAccess.revoked_at.is_(None))
         .values(revoked_at=now)
     )
-    await audit.record(session, ctx.user.id, "vehicle.deleted", "vehicle", ctx.vehicle.id)
+    # Free the car's device so it can be claimed again (e.g. moved to the next car).
+    freed = await session.scalar(
+        update(DeviceAssignment)
+        .where(
+            DeviceAssignment.vehicle_id == ctx.vehicle.id, DeviceAssignment.unassigned_at.is_(None)
+        )
+        .values(unassigned_at=now)
+        .returning(DeviceAssignment.device_id)
+    )
+    await audit.record(
+        session, ctx.user.id, "vehicle.deleted", "vehicle", ctx.vehicle.id,
+        **({"device_unclaimed": freed} if freed else {}),
+    )  # fmt: skip
     await session.commit()
     return Response(status_code=status.HTTP_204_NO_CONTENT)
