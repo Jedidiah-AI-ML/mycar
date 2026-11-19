@@ -60,6 +60,8 @@ class Settings(BaseSettings):
     ingest_rate_per_min: int = 60  # requests per device; a backlog drains at this pace
     command_resend_s: int = 120  # resend a command the device didn't confirm (lost ack)
     trip_assemble_delay_s: int = 60  # debounce: one assembly per burst of batches
+    trip_close_after_s: int = 900  # SEED - validate (P11): no data for 15 min -> trip over
+    trip_gap_s: int = 10  # SEED - validate (P14): a hole in 1 Hz data longer than this is a gap
 
     # --- Privacy ---  # SEED - validate (S3): NDPA sets no fixed purge period
     account_purge_days: int = 30

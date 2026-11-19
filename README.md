@@ -4,7 +4,7 @@ Early-warning web app for petrol cars, fed by a cellular OBD-II device. Personal
 portfolio project. **Source of truth: [docs/PRD.md](docs/PRD.md).** Decisions are in
 [docs/decisions/](docs/decisions/), phase plans in [docs/plans/](docs/plans/).
 
-Status: **Phase 2 in progress** (simulator, device emulation, telemetry schema, device provisioning/claim and the ingestion gateway are done; trip assembly is next). **Phase 1 (backend foundation) done**: auth, consents, vehicles, sharing, job queue. Live on Railway with Neon Postgres (ADR-005); request list 33/33 against the live API (2026-11-16).
+Status: **Phase 2 in progress** (simulator, device emulation, telemetry schema, device provisioning/claim and the ingestion gateway and trip assembly are done; the local exit-gate run is next). **Phase 1 (backend foundation) done**: auth, consents, vehicles, sharing, job queue. Live on Railway with Neon Postgres (ADR-005); request list 33/33 against the live API (2026-11-16).
 
 ## Run it locally (Windows, PowerShell)
 
@@ -33,7 +33,7 @@ Or everything in containers: `docker compose up --build -d` (db + api).
 ```powershell
 docker compose up -d db
 cd backend
-uv run pytest -q          # 196 tests; creates and drops its own autocare_test database
+uv run pytest -q          # 203 tests; creates and drops its own autocare_test database
 uv run ruff check .
 ```
 
@@ -92,7 +92,8 @@ backend/
     models/     SQLAlchemy models
     schemas/    Pydantic request/response models
     services/   consents, audit trail, VIN checks
-    jobs/       enqueue(), worker (embedded in the API), handlers (ADR-004, ADR-008)
+    jobs/       enqueue(), worker (embedded in the API), handlers incl. trip.assemble,
+                pipeline stages (ADR-004, ADR-008)
     config/     consents.yaml (SEED - validate)
   tests/
   restfox/      Phase 1 request list + Postman/Restfox export

@@ -53,6 +53,12 @@ class Trip(TimestampMixin, Base):
     # Events with no table of their own: readiness snapshots, harsh driving, and event
     # types newer than this server. Appended by ingestion, each with its corrected `ts`.
     events: Mapped[list] = mapped_column(JSONB, server_default=text("'[]'::jsonb"))
+    # Written by trip.assemble (step 9).
+    n_batches: Mapped[int] = mapped_column(Integer, server_default=text("0"))
+    signal_counts: Mapped[dict] = mapped_column(JSONB, server_default=text("'{}'::jsonb"))
+    end_reason: Mapped[str | None] = mapped_column(String(16))  # ignition_off / timeout / ...
+    assembled_at: Mapped[datetime | None]
+    assembled_through: Mapped[datetime | None]  # newest batch receive time it included
 
     __table_args__ = (
         # A device's trip is identified by its own counters; batches find their trip here.

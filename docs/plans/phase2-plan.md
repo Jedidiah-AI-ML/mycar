@@ -297,6 +297,18 @@ As built:
 
 **Gate:** pytest: the assembled trip is identical regardless of batch arrival order; a late batch after `complete` re-assembles and changes only what it should; trip end without a trip_end event (device lost power) closes after a timeout (SEED 15 min).
 
+✅ **Done 2026-11-19:** 7 new tests (203 backend tests in total, all pass). As built:
+- **`app/jobs/handlers/trips.py` (`trip.assemble`).** Every field is computed from the stored rows with min, max and counts, so arrival order doesn't matter:
+  - start, end and end reason (`ignition_off`, or `timeout` after 15 min without a batch, P11)
+  - samples per signal (`signal_counts`)
+  - gaps longer than 10 s in the 1 Hz RPM stream (new SEED P14), and completeness
+  - `late_data` when the trip has more batches than at its last assembly
+- **An open trip schedules its own close check** for 15 min after its last batch, and re-arms if data is still coming.
+- **Race fixed.** The job locks the trip row, so a batch arriving mid-assembly waits, then queues a fresh assembly (tested). Before this, the running job's dedupe key would have silently dropped that batch's assembly.
+- **`app/jobs/pipeline.py`:** `STAGES = ("trip.assemble",)`. Phases 3 to 6 append theirs.
+- **Migration 0003** (not yet deployed, so extended in place) also adds `trips.n_batches`, `signal_counts`, `end_reason`, `assembled_at` and `assembled_through`.
+- **Deploy:** steps 8 and 9 go live together (0003 runs in Railway's pre-deploy step).
+
 ### Step 10: Exit-gate run (local)
 `scripts/phase2_gate.py`:
 1. Simulate 7 days × 5 cars with outages, retries, reordering and clock drift on, plus faults on 2 cars.
@@ -365,6 +377,7 @@ No new services in Phase 2.
 | P11 | Trip auto-close after 15 min without data | `trip.assemble` | Long Lagos idles with engine off vs a dead device |
 | P12 | Critical-packet trigger in the simulator: coolant ≥ 118 °C | device emulation | The real Stop-safely rules are set in Phase 6 |
 | P13 | Data-budget target: < 30 MB/month at 2 h/day | step 5 | Depends on the SIM plan chosen |
+| P14 | Coverage gap: a hole longer than 10 s in the 1 Hz RPM stream | `trip.assemble` | Balances flagging real outages vs slow-poll jitter |
 
 ## New ADRs in this phase
 - **ADR-006:** device payload contract v1 (format, auth, idempotency, acks, commands).
