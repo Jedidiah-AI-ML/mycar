@@ -72,3 +72,23 @@ async def revoke(session: AsyncSession, user_id: UUID, purpose: ConsentPurpose) 
     existing.revoked_at = datetime.now(UTC)
     await audit.record(session, user_id, "consent.revoked", "user", user_id, purpose=purpose.value)
     return True
+
+
+async def owner_has_consent(
+    session: AsyncSession, vehicle_id: UUID, purpose: ConsentPurpose
+) -> bool:
+    """Has the vehicle's (active) owner an active consent for `purpose`? E.g. location:
+    without it, GNSS positions are dropped at the door (PRD 10)."""
+    from app.models import VehicleAccess, VehicleRole
+
+    owner = select(VehicleAccess.user_id).where(
+        VehicleAccess.vehicle_id == vehicle_id,
+        VehicleAccess.role == VehicleRole.owner,
+        VehicleAccess.revoked_at.is_(None),
+    )
+    found = await session.scalar(
+        select(Consent.id).where(
+            Consent.user_id.in_(owner), Consent.purpose == purpose, Consent.revoked_at.is_(None)
+        )
+    )
+    return found is not None

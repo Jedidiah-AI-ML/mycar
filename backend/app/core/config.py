@@ -53,6 +53,13 @@ class Settings(BaseSettings):
     # --- Devices ---
     device_online_s: int = 300  # SEED - validate (P9): "online" = seen within 5 min
     device_id_prefix: str = "FM1"  # auto-generated ids: FM1-0001, FM1-0002, ...
+    # Ingestion (plan step 8). SEED - validate (P8, P10)
+    clock_skew_threshold_ms: int = 2000  # correct device clocks only beyond this
+    ingest_max_body_bytes: int = 256 * 1024  # gzip body as sent
+    ingest_max_decoded_bytes: int = 2 * 1024 * 1024  # after decompression (gzip bombs)
+    ingest_rate_per_min: int = 60  # requests per device; a backlog drains at this pace
+    command_resend_s: int = 120  # resend a command the device didn't confirm (lost ack)
+    trip_assemble_delay_s: int = 60  # debounce: one assembly per burst of batches
 
     # --- Privacy ---  # SEED - validate (S3): NDPA sets no fixed purge period
     account_purge_days: int = 30

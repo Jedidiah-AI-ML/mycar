@@ -21,9 +21,9 @@ from app.api.admin import AdminUser
 from app.api.deps import AsManager, AsViewer, SessionDep
 from app.core.config import get_settings
 from app.gateway import auth, capabilities
-from app.models import Consent, ConsentPurpose, Device, DeviceAssignment, VehicleAccess, VehicleRole
+from app.models import ConsentPurpose, Device, DeviceAssignment
 from app.schemas.device import DeviceClaim, DeviceProvision, DeviceProvisioned, DeviceStatus
-from app.services import audit
+from app.services import audit, consents
 
 admin_router = APIRouter(prefix="/admin/devices", tags=["admin"])
 router = APIRouter(prefix="/vehicles/{vehicle_id}/device", tags=["devices"])
@@ -156,22 +156,6 @@ def _signal(rssi: int | None) -> str:
     return "poor"
 
 
-async def _owner_has_location_consent(session, vehicle_id) -> bool:
-    owner = select(VehicleAccess.user_id).where(
-        VehicleAccess.vehicle_id == vehicle_id,
-        VehicleAccess.role == VehicleRole.owner,
-        VehicleAccess.revoked_at.is_(None),
-    )
-    consent = await session.scalar(
-        select(Consent.id).where(
-            Consent.user_id.in_(owner),
-            Consent.purpose == ConsentPurpose.location,
-            Consent.revoked_at.is_(None),
-        )
-    )
-    return consent is not None
-
-
 async def _status(session, ctx, device: Device, assignment: DeviceAssignment) -> DeviceStatus:
     now = datetime.now(UTC)
     online_window = timedelta(seconds=get_settings().device_online_s)
@@ -190,6 +174,6 @@ async def _status(session, ctx, device: Device, assignment: DeviceAssignment) ->
         capabilities=capabilities.effective(
             device.type,
             device.capabilities,
-            await _owner_has_location_consent(session, ctx.vehicle.id),
+            await consents.owner_has_consent(session, ctx.vehicle.id, ConsentPurpose.location),
         ),
     )

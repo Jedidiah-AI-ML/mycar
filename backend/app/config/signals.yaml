@@ -62,3 +62,4 @@ signals:
   - {id: 62, name: acc_y,   pid: null, unit: g, group: motion, dp: 2, min: -16, max: 16, desc: Accelerometer y (device frame)}
   - {id: 63, name: acc_z,   pid: null, unit: g, group: motion, dp: 2, min: -16, max: 16, desc: Accelerometer z (device frame)}
   - {id: 64, name: device_temp, pid: null, unit: degC, group: device, dp: 0, min: -40, max: 125, desc: Device internal temperature}
+  - {id: 65, name: crank_v, pid: null, unit: V, group: device, dp: 2, min: 0, max: 20, desc: "Battery voltage while cranking (crank event trace, ~50 Hz), measured by the device"}

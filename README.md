@@ -4,7 +4,7 @@ Early-warning web app for petrol cars, fed by a cellular OBD-II device. Personal
 portfolio project. **Source of truth: [docs/PRD.md](docs/PRD.md).** Decisions are in
 [docs/decisions/](docs/decisions/), phase plans in [docs/plans/](docs/plans/).
 
-Status: **Phase 2 in progress** (simulator, device emulation, telemetry schema and device provisioning/claim are done; the gateway is next). **Phase 1 (backend foundation) done**: auth, consents, vehicles, sharing, job queue. Live on Railway with Neon Postgres (ADR-005); request list 33/33 against the live API (2026-11-16).
+Status: **Phase 2 in progress** (simulator, device emulation, telemetry schema, device provisioning/claim and the ingestion gateway are done; trip assembly is next). **Phase 1 (backend foundation) done**: auth, consents, vehicles, sharing, job queue. Live on Railway with Neon Postgres (ADR-005); request list 33/33 against the live API (2026-11-16).
 
 ## Run it locally (Windows, PowerShell)
 
@@ -33,7 +33,7 @@ Or everything in containers: `docker compose up --build -d` (db + api).
 ```powershell
 docker compose up -d db
 cd backend
-uv run pytest -q          # 181 tests; creates and drops its own autocare_test database
+uv run pytest -q          # 196 tests; creates and drops its own autocare_test database
 uv run ruff check .
 ```
 
@@ -85,7 +85,8 @@ real datasets in `simulator/profiles/calibration.yaml` (written by `ml/notebooks
 backend/
   app/
     api/        health, auth, account (/me), vehicles, access (sharing), admin, devices
-    gateway/    device contract, signal catalogue, device auth, capabilities
+    gateway/    device contract, signal catalogue, device auth, capabilities, adapters,
+                ingestion store (POST /ingest/{device_type}/batches and /critical)
     core/       config, security (passwords, tokens), JSON logging
     db/         engine/session, base, alembic migrations
     models/     SQLAlchemy models

@@ -271,6 +271,24 @@ The ack returns `{"ok":true,"dup":false,"cmds":[...]}`. Pending `device_commands
 - oversize body → 413
 - rate limit → 429
 
+✅ **Done 2026-11-19:** 15 new tests (196 backend tests in total, all pass), covering every gate item above plus:
+- DTC lists set and clear codes, and a late, older report can't reopen a code a newer one cleared (a real bug the tests caught)
+- commands ride on the ack, are resent after 2 min if unconfirmed (lost ack), and are closed by `cmd_result`
+- critical packets are stored and queued at priority 0, and a retry is recognised
+- uncompressed JSON is also accepted; a gzip bomb (tiny body, 3 MB inside) → 413; bad gzip → 400; contract errors → 422
+
+As built:
+- **Adapter:** `app/gateway/adapters/{base,freematics_one_plus}.py`. `NormalisedBatch` / `NormalisedCritical` are the canonical form; nothing after the gateway imports adapter code.
+- **Store and endpoints:** `app/gateway/store.py`, `app/api/ingest.py`, `app/gateway/ratelimit.py` (in-memory token bucket, per process: right for one replica).
+- **Clock-skew correction:** the reference is GNSS time if present, else the server receive time, compared with `sent_at`; corrected only beyond 2 s (P8). This relies on the device refreshing `sent_at` on every attempt (ADR-010). The server clock is a dependency (`server_now_ms`) so tests and the step 10 run can set it.
+- **Limits (P10):** 256 KB per request as sent, 2 MB decompressed, 60 requests/min per device.
+- **New catalogue signal `crank_v` (id 65):** the crank trace is stored as readings (needed in Phase 5; no raw payloads are kept, Q5).
+- **Migration 0003: `trips.events` (jsonb).** It holds readiness snapshots, harsh events, trip_end reason, and unknown future event types, appended atomically.
+- **Job `alert.critical`:** it records the packet in the audit trail and log. Phase 6 replaces its body with the real alert rules.
+- **Not stored:** a VIN never overwrites one already on the car (a mismatch is for Phase 4 to show).
+
+**Deploy note:** steps 8 and 9 must go live together. Step 8 enqueues `trip.assemble`, whose handler is step 9; without it the worker marks those jobs dead.
+
 ### Step 9: Trip assembly + pipeline skeleton
 | File | Purpose |
 |---|---|

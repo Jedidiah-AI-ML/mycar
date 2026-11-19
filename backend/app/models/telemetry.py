@@ -50,6 +50,9 @@ class Trip(TimestampMixin, Base):
     n_samples: Mapped[int] = mapped_column(Integer, server_default=text("0"))
     completeness: Mapped[float | None] = mapped_column(REAL)  # 0..1, from the gap list
     gaps: Mapped[list] = mapped_column(JSONB, server_default=text("'[]'::jsonb"))
+    # Events with no table of their own: readiness snapshots, harsh driving, and event
+    # types newer than this server. Appended by ingestion, each with its corrected `ts`.
+    events: Mapped[list] = mapped_column(JSONB, server_default=text("'[]'::jsonb"))
 
     __table_args__ = (
         # A device's trip is identified by its own counters; batches find their trip here.

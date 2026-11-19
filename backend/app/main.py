@@ -11,7 +11,7 @@ from collections.abc import AsyncIterator
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api import access, account, admin, auth, devices, health, vehicles
+from app.api import access, account, admin, auth, devices, health, ingest, vehicles
 from app.core.config import get_settings
 from app.core.logging import RequestIdMiddleware, configure_logging
 from app.db.session import IdlePoolReleaser, get_engine
@@ -75,6 +75,7 @@ def create_app() -> FastAPI:
     app.include_router(admin.router)
     app.include_router(devices.admin_router)
     app.include_router(devices.router)
+    app.include_router(ingest.router)
     return app
 
 
