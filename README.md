@@ -4,7 +4,7 @@ Early-warning web app for petrol cars, fed by a cellular OBD-II device. Personal
 portfolio project. **Source of truth: [docs/PRD.md](docs/PRD.md).** Decisions are in
 [docs/decisions/](docs/decisions/), phase plans in [docs/plans/](docs/plans/).
 
-Status: **Phase 2 in progress** (simulator, device emulation, telemetry schema, device provisioning/claim and the ingestion gateway and trip assembly are done; the local exit-gate run is next). **Phase 1 (backend foundation) done**: auth, consents, vehicles, sharing, job queue. Live on Railway with Neon Postgres (ADR-005); request list 33/33 against the live API (2026-11-16).
+Status: **Phase 2 in progress** (simulator, device emulation, telemetry schema, device provisioning/claim and the ingestion gateway and trip assembly are done; the exit gate passed locally, see `ml/reports/phase2_gate.md`). **Phase 1 (backend foundation) done**: auth, consents, vehicles, sharing, job queue. Live on Railway with Neon Postgres (ADR-005); request list 33/33 against the live API (2026-11-16).
 
 ## Run it locally (Windows, PowerShell)
 
@@ -78,6 +78,29 @@ gateway once step 8 exists.
 Five car profiles in `simulator/profiles/` (SEED values for Wisdom to validate); drive
 cycles and the Lagos schedule in `simulator/profiles/cycles.yaml`; numbers measured from
 real datasets in `simulator/profiles/calibration.yaml` (written by `ml/notebooks/01_...`).
+
+## Phase 2 exit gate and smoke test
+
+```powershell
+docker compose up -d db
+cd simulator
+uv run python ../scripts/phase2_gate.py      # 7 days x 5 cars over HTTP, local only (~8 min)
+```
+
+It builds a throwaway `autocare_gate` database, starts its own API on port 8010, streams
+a simulated week through the real endpoints, replays it shuffled, and writes
+`ml/reports/phase2_gate.md`.
+
+Device endpoints and a 1 car-day smoke test against a deployment need an admin account
+(register, then `UPDATE users SET is_admin = true WHERE email = '...'` in the database):
+
+```powershell
+$env:AUTOCARE_ADMIN_EMAIL = "you@example.com"; $env:AUTOCARE_ADMIN_PASSWORD = "..."
+cd backend; uv run python restfox/phase2_requests.py run https://mycar-api-production.up.railway.app
+cd ..\simulator; uv run python ../scripts/phase2_smoke.py https://mycar-api-production.up.railway.app --cleanup
+```
+
+Restfox: import `backend/restfox/autocare_phase2.postman_collection.json`.
 
 ## Layout
 

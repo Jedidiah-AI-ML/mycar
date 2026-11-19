@@ -318,11 +318,30 @@ As built:
 
 **Gate:** the report shows equality and 0 duplicates, and Wisdom reviews it.
 
+✅ **Passed 2026-11-19** (`ml/reports/phase2_gate.md`; **for Wisdom to review**): 31/31 checks.
+- **Readings:** 1,616,784 produced = 1,616,784 stored; 0 duplicate rows.
+- **Batches and trips:** 2,984 batches; 81 of 81 trips assembled, none left open. Positions were stored only for the 3 consenting owners.
+- **Fault codes:** the simulated ECU's codes reached the database (P0128 for the thermostat; P0171 and P0174 for the vacuum leak).
+- **Replay:** all 3,074 requests came back as duplicates, and the database didn't change.
+- **Throughput:** 8.4 requests/s and ~4,200 readings/s from one local client.
+
+As built:
+- `scripts/phase2_gate.py` makes its own `autocare_gate` database and its own API on :8010.
+- **New setting `INGEST_SIM_CLOCK`:** trusts an `X-Sim-Server-Time` header as the server clock, so simulated days arrive "on time". It's off by default and refused in production (tested).
+- The gate raises the rate limit for the run; the 429 behaviour is covered by its own test.
+- Which trips end `complete` vs `late_data` depends on whether assembly ran before a late batch arrived; the trip contents don't change.
+- A first run's throughput figure was skewed by a ~2 h stall on one car (PC sleep or Docker pause). The rerun was normal, and the report now gives per-car figures and the median.
+
 ### Step 11: Live smoke test + Restfox
 - Restfox list for the device endpoints (`backend/restfox/phase2_requests.py`, same runner style as Phase 1).
 - **Smoke test against Railway:** 1 car × 1 day only (keeps storage small), plus one replay.
 
 **Gate:** the list passes against Railway; the smoke run reports 0 duplicates.
+
+🟡 **Built and passing locally 2026-11-19; the live run is waiting on Wisdom** (it needs an admin account on production).
+- **`backend/restfox/phase2_requests.py`** plus `autocare_phase2.postman_collection.json`: 25 requests, covering provision, claim (wrong code → 403), status, 401s, upload, retry → `dup`, out of order, 422, critical, stored counts, unclaim → discarded, cleanup. **25/25 passed locally.**
+- **`scripts/phase2_smoke.py`:** 1 car × 1 day. The day is simulated without coverage, then the backlog uploads now with a correct clock (no simulation clock in production). It includes lost-ack resends and a shuffled replay, and keeps to the real 60/min rate limit. Locally it passed 8/8: 60,244 readings, 0 duplicates, 154 s of rate-limit waiting, both trips complete.
+- **New `GET /admin/vehicles/{id}/telemetry` (admin only):** readings, duplicate rows, batches, trips by status, positions and DTC codes for one car. The smoke test checks production through it, with no database access.
 
 ## Phase 2 schema (migration 0002)
 

@@ -421,3 +421,43 @@ async def test_critical_packet_stored_and_queued_at_priority_0(client, session, 
     await post(client, rig, batch(rig))
     assert await count(session, Trip) == 1
     await session.execute(text("SELECT 1"))
+
+
+# ---------------------------------------------------------------- simulation clock
+
+
+async def test_sim_clock_header_only_when_enabled(client, session, monkeypatch):
+    from app.core.config import Settings, get_settings
+
+    rig = await make_rig(client, session)
+    sim_now = T0 + 61_000
+    h = {**rig.headers, ingest.SIM_CLOCK_HEADER: str(sim_now)}
+    # Off (the default): the header is ignored; the real clock is used, so a batch
+    # stamped a year ago gets shifted forward as clock skew.
+    r = await post(client, rig, batch(rig, seq=0), headers=h)
+    assert r.json()["server_time"] > sim_now + 86_400_000
+    monkeypatch.setattr(get_settings(), "ingest_sim_clock", True)
+    r = await post(client, rig, batch(rig, seq=1), headers=h)
+    assert r.json()["server_time"] == sim_now
+    with pytest.raises(ValueError, match="never production"):
+        Settings(environment="production", jwt_secret="x" * 40, ingest_sim_clock=True)
+
+
+async def test_admin_telemetry_stats(client, session, at):
+    from tests.test_devices import make_admin
+
+    rig = await make_rig(client, session, consents=("service_processing", "location"))
+    doc = batch(rig, events=True)
+    await post(client, rig, doc)
+    await post(client, rig, doc)  # duplicate: stored once
+    admin = await make_admin(client, session)
+    url = f"/admin/vehicles/{rig.vehicle_id}/telemetry"
+    r = await client.get(url, headers=admin.headers)
+    assert r.status_code == 200, r.text
+    st = r.json()
+    assert st["readings"] == n_samples(doc) + 5 and st["duplicate_readings"] == 0
+    assert st["positions"] == len(doc["g"]) and st["batches"] == 1
+    assert st["trips"] == {"open": 1} and st["dtc_codes"] == ["P0128"]
+    assert (await client.get(url, headers=rig.owner.headers)).status_code == 404  # admin only
+    r = await client.get(f"/admin/vehicles/{uuid.uuid4()}/telemetry", headers=admin.headers)
+    assert r.status_code == 404

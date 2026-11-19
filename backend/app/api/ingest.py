@@ -28,8 +28,19 @@ router = APIRouter(prefix="/ingest", tags=["ingest"])
 limiter = RateLimiter(get_settings().ingest_rate_per_min)
 
 
-def server_now_ms() -> int:
-    """The server's clock. A dependency so tests (and the local gate run) can set it."""
+SIM_CLOCK_HEADER = "X-Sim-Server-Time"
+
+
+def server_now_ms(request: Request) -> int:
+    """The server's clock. A dependency so tests can pin it.
+
+    With INGEST_SIM_CLOCK on (local gate run only; refused in production), the
+    `X-Sim-Server-Time` header is used instead, so simulated days arrive "on time".
+    """
+    if get_settings().ingest_sim_clock:
+        sim = request.headers.get(SIM_CLOCK_HEADER)
+        if sim and sim.isdigit():
+            return int(sim)
     return int(time.time() * 1000)
 
 

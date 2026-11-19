@@ -1,0 +1,581 @@
+{
+  "info": {
+    "name": "AutoCare Phase 2 (devices + ingestion)",
+    "_postman_id": "f9133b81-92c3-55b1-9b6e-2f367f93d539",
+    "description": "Run in order. Change `run` before each full run. Needs an admin.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "01 Liveness -> 200",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{base}}/health",
+        "description": "Expect HTTP 200."
+      }
+    },
+    {
+      "name": "02 Readiness (DB + migrations) -> 200",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{base}}/health/ready",
+        "description": "Expect HTTP 200. Check: checks.migrations = \"head\"."
+      }
+    },
+    {
+      "name": "03 Register owner -> 201",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base}}/auth/register",
+        "description": "Expect HTTP 201.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{email_owner}}\",\n  \"password\": \"restfox-pass-123\",\n  \"display_name\": \"owner\",\n  \"consents\": [\n    \"service_processing\"\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "04 Log in owner -> 200",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base}}/auth/login",
+        "description": "Expect HTTP 200. Then save: token = response.access_token.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{email_owner}}\",\n  \"password\": \"restfox-pass-123\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "05 Log in admin -> 200",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base}}/auth/login",
+        "description": "Expect HTTP 200. Then save: admin_token = response.access_token. Needs an account with is_admin = true.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{admin_email}}\",\n  \"password\": \"{{admin_password}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "06 Owner adds a car -> 201",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{base}}/vehicles",
+        "description": "Expect HTTP 201. Then save: vid = response.id.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"make\": \"Toyota\",\n  \"model\": \"Corolla\",\n  \"year\": 2009\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "07 Owner tries to provision (not admin) -> 404",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{base}}/admin/devices",
+        "description": "Expect HTTP 404.",
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "08 Admin provisions a device -> 201",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{admin_token}}"
+          }
+        ],
+        "url": "{{base}}/admin/devices",
+        "description": "Expect HTTP 201. Then save: device_id = response.id, device_token = response.token, claim_code = response.claim_code. token and claim_code are shown only now.",
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "09 Claim with a wrong code -> 403",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{base}}/vehicles/{{vid}}/device",
+        "description": "Expect HTTP 403.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"device_id\": \"{{device_id}}\",\n  \"claim_code\": \"AAAA-AAAA\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "10 Claim the device -> 201",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{base}}/vehicles/{{vid}}/device",
+        "description": "Expect HTTP 201.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"device_id\": \"{{device_id}}\",\n  \"claim_code\": \"{{claim_code}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "11 Device status (never seen) -> 200",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{base}}/vehicles/{{vid}}/device",
+        "description": "Expect HTTP 200. Check: online = false."
+      }
+    },
+    {
+      "name": "12 Upload without a token -> 401",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base}}/ingest/freematics_one_plus/batches",
+        "description": "Expect HTTP 401.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"v\": 1,\n  \"device_id\": \"{{device_id}}\",\n  \"fw\": \"0.1.0\",\n  \"boot\": 0,\n  \"trip\": 1,\n  \"seq\": 0,\n  \"final\": false,\n  \"t0\": 1763290000000,\n  \"sent_at\": 1763290120000,\n  \"s\": {\n    \"rpm\": [\n      [\n        0,\n        820\n      ],\n      [\n        1000,\n        830\n      ],\n      [\n        2000,\n        840\n      ],\n      [\n        3000,\n        850\n      ],\n      [\n        4000,\n        860\n      ],\n      [\n        5000,\n        870\n      ],\n      [\n        6000,\n        880\n      ],\n      [\n        7000,\n        890\n      ],\n      [\n        8000,\n        900\n      ],\n      [\n        9000,\n        910\n      ]\n    ],\n    \"speed\": [\n      [\n        0,\n        0\n      ],\n      [\n        1000,\n        3\n      ],\n      [\n        2000,\n        6\n      ],\n      [\n        3000,\n        9\n      ],\n      [\n        4000,\n        12\n      ],\n      [\n        5000,\n        15\n      ],\n      [\n        6000,\n        18\n      ],\n      [\n        7000,\n        21\n      ],\n      [\n        8000,\n        24\n      ],\n      [\n        9000,\n        27\n      ]\n    ],\n    \"coolant\": [\n      [\n        0,\n        88\n      ],\n      [\n        7500,\n        89\n      ]\n    ],\n    \"batt_v\": [\n      [\n        0,\n        14.05\n      ],\n      [\n        5000,\n        14.1\n      ]\n    ]\n  },\n  \"g\": [\n    [\n      0,\n      6.5244,\n      3.3792,\n      0.0\n    ]\n  ],\n  \"ev\": [],\n  \"net\": {\n    \"rssi\": -77\n  }\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "13 Upload with a wrong token -> 401",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{bad_device_token}}"
+          }
+        ],
+        "url": "{{base}}/ingest/freematics_one_plus/batches",
+        "description": "Expect HTTP 401.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"v\": 1,\n  \"device_id\": \"{{device_id}}\",\n  \"fw\": \"0.1.0\",\n  \"boot\": 0,\n  \"trip\": 1,\n  \"seq\": 0,\n  \"final\": false,\n  \"t0\": 1763290000000,\n  \"sent_at\": 1763290120000,\n  \"s\": {\n    \"rpm\": [\n      [\n        0,\n        820\n      ],\n      [\n        1000,\n        830\n      ],\n      [\n        2000,\n        840\n      ],\n      [\n        3000,\n        850\n      ],\n      [\n        4000,\n        860\n      ],\n      [\n        5000,\n        870\n      ],\n      [\n        6000,\n        880\n      ],\n      [\n        7000,\n        890\n      ],\n      [\n        8000,\n        900\n      ],\n      [\n        9000,\n        910\n      ]\n    ],\n    \"speed\": [\n      [\n        0,\n        0\n      ],\n      [\n        1000,\n        3\n      ],\n      [\n        2000,\n        6\n      ],\n      [\n        3000,\n        9\n      ],\n      [\n        4000,\n        12\n      ],\n      [\n        5000,\n        15\n      ],\n      [\n        6000,\n        18\n      ],\n      [\n        7000,\n        21\n      ],\n      [\n        8000,\n        24\n      ],\n      [\n        9000,\n        27\n      ]\n    ],\n    \"coolant\": [\n      [\n        0,\n        88\n      ],\n      [\n        7500,\n        89\n      ]\n    ],\n    \"batt_v\": [\n      [\n        0,\n        14.05\n      ],\n      [\n        5000,\n        14.1\n      ]\n    ]\n  },\n  \"g\": [\n    [\n      0,\n      6.5244,\n      3.3792,\n      0.0\n    ]\n  ],\n  \"ev\": [],\n  \"net\": {\n    \"rssi\": -77\n  }\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "14 Upload batch 0 (trip start) -> 200",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{device_token}}"
+          }
+        ],
+        "url": "{{base}}/ingest/freematics_one_plus/batches",
+        "description": "Expect HTTP 200. Check: dup = false.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"v\": 1,\n  \"device_id\": \"{{device_id}}\",\n  \"fw\": \"0.1.0\",\n  \"boot\": 0,\n  \"trip\": 1,\n  \"seq\": 0,\n  \"final\": false,\n  \"t0\": 1763290000000,\n  \"sent_at\": 1763290120000,\n  \"s\": {\n    \"rpm\": [\n      [\n        0,\n        820\n      ],\n      [\n        1000,\n        830\n      ],\n      [\n        2000,\n        840\n      ],\n      [\n        3000,\n        850\n      ],\n      [\n        4000,\n        860\n      ],\n      [\n        5000,\n        870\n      ],\n      [\n        6000,\n        880\n      ],\n      [\n        7000,\n        890\n      ],\n      [\n        8000,\n        900\n      ],\n      [\n        9000,\n        910\n      ]\n    ],\n    \"speed\": [\n      [\n        0,\n        0\n      ],\n      [\n        1000,\n        3\n      ],\n      [\n        2000,\n        6\n      ],\n      [\n        3000,\n        9\n      ],\n      [\n        4000,\n        12\n      ],\n      [\n        5000,\n        15\n      ],\n      [\n        6000,\n        18\n      ],\n      [\n        7000,\n        21\n      ],\n      [\n        8000,\n        24\n      ],\n      [\n        9000,\n        27\n      ]\n    ],\n    \"coolant\": [\n      [\n        0,\n        88\n      ],\n      [\n        7500,\n        89\n      ]\n    ],\n    \"batt_v\": [\n      [\n        0,\n        14.05\n      ],\n      [\n        5000,\n        14.1\n      ]\n    ]\n  },\n  \"g\": [\n    [\n      0,\n      6.5244,\n      3.3792,\n      0.0\n    ]\n  ],\n  \"ev\": [\n    {\n      \"t\": 0,\n      \"type\": \"trip_start\"\n    }\n  ],\n  \"net\": {\n    \"rssi\": -77\n  }\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "15 Upload batch 0 again (retry) -> 200",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{device_token}}"
+          }
+        ],
+        "url": "{{base}}/ingest/freematics_one_plus/batches",
+        "description": "Expect HTTP 200. Check: dup = true.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"v\": 1,\n  \"device_id\": \"{{device_id}}\",\n  \"fw\": \"0.1.0\",\n  \"boot\": 0,\n  \"trip\": 1,\n  \"seq\": 0,\n  \"final\": false,\n  \"t0\": 1763290000000,\n  \"sent_at\": 1763290120000,\n  \"s\": {\n    \"rpm\": [\n      [\n        0,\n        820\n      ],\n      [\n        1000,\n        830\n      ],\n      [\n        2000,\n        840\n      ],\n      [\n        3000,\n        850\n      ],\n      [\n        4000,\n        860\n      ],\n      [\n        5000,\n        870\n      ],\n      [\n        6000,\n        880\n      ],\n      [\n        7000,\n        890\n      ],\n      [\n        8000,\n        900\n      ],\n      [\n        9000,\n        910\n      ]\n    ],\n    \"speed\": [\n      [\n        0,\n        0\n      ],\n      [\n        1000,\n        3\n      ],\n      [\n        2000,\n        6\n      ],\n      [\n        3000,\n        9\n      ],\n      [\n        4000,\n        12\n      ],\n      [\n        5000,\n        15\n      ],\n      [\n        6000,\n        18\n      ],\n      [\n        7000,\n        21\n      ],\n      [\n        8000,\n        24\n      ],\n      [\n        9000,\n        27\n      ]\n    ],\n    \"coolant\": [\n      [\n        0,\n        88\n      ],\n      [\n        7500,\n        89\n      ]\n    ],\n    \"batt_v\": [\n      [\n        0,\n        14.05\n      ],\n      [\n        5000,\n        14.1\n      ]\n    ]\n  },\n  \"g\": [\n    [\n      0,\n      6.5244,\n      3.3792,\n      0.0\n    ]\n  ],\n  \"ev\": [\n    {\n      \"t\": 0,\n      \"type\": \"trip_start\"\n    }\n  ],\n  \"net\": {\n    \"rssi\": -77\n  }\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "16 Upload batch 2 before 1 (out of order) -> 200",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{device_token}}"
+          }
+        ],
+        "url": "{{base}}/ingest/freematics_one_plus/batches",
+        "description": "Expect HTTP 200. Check: dup = false.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"v\": 1,\n  \"device_id\": \"{{device_id}}\",\n  \"fw\": \"0.1.0\",\n  \"boot\": 0,\n  \"trip\": 1,\n  \"seq\": 2,\n  \"final\": true,\n  \"t0\": 1763290020000,\n  \"sent_at\": 1763290120000,\n  \"s\": {\n    \"rpm\": [\n      [\n        0,\n        820\n      ],\n      [\n        1000,\n        830\n      ],\n      [\n        2000,\n        840\n      ],\n      [\n        3000,\n        850\n      ],\n      [\n        4000,\n        860\n      ],\n      [\n        5000,\n        870\n      ],\n      [\n        6000,\n        880\n      ],\n      [\n        7000,\n        890\n      ],\n      [\n        8000,\n        900\n      ],\n      [\n        9000,\n        910\n      ]\n    ],\n    \"speed\": [\n      [\n        0,\n        0\n      ],\n      [\n        1000,\n        3\n      ],\n      [\n        2000,\n        6\n      ],\n      [\n        3000,\n        9\n      ],\n      [\n        4000,\n        12\n      ],\n      [\n        5000,\n        15\n      ],\n      [\n        6000,\n        18\n      ],\n      [\n        7000,\n        21\n      ],\n      [\n        8000,\n        24\n      ],\n      [\n        9000,\n        27\n      ]\n    ],\n    \"coolant\": [\n      [\n        0,\n        88\n      ],\n      [\n        7500,\n        89\n      ]\n    ],\n    \"batt_v\": [\n      [\n        0,\n        14.05\n      ],\n      [\n        5000,\n        14.1\n      ]\n    ]\n  },\n  \"g\": [\n    [\n      0,\n      6.5244,\n      3.3792,\n      0.0\n    ]\n  ],\n  \"ev\": [\n    {\n      \"t\": 9000,\n      \"type\": \"trip_end\",\n      \"reason\": \"ignition_off\"\n    }\n  ],\n  \"net\": {\n    \"rssi\": -77\n  }\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "17 Upload batch 1 (late) -> 200",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{device_token}}"
+          }
+        ],
+        "url": "{{base}}/ingest/freematics_one_plus/batches",
+        "description": "Expect HTTP 200. Check: dup = false.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"v\": 1,\n  \"device_id\": \"{{device_id}}\",\n  \"fw\": \"0.1.0\",\n  \"boot\": 0,\n  \"trip\": 1,\n  \"seq\": 1,\n  \"final\": false,\n  \"t0\": 1763290010000,\n  \"sent_at\": 1763290120000,\n  \"s\": {\n    \"rpm\": [\n      [\n        0,\n        820\n      ],\n      [\n        1000,\n        830\n      ],\n      [\n        2000,\n        840\n      ],\n      [\n        3000,\n        850\n      ],\n      [\n        4000,\n        860\n      ],\n      [\n        5000,\n        870\n      ],\n      [\n        6000,\n        880\n      ],\n      [\n        7000,\n        890\n      ],\n      [\n        8000,\n        900\n      ],\n      [\n        9000,\n        910\n      ]\n    ],\n    \"speed\": [\n      [\n        0,\n        0\n      ],\n      [\n        1000,\n        3\n      ],\n      [\n        2000,\n        6\n      ],\n      [\n        3000,\n        9\n      ],\n      [\n        4000,\n        12\n      ],\n      [\n        5000,\n        15\n      ],\n      [\n        6000,\n        18\n      ],\n      [\n        7000,\n        21\n      ],\n      [\n        8000,\n        24\n      ],\n      [\n        9000,\n        27\n      ]\n    ],\n    \"coolant\": [\n      [\n        0,\n        88\n      ],\n      [\n        7500,\n        89\n      ]\n    ],\n    \"batt_v\": [\n      [\n        0,\n        14.05\n      ],\n      [\n        5000,\n        14.1\n      ]\n    ]\n  },\n  \"g\": [\n    [\n      0,\n      6.5244,\n      3.3792,\n      0.0\n    ]\n  ],\n  \"ev\": [\n    {\n      \"t\": 0,\n      \"type\": \"dtc\",\n      \"mode\": \"07\",\n      \"codes\": [\n        \"P0128\"\n      ]\n    }\n  ],\n  \"net\": {\n    \"rssi\": -77\n  }\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "18 Upload breaking the contract -> 422",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{device_token}}"
+          }
+        ],
+        "url": "{{base}}/ingest/freematics_one_plus/batches",
+        "description": "Expect HTTP 422.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"v\": 2,\n  \"device_id\": \"{{device_id}}\",\n  \"fw\": \"0.1.0\",\n  \"boot\": 0,\n  \"trip\": 1,\n  \"seq\": 3,\n  \"final\": false,\n  \"t0\": 1763290030000,\n  \"sent_at\": 1763290120000,\n  \"s\": {\n    \"rpm\": [\n      [\n        0,\n        820\n      ],\n      [\n        1000,\n        830\n      ],\n      [\n        2000,\n        840\n      ],\n      [\n        3000,\n        850\n      ],\n      [\n        4000,\n        860\n      ],\n      [\n        5000,\n        870\n      ],\n      [\n        6000,\n        880\n      ],\n      [\n        7000,\n        890\n      ],\n      [\n        8000,\n        900\n      ],\n      [\n        9000,\n        910\n      ]\n    ],\n    \"speed\": [\n      [\n        0,\n        0\n      ],\n      [\n        1000,\n        3\n      ],\n      [\n        2000,\n        6\n      ],\n      [\n        3000,\n        9\n      ],\n      [\n        4000,\n        12\n      ],\n      [\n        5000,\n        15\n      ],\n      [\n        6000,\n        18\n      ],\n      [\n        7000,\n        21\n      ],\n      [\n        8000,\n        24\n      ],\n      [\n        9000,\n        27\n      ]\n    ],\n    \"coolant\": [\n      [\n        0,\n        88\n      ],\n      [\n        7500,\n        89\n      ]\n    ],\n    \"batt_v\": [\n      [\n        0,\n        14.05\n      ],\n      [\n        5000,\n        14.1\n      ]\n    ]\n  },\n  \"g\": [\n    [\n      0,\n      6.5244,\n      3.3792,\n      0.0\n    ]\n  ],\n  \"ev\": [],\n  \"net\": {\n    \"rssi\": -77\n  }\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "19 Critical packet -> 200",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{device_token}}"
+          }
+        ],
+        "url": "{{base}}/ingest/freematics_one_plus/critical",
+        "description": "Expect HTTP 200.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"v\": 1,\n  \"device_id\": \"{{device_id}}\",\n  \"boot\": 0,\n  \"trip\": 1,\n  \"t\": 1763290025000,\n  \"sent_at\": 1763290030000,\n  \"kind\": \"coolant_high\",\n  \"values\": {\n    \"coolant\": 118,\n    \"rpm\": 800\n  }\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "20 Device status (online now) -> 200",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{base}}/vehicles/{{vid}}/device",
+        "description": "Expect HTTP 200. Check: online = true, signal = \"fair\"."
+      }
+    },
+    {
+      "name": "21 Admin: what was stored -> 200",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{admin_token}}"
+          }
+        ],
+        "url": "{{base}}/admin/vehicles/{{vid}}/telemetry",
+        "description": "Expect HTTP 200. Check: readings = 74, duplicate_readings = 0, batches = 3, positions = 0, dtc_codes = [\"P0128\"]. 3 batches x 24 samples + 2 critical values; no positions (no location consent)."
+      }
+    },
+    {
+      "name": "22 Unclaim the device -> 204",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{base}}/vehicles/{{vid}}/device",
+        "description": "Expect HTTP 204."
+      }
+    },
+    {
+      "name": "23 Upload from the unclaimed device (acked, discarded) -> 200",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{device_token}}"
+          }
+        ],
+        "url": "{{base}}/ingest/freematics_one_plus/batches",
+        "description": "Expect HTTP 200.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"v\": 1,\n  \"device_id\": \"{{device_id}}\",\n  \"fw\": \"0.1.0\",\n  \"boot\": 0,\n  \"trip\": 1,\n  \"seq\": 5,\n  \"final\": false,\n  \"t0\": 1763290050000,\n  \"sent_at\": 1763290120000,\n  \"s\": {\n    \"rpm\": [\n      [\n        0,\n        820\n      ],\n      [\n        1000,\n        830\n      ],\n      [\n        2000,\n        840\n      ],\n      [\n        3000,\n        850\n      ],\n      [\n        4000,\n        860\n      ],\n      [\n        5000,\n        870\n      ],\n      [\n        6000,\n        880\n      ],\n      [\n        7000,\n        890\n      ],\n      [\n        8000,\n        900\n      ],\n      [\n        9000,\n        910\n      ]\n    ],\n    \"speed\": [\n      [\n        0,\n        0\n      ],\n      [\n        1000,\n        3\n      ],\n      [\n        2000,\n        6\n      ],\n      [\n        3000,\n        9\n      ],\n      [\n        4000,\n        12\n      ],\n      [\n        5000,\n        15\n      ],\n      [\n        6000,\n        18\n      ],\n      [\n        7000,\n        21\n      ],\n      [\n        8000,\n        24\n      ],\n      [\n        9000,\n        27\n      ]\n    ],\n    \"coolant\": [\n      [\n        0,\n        88\n      ],\n      [\n        7500,\n        89\n      ]\n    ],\n    \"batt_v\": [\n      [\n        0,\n        14.05\n      ],\n      [\n        5000,\n        14.1\n      ]\n    ]\n  },\n  \"g\": [\n    [\n      0,\n      6.5244,\n      3.3792,\n      0.0\n    ]\n  ],\n  \"ev\": [],\n  \"net\": {\n    \"rssi\": -77\n  }\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "24 Delete the car -> 204",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{base}}/vehicles/{{vid}}",
+        "description": "Expect HTTP 204."
+      }
+    },
+    {
+      "name": "25 Delete the owner account -> 204",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{base}}/me",
+        "description": "Expect HTTP 204."
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base",
+      "value": "http://localhost:8000"
+    },
+    {
+      "key": "run",
+      "value": "r1"
+    },
+    {
+      "key": "email_owner",
+      "value": "p2-owner-{{run}}@example.com"
+    },
+    {
+      "key": "admin_email",
+      "value": ""
+    },
+    {
+      "key": "admin_password",
+      "value": ""
+    },
+    {
+      "key": "bad_device_token",
+      "value": "FM1-9999.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    }
+  ]
+}

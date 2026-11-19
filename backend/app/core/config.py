@@ -60,6 +60,9 @@ class Settings(BaseSettings):
     ingest_rate_per_min: int = 60  # requests per device; a backlog drains at this pace
     command_resend_s: int = 120  # resend a command the device didn't confirm (lost ack)
     trip_assemble_delay_s: int = 60  # debounce: one assembly per burst of batches
+    # Local exit-gate run only (plan step 10): trust an `X-Sim-Server-Time` header as the
+    # server clock, so a simulated week can be replayed in minutes. Refused in production.
+    ingest_sim_clock: bool = False
     trip_close_after_s: int = 900  # SEED - validate (P11): no data for 15 min -> trip over
     trip_gap_s: int = 10  # SEED - validate (P14): a hole in 1 Hz data longer than this is a gap
 
@@ -107,6 +110,8 @@ class Settings(BaseSettings):
             and self.jwt_secret.get_secret_value() == INSECURE_DEFAULT_SECRET
         ):
             raise ValueError("JWT_SECRET must be set in production")
+        if self.environment == "production" and self.ingest_sim_clock:
+            raise ValueError("INGEST_SIM_CLOCK is for local simulation runs, never production")
         return self
 
     @property
