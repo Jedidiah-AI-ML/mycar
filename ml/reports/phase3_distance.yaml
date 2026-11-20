@@ -1,0 +1,163 @@
+# Phase 3 distance + usage numbers from ml/notebooks/02_distance_and_usage.ipynb
+# SEED - validate: measured on VED (Michigan) and the simulator, not on Lagos cars.
+decisions:
+  distance:
+    method: trapezoidal integral of 1 Hz speed
+    bridge_max_s: 10
+    with_gps: 'holes > 10 s: GPS chord x detour factor'
+    without_gps: bridge holes up to 120 s, trip-average speed beyond; trip distance
+      marked partial when a hole exceeds 20 s
+    no_gps_bridge_max_s: 120
+    partial_hole_s: 20
+    detour_factor_by_hole_s:
+      2: 0.997
+      5: 1.0
+      10: 1.005
+      20: 1.007
+      30: 1.017
+      60: 1.035
+      120: 1.077
+      300: 1.147
+      600: 1.251
+    gnss_disagree_flag_pct: 13
+  km_per_day:
+    best_on_ved: mean60
+    best_on_simulator: baseline_other_cars
+    chosen: mean30
+    lagos_prior_km_per_day: 30
+    prior_weight_days: 7
+  odometer_mismatch:
+    floor_km: 500
+    pct_of_km_since_anchor: 5
+    per_car_bias_abs_p95_pct: 3.33
+evidence:
+  ved_gps_over_speed:
+    p10: 0.984
+    p50: 1.007
+    p90: 1.036
+    n: 17068
+  ved_per_car_bias_pct:
+    p5: -1.579
+    p50: 0.675
+    p95: 3.293
+    n: 207
+  sampling_error_abs_pct:
+    2:
+      p50: 0.084
+      p90: 0.251
+      p99: 0.398
+      n: 400.0
+    5:
+      p50: 0.241
+      p90: 0.743
+      p99: 1.533
+      n: 400.0
+    10:
+      p50: 0.617
+      p90: 1.718
+      p99: 3.64
+      n: 400.0
+  gap_detour_factor:
+    2: 0.997
+    5: 1.0
+    10: 1.005
+    20: 1.007
+    30: 1.017
+    60: 1.035
+    120: 1.077
+    300: 1.147
+    600: 1.251
+  gap_median_abs_err_pct:
+    2:
+      bridge: 0.4
+      chord: 3.8
+      chord_x_detour: 3.8
+      mean_speed: 38.4
+    5:
+      bridge: 1.2
+      chord: 3.6
+      chord_x_detour: 3.6
+      mean_speed: 39.6
+    10:
+      bridge: 3.3
+      chord: 4.0
+      chord_x_detour: 4.1
+      mean_speed: 39.1
+    20:
+      bridge: 8.1
+      chord: 3.7
+      chord_x_detour: 3.8
+      mean_speed: 38.0
+    30:
+      bridge: 14.0
+      chord: 4.4
+      chord_x_detour: 4.5
+      mean_speed: 37.6
+    60:
+      bridge: 21.0
+      chord: 5.2
+      chord_x_detour: 6.0
+      mean_speed: 35.8
+    120:
+      bridge: 29.4
+      chord: 8.8
+      chord_x_detour: 8.7
+      mean_speed: 29.4
+    300:
+      bridge: 34.5
+      chord: 12.6
+      chord_x_detour: 11.0
+      mean_speed: 21.5
+    600:
+      bridge: 42.7
+      chord: 19.3
+      chord_x_detour: 11.1
+      mean_speed: 6.6
+  bridge_max_s: 20
+  gps_better_from_s: 20
+  gnss_disagree_flag_pct: 13
+  sim_device_err_pct:
+    p5: -0.071
+    p50: -0.0
+    p95: 0.093
+    n: 76
+  sim_drop60_bridge_err_pct:
+    p5: -5.971
+    p50: -0.005
+    p95: 2.737
+    n: 76
+  forecast_median_err_pct:
+    ved:
+      mean60: 45.5
+      ewma14: 46.6
+      mean30: 51.6
+      baseline_other_cars: 57.5
+      mean7: 79.7
+    simulator:
+      baseline_other_cars: 12.8
+      mean30: 13.5
+      mean60: 13.9
+      ewma14: 16.1
+      mean7: 21.9
+  lagos_prior_km_per_day_sim: 28.3
+  cold_start_err_pct:
+    1:
+      blend: 6.2
+      own_data: 43.0
+      prior: 6.2
+    3:
+      blend: 15.6
+      own_data: 43.0
+      prior: 6.2
+    7:
+      blend: 8.4
+      own_data: 8.8
+      prior: 6.2
+    14:
+      blend: 21.9
+      own_data: 28.0
+      prior: 6.2
+  odometer_mismatch:
+    floor_km: 500
+    pct_of_km_since_anchor: 5
+    per_car_bias_abs_p95_pct: 3.33

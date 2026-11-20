@@ -72,6 +72,26 @@ Output: `ml/reports/phase3_distance.md` and the numbers in `wear.yaml` / setting
 
 **Gate:** the notebook runs top to bottom (`nbconvert --execute`); the report states each chosen threshold with its evidence and a trivial baseline.
 
+✅ **Done 2026-11-20** (`ml/reports/phase3_distance.md` + `.yaml`). Measured:
+
+**Distance**
+- Integrating 1 Hz speed is within ±0.1 % of the simulator's true distance.
+- VED GPS and speed agree to a median of +0.7 %. Per-car speed-sensor bias ranges from −1.6 % to +3.3 % (p5–p95).
+- Polling every 5 s instead of 1 s would add only 0.24 % error (median).
+
+**Gap policy** (whichever method measured better at each hole length; the cut-offs are SEED M4):
+- Holes up to 10 s: bridge them (0.4–3.3 % error).
+- Longer holes with GPS: GPS chord × detour factor (3.6–11 %).
+- Longer holes without GPS: bridge up to 120 s, then the trip's average speed beyond that. The trip is marked *partial* once a hole is over 20 s.
+- Trips where GPS and speed disagree by more than 13 % are flagged.
+
+**Odometer mismatch (M5):** flag when the difference is more than max(500 km, 5 % of km since the last anchor).
+
+**km/day:**
+- On VED, the trailing 60-day mean (45.5 % error) beat the 30-day mean (51.6 %) and the baseline (57.5 %). The simulator can't separate the methods.
+- **The trailing 30-day mean is kept as the PRD specifies, pending Wisdom's call.**
+- Lagos prior: 30 km/day (M6), weighted as 7 days of data.
+
 ### Step 2: Service rules and wear config (SEED)
 | File | Purpose |
 |---|---|
