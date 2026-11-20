@@ -1,4 +1,9 @@
-# Phase 2 plan: Simulator + device gateway (APPROVED 2026-11-16)
+# Phase 2 plan: Simulator + device gateway (APPROVED 2026-11-16, ✅ DONE 2026-11-20)
+
+**Status:** all steps done. The exit gate passed locally (`ml/reports/phase2_gate.md`, for
+Wisdom to review), and the request list and smoke test passed live. Open items for
+Wisdom: the SEED values P1–P14; fixing Railway auto-deploy (pushes are being skipped); a
+strong admin password.
 
 **Decisions (Wisdom, 2026-11-16):**
 - **Q0: stay on Neon** and let the database sleep. Hosting will move from Railway to
@@ -338,7 +343,11 @@ As built:
 
 **Gate:** the list passes against Railway; the smoke run reports 0 duplicates.
 
-🟡 **Built and passing locally 2026-11-19; the live run is waiting on Wisdom** (it needs an admin account on production).
+✅ **Passed live on Railway + Neon 2026-11-20** (run by Wisdom):
+- request list **25/25**
+- smoke test **8/8**: 22 batches, 11,815 readings stored = produced, **0 duplicates**, all resends and a shuffled replay acknowledged as duplicates, 242 positions, both trips `complete`, cleaned up afterwards
+
+Built 2026-11-19:
 - **`backend/restfox/phase2_requests.py`** plus `autocare_phase2.postman_collection.json`: 25 requests, covering provision, claim (wrong code → 403), status, 401s, upload, retry → `dup`, out of order, 422, critical, stored counts, unclaim → discarded, cleanup. **25/25 passed locally.**
 - **`scripts/phase2_smoke.py`:** 1 car × 1 day. The day is simulated without coverage, then the backlog uploads now with a correct clock (no simulation clock in production). It includes lost-ack resends and a shuffled replay, and keeps to the real 60/min rate limit. Locally it passed 8/8: 60,244 readings, 0 duplicates, 154 s of rate-limit waiting, both trips complete.
 - **New `GET /admin/vehicles/{id}/telemetry` (admin only):** readings, duplicate rows, batches, trips by status, positions and DTC codes for one car. The smoke test checks production through it, with no database access.

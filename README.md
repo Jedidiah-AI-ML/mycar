@@ -4,7 +4,7 @@ Early-warning web app for petrol cars, fed by a cellular OBD-II device. Personal
 portfolio project. **Source of truth: [docs/PRD.md](docs/PRD.md).** Decisions are in
 [docs/decisions/](docs/decisions/), phase plans in [docs/plans/](docs/plans/).
 
-Status: **Phase 2 in progress** (simulator, device emulation, telemetry schema, device provisioning/claim and the ingestion gateway and trip assembly are done; the exit gate passed locally, see `ml/reports/phase2_gate.md`). **Phase 1 (backend foundation) done**: auth, consents, vehicles, sharing, job queue. Live on Railway with Neon Postgres (ADR-005); request list 33/33 against the live API (2026-11-16).
+Status: **Phase 2 (simulator + device gateway) done** (2026-11-20). The simulator, device emulation, telemetry schema, device provisioning/claim, ingestion gateway and trip assembly are live on Railway + Neon. The exit gate passed locally (`ml/reports/phase2_gate.md`); the request list (25/25) and the 1 car-day smoke test passed live. **Phase 1 (backend foundation) done**: auth, consents, vehicles, sharing, job queue.
 
 ## Run it locally (Windows, PowerShell)
 
