@@ -191,9 +191,10 @@ def test_find_gaps():
     assert find_gaps([], 10) == [] and find_gaps([5], 10) == []
 
 
-def test_pipeline_has_only_trip_assembly_in_phase_2():
-    assert STAGES == ("trip.assemble",)
-    assert next_stage("trip.assemble") is None
+def test_pipeline_stages_through_phase_3():
+    assert STAGES == ("trip.assemble", "trip.summarise")
+    assert next_stage("trip.assemble") == "trip.summarise"
+    assert next_stage("trip.summarise") is None
 
 
 # ---------------------------------------------------------------- concurrency

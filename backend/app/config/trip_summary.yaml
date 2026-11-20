@@ -1,0 +1,38 @@
+# Trip summary settings (Phase 3, step 4).
+#
+# `distance` comes from ml/notebooks/02_distance_and_usage.ipynb
+# (ml/reports/phase3_distance.yaml, `decisions.distance`). A test fails if they drift
+# apart. SEED - validate (M4): measured on Michigan cars and the simulator.
+
+version: 1
+
+distance:
+  bridge_max_s: 10            # holes up to this: straight line between the two speeds
+  no_gps_bridge_max_s: 120    # no GPS: bridge up to this, trip-average speed beyond
+  partial_hole_s: 20          # no GPS and a hole longer than this: distance is "partial"
+  gnss_disagree_flag_pct: 13  # GPS vs speed distance differ more than this: flag the trip
+  detour_factor_by_hole_s:    # road distance / GPS straight line, by hole length
+    2: 0.997
+    5: 1.0
+    10: 1.005
+    20: 1.007
+    30: 1.017
+    60: 1.035
+    120: 1.077
+    300: 1.147
+    600: 1.251
+  gps_fix_max_gap_s: 15       # SEED: a GPS fix this close to each side of the hole is needed
+  moving_kmh: 1.0             # GPS hops count only if moving (parked GPS wanders a few metres)
+
+idle:
+  below_kmh: 2.0              # engine on and under this speed = idling (as in the notebook)
+
+harsh:                        # SEED - validate (M7): from the 1 Hz speed curve
+  brake_kmh_per_s: 12.4       # 0.35 g, matching the device's brake threshold (P5)
+  accel_kmh_per_s: 10.6       # 0.30 g, matching the device's accel threshold
+  merge_within_s: 3           # device + speed-curve events this close count once
+
+retention:
+  raw_days: 180               # S9 (decision Q3): raw readings and positions older than this,
+                              # counted back from the car's newest trip, are deleted;
+                              # per-minute summaries are kept

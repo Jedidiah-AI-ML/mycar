@@ -23,7 +23,8 @@ decisions:
   km_per_day:
     best_on_ved: mean60
     best_on_simulator: baseline_other_cars
-    chosen: mean30  # Wisdom's decision 2026-11-20 (PRD); 60-day re-checked in Phase 9
+    chosen: mean30
+    chosen_by: Wisdom, 2026-11-20 (PRD default; 60-day to be re-checked in Phase 9)
     lagos_prior_km_per_day: 30
     prior_weight_days: 7
   odometer_mismatch:
@@ -161,3 +162,6 @@ evidence:
     floor_km: 500
     pct_of_km_since_anchor: 5
     per_car_bias_abs_p95_pct: 3.33
+backend_reproduces_notebook:
+  cases: 595
+  max_abs_diff_m: 9.521272659185342e-10

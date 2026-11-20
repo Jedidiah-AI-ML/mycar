@@ -119,7 +119,7 @@ async def assemble_trip(payload: dict, session: AsyncSession) -> None:
         duration_ms = _ms(span_end) - _ms(started)
         completeness = max(0.0, min(1.0, 1 - hole_ms / duration_ms))
 
-    was = trip.status
+    was, was_batches = trip.status, trip.n_batches
     if ended is None:
         status = TripStatus.open
     elif was == TripStatus.late_data or (was == TripStatus.complete and n_batches > trip.n_batches):
@@ -142,7 +142,9 @@ async def assemble_trip(payload: dict, session: AsyncSession) -> None:
             session, NAME, {"trip_id": str(trip_id)}, run_at=due,
             dedupe_key=f"trip.close:{trip_id}:{int(due.timestamp())}",
         )  # fmt: skip
-    elif status != was and (nxt := next_stage(NAME)) is not None:
+    elif (status != was or n_batches != was_batches) and (nxt := next_stage(NAME)) is not None:
+        # Newly closed, or closed and re-assembled with more data (a second late batch
+        # leaves the status at late_data, but the next stages must still re-run).
         await enqueue(session, nxt, {"trip_id": str(trip_id)}, dedupe_key=f"{nxt}:{trip_id}")
 
     log.info(

@@ -138,6 +138,20 @@ Tables below. **Gate:** upgrade / downgrade / upgrade round trip, `alembic check
 - re-running is idempotent
 - retention deletes only rows older than the period, and keeps the minute summaries
 
+✅ **Done 2026-11-20:** 22 new tests (276 backend tests in total, all pass).
+
+**Distance**
+- On 3 simulated Lagos trips (fixture `tests/data/sim_trips.json`, made by `scripts/make_distance_fixture.py`), distance is within 0.3 % of the true value.
+- With a 60 s batch lost: within 2 % using the GPS chord, and within 5 % without GPS (marked `partial`).
+- **The backend reproduces the notebook:** notebook 02, section 8, runs `app/services/distance.py` on 595 VED trip/hole cases. Largest difference: 9.5e-10 m. A first run differed by up to 0.48 m, because the notebook used unrounded detour factors where the backend uses the published 3-decimal table. The comparison now uses the published table.
+- A drift test keeps `app/config/trip_summary.yaml` equal to the notebook's decisions.
+
+**As built**
+- `app/services/distance.py` is pure Python (stdlib + PyYAML), so the notebook can import it. `app/jobs/handlers/trip_summary.py` is the new pipeline stage.
+- **Harsh events:** device accelerometer events + 1 Hz speed-curve events (0.35 g brake, 0.30 g accel, M7), merged within 3 s.
+- **Retention (S9, ADR-012 to write):** raw readings **and positions** more than 180 days older than *the car's own newest trip* are deleted; per-minute summaries stay. Counting from the car's own data means a parked car never loses history, and simulated runs don't get wiped.
+- **Pipeline fix:** `trip.assemble` now queues the next stage whenever a closed trip gains batches, not only when its status changes. Before, a second late batch on a `late_data` trip never re-summarised.
+
 ### Step 5: Usage and odometer service
 | File | Purpose |
 |---|---|

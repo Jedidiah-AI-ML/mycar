@@ -29,3 +29,7 @@ From `ml/notebooks/02_distance_and_usage.ipynb`. Numbers: `ml/reports/phase3_dis
 
 - VED is Michigan driving logged by a research logger; Lagos usage and road shapes differ. The detour factors and km/day levels are to be re-checked on the field-test car (Phase 9).
 - VED per-day km is understated (partial logging), so VED informs how *steady* usage is, not how much.
+
+## Backend reproduces the notebook
+
+`backend/app/services/distance.py` on 595 VED trip/hole cases (test cars; holes of 5, 30 and 120 s): largest difference from the notebook's own calculation 9.5e-10 m (floating-point rounding).

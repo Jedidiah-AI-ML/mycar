@@ -476,7 +476,8 @@ decisions = {
     },
     "km_per_day": {
         "best_on_ved": best_ved, "best_on_simulator": best_sim,
-        "chosen": "mean30",
+        "chosen": "mean30",  # Wisdom's decision 2026-11-20 (PRD); 60-day re-checked in Phase 9
+        "chosen_by": "Wisdom, 2026-11-20 (PRD default; 60-day to be re-checked in Phase 9)",
         "lagos_prior_km_per_day": round(OUT["lagos_prior_km_per_day_sim"] / 5) * 5,
         "prior_weight_days": 7,
     },
@@ -546,6 +547,80 @@ w("- VED per-day km is understated (partial logging), so VED informs how *steady
 print("\n".join(L))
 """)
 
+# =====================================================================================
+md(r"""
+## 8. The backend reproduces the notebook (PRD 0.5)
+
+Phase 3 step 4 promoted the gap policy to `backend/app/services/distance.py` (pure Python,
+so this notebook can import it). Here it runs on the **same** VED trips and holes as
+section 3 (test cars): its total distance must equal the notebook's own calculation, the
+1 Hz integral with the true stretch replaced by the chosen method's estimate (bridge up
+to 10 s, GPS chord × detour beyond), to within floating-point rounding.
+""")
+
+code(r"""
+sys.path.insert(0, str(REPO / "backend"))
+from app.services import distance as backend_distance
+from app.services.distance import Fix, trip_distance as backend_trip_distance
+
+cfg = backend_distance.settings()
+for key in ("bridge_max_s", "no_gps_bridge_max_s", "partial_hole_s"):
+    assert cfg["distance"][key] == decisions["distance"][key], key
+
+def notebook_estimate(tr, i, L):
+    # Section 3's formulas, for the hole [i, i+L]: the chosen method's estimate.
+    if L <= cfg["distance"]["bridge_max_s"]:
+        return (tr["v"][i] + tr["v"][i + L]) / 2 / 3600 * L
+    b = np.flatnonzero(tr["fix_t"] <= tr["t"][i])[-1]
+    a = np.flatnonzero(tr["fix_t"] >= tr["t"][i + L])[0]
+    chord = haversine_m(tr["lat"][b], tr["lon"][b], tr["lat"][a], tr["lon"][a]) / 1000
+    # The published (rounded, 3 decimals) detour factor: that's what was promoted.
+    published = decisions["distance"]["detour_factor_by_hole_s"][L]
+    return chord * L / (tr["fix_t"][a] - tr["fix_t"][b]) * published
+
+rows = []
+for k, tr in hz.items():
+    if k[0] in train_cars:
+        continue  # test cars only, as in section 3
+    fixes = [Fix(t, la, lo, None) for t, la, lo in zip(tr["fix_t"], tr["lat"], tr["lon"])]
+    moving = np.flatnonzero(tr["v"] > 5)
+    for L in (5, 30, 120):
+        i = int(moving[len(moving) // 2])  # a deterministic hole in the middle
+        if i + L >= len(tr["t"]) - 1:
+            continue
+        keep = np.r_[np.arange(i + 1), np.arange(i + L, len(tr["t"]))]
+        b = backend_trip_distance(tr["t"][keep].tolist(), tr["v"][keep].tolist(), fixes, cfg)
+        if L > cfg["distance"]["bridge_max_s"] and b.source != "speed+gnss":
+            continue  # a GPS fix too far from the hole: the backend correctly falls back
+        truth = trapz_km(tr["t"][i:i + L + 1], tr["v"][i:i + L + 1])
+        notebook_km = trapz_km(tr["t"], tr["v"]) - truth + notebook_estimate(tr, i, L)
+        rows.append({"L": L, "notebook_km": notebook_km, "backend_km": b.km})
+rep = pd.DataFrame(rows)
+rep["abs_diff_m"] = (rep.backend_km - rep.notebook_km).abs() * 1000
+print(f"{len(rep)} trip/hole cases compared (test cars)")
+print(rep.groupby("L").abs_diff_m.agg(["count", "max"]))
+max_diff = float(rep.abs_diff_m.max())
+assert max_diff < 1e-6, max_diff  # identical up to floating-point rounding
+OUT["backend_reproduces_notebook"] = {"cases": int(len(rep)), "max_abs_diff_m": max_diff}
+
+# Section 7 already wrote the outputs: add this result to both.
+NL = chr(10)
+report_yaml.write_text(
+    report_yaml.read_text(encoding="utf-8")
+    + yaml.safe_dump({"backend_reproduces_notebook": py(OUT["backend_reproduces_notebook"])}),
+    encoding="utf-8", newline=NL)
+md_path = REPO / "ml/reports/phase3_distance.md"
+extra = [
+    "",
+    "## Backend reproduces the notebook",
+    "",
+    f"`backend/app/services/distance.py` on {len(rep)} VED trip/hole cases (test cars; holes "
+    f"of 5, 30 and 120 s): largest difference from the notebook's own calculation "
+    f"{max_diff:.2g} m (floating-point rounding).",
+    "",
+]
+md_path.write_text(md_path.read_text(encoding="utf-8") + NL.join(extra), encoding="utf-8", newline=NL)
+""")
 
 def build() -> None:
     nb = nbf.v4.new_notebook()
