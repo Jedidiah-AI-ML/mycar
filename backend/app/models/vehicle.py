@@ -12,6 +12,7 @@ from app.models.enums import VinSource, pg_enum
 # SEED - validate (S5, S6, S7): see docs/plans/phase1-plan.md
 MIN_MODEL_YEAR = 1996  # OBD-II mandatory in the US from MY1996
 MAX_ODOMETER_KM = 1_500_000
+OIL_TYPES = ("mineral", "semi_synthetic", "full_synthetic")  # = engine_oil variants
 
 
 class Vehicle(TimestampMixin, Base):
@@ -31,6 +32,8 @@ class Vehicle(TimestampMixin, Base):
     fuel_type: Mapped[str] = mapped_column(String(16), server_default="petrol")
     protocol: Mapped[str | None] = mapped_column(String(32))  # filled by the device (Phase 2)
     supported_pids: Mapped[dict | None] = mapped_column(JSONB)  # filled by the device (Phase 2)
+    # Picks the engine-oil service rule (Phase 3). NULL = unknown -> the shorter interval.
+    oil_type: Mapped[str | None] = mapped_column(String(16))
     nickname: Mapped[str | None] = mapped_column(String(50))
     odometer_at_install_km: Mapped[int | None]
     installed_at: Mapped[date | None]
@@ -54,6 +57,10 @@ class Vehicle(TimestampMixin, Base):
         CheckConstraint(
             "displacement_l IS NULL OR (displacement_l > 0 AND displacement_l < 10)",
             name="displacement_range",
+        ),
+        CheckConstraint(
+            "oil_type IS NULL OR oil_type IN (" + ", ".join(f"'{t}'" for t in OIL_TYPES) + ")",
+            name="oil_type_known",
         ),
         Index(
             "uq_vehicles_vin_active",

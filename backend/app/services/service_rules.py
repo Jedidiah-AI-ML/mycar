@@ -253,3 +253,39 @@ def wear_factors(
     return {
         item: WearFactor(max(f, cfg.floor), tuple(reasons[item])) for item, f in factors.items()
     }
+
+
+# ---------------------------------------------------------------- database copy
+
+
+async def sync_to_db(session, cfg: RulesConfig | None = None) -> tuple[int, int]:
+    """Copy the config into `service_items` / `service_rules`. Idempotent.
+
+    Items are upserted and never deleted (service records point at them). Rules are
+    replaced as a whole: nothing points at them, and the config is the source of truth.
+    Returns (items, rules) in the config. The caller commits.
+    """
+    from sqlalchemy import delete
+    from sqlalchemy.dialects.postgresql import insert
+
+    from app.models import ServiceItem, ServiceRule
+
+    cfg = cfg or rules()
+    stmt = insert(ServiceItem).values([{"key": k, "name": i.name} for k, i in cfg.items.items()])
+    await session.execute(
+        stmt.on_conflict_do_update(
+            index_elements=[ServiceItem.key], set_={"name": stmt.excluded.name}
+        )
+    )
+    await session.execute(delete(ServiceRule))
+    all_rules = (*cfg.rules, *cfg.overrides)
+    await session.execute(
+        insert(ServiceRule),
+        [
+            {"item_key": r.item, "profile": r.profile, "variant": r.variant, "make": r.make,
+             "model": r.model, "engine": r.engine, "interval_km": r.km,
+             "interval_months": r.months}
+            for r in all_rules
+        ],
+    )  # fmt: skip
+    return len(cfg.items), len(all_rules)

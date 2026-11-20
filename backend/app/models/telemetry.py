@@ -33,6 +33,10 @@ from sqlalchemy.orm import Mapped, mapped_column
 from app.db.base import Base, TimestampMixin
 from app.models.enums import DtcStatus, TripStatus, pg_enum
 
+# speed: 1 Hz speed integral, complete. speed+gnss: long holes filled from the GPS track.
+# partial: a hole longer than the cut-off with no GPS, so the distance is a lower bound.
+DISTANCE_SOURCES = ("speed", "speed+gnss", "partial")
+
 
 class Trip(TimestampMixin, Base):
     __tablename__ = "trips"
@@ -59,6 +63,17 @@ class Trip(TimestampMixin, Base):
     end_reason: Mapped[str | None] = mapped_column(String(16))  # ignition_off / timeout / ...
     assembled_at: Mapped[datetime | None]
     assembled_through: Mapped[datetime | None]  # newest batch receive time it included
+    # Written by trip.summarise (Phase 3).
+    distance_km: Mapped[float | None] = mapped_column(REAL)
+    distance_source: Mapped[str | None] = mapped_column(String(16))  # see DISTANCE_SOURCES
+    gnss_distance_km: Mapped[float | None] = mapped_column(REAL)  # cross-check, with consent
+    driving_s: Mapped[int | None]
+    idle_s: Mapped[int | None]
+    idle_share: Mapped[float | None] = mapped_column(REAL)
+    max_speed_kmh: Mapped[float | None] = mapped_column(REAL)
+    harsh_brake_n: Mapped[int] = mapped_column(Integer, server_default=text("0"))
+    harsh_accel_n: Mapped[int] = mapped_column(Integer, server_default=text("0"))
+    summarised_at: Mapped[datetime | None]
 
     __table_args__ = (
         # A device's trip is identified by its own counters; batches find their trip here.
@@ -70,6 +85,16 @@ class Trip(TimestampMixin, Base):
         ),
         CheckConstraint(
             "ended_at IS NULL OR started_at IS NULL OR ended_at >= started_at", name="end_after"
+        ),
+        CheckConstraint("distance_km IS NULL OR distance_km >= 0", name="distance_non_negative"),
+        CheckConstraint(
+            "idle_share IS NULL OR (idle_share >= 0 AND idle_share <= 1)", name="idle_share_range"
+        ),
+        CheckConstraint(
+            "distance_source IS NULL OR distance_source IN ("
+            + ", ".join(f"'{s}'" for s in DISTANCE_SOURCES)
+            + ")",
+            name="distance_source_known",
         ),
     )
 
@@ -112,6 +137,24 @@ positions = Table(
     Index("ix_positions_trip_ts", "trip_id", "ts"),
     # Location consent withdrawn -> delete every position of the owner's vehicles (PRD 10).
     Index("ix_positions_vehicle_id", "vehicle_id"),
+)
+
+
+# One row per trip, signal and minute: about 60x smaller than the raw readings, kept
+# after raw readings older than the retention period are deleted (ADR-012).
+reading_minutes = Table(
+    "reading_minutes",
+    Base.metadata,
+    Column("vehicle_id", Uuid, nullable=False),
+    Column("trip_id", Uuid, primary_key=True),
+    Column("signal_id", SmallInteger, primary_key=True),
+    Column("minute", DateTime(timezone=True), primary_key=True),
+    Column("n", Integer, nullable=False),
+    Column("mean", REAL, nullable=False),
+    Column("min", REAL, nullable=False),
+    Column("max", REAL, nullable=False),
+    Index("ix_reading_minutes_minute_brin", "minute", postgresql_using="brin"),
+    Index("ix_reading_minutes_vehicle_signal_minute", "vehicle_id", "signal_id", "minute"),
 )
 
 

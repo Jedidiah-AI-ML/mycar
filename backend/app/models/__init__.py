@@ -14,7 +14,16 @@ from app.models.enums import (
     VinSource,
 )
 from app.models.job import Job
-from app.models.telemetry import DtcEvent, Mode06Result, Signal, Trip, positions, readings
+from app.models.maintenance import OdometerReading, ServiceItem, ServiceRecord, ServiceRule
+from app.models.telemetry import (
+    DtcEvent,
+    Mode06Result,
+    Signal,
+    Trip,
+    positions,
+    reading_minutes,
+    readings,
+)
 from app.models.user import RefreshToken, User
 from app.models.vehicle import Vehicle
 
@@ -33,7 +42,11 @@ __all__ = [
     "Job",
     "JobStatus",
     "Mode06Result",
+    "OdometerReading",
     "RefreshToken",
+    "ServiceItem",
+    "ServiceRecord",
+    "ServiceRule",
     "Signal",
     "Trip",
     "TripStatus",
@@ -43,5 +56,6 @@ __all__ = [
     "VehicleRole",
     "VinSource",
     "positions",
+    "reading_minutes",
     "readings",
 ]

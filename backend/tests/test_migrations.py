@@ -26,7 +26,7 @@ async def test_upgrade_downgrade_upgrade():
     await run_alembic(command.downgrade, "base")
     assert await _table_count() == 0
     await run_alembic(command.upgrade, "head")
-    assert await _table_count() == 17  # 7 core (0001) + 10 Phase 2 (0002)
+    assert await _table_count() == 22  # 7 core (0001) + 10 Phase 2 (0002) + 5 Phase 3 (0004)
 
 
 async def test_models_match_migrations():

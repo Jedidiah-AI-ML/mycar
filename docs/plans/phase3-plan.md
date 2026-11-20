@@ -116,6 +116,14 @@ Output: `ml/reports/phase3_distance.md` and the numbers in `wear.yaml` / setting
 ### Step 3: Migration `0004_maintenance`
 Tables below. **Gate:** upgrade / downgrade / upgrade round trip, `alembic check` clean, constraint tests (record dates not in the future; odometer values in range; one rule per item per scope).
 
+✅ **Done 2026-11-20:** 22 new tests (254 backend tests in total, all pass).
+- **Migration:** round trip and `alembic check` are clean.
+- **Rules sync** (`service_rules.sync_to_db`): idempotent. It replaces rules and never deletes an item that service records point at.
+- **"One rule per scope":** uses a `NULLS NOT DISTINCT` unique constraint, so two *default* rules can't coexist.
+- **Checks written by hand:** Alembic doesn't detect CHECKs added to existing tables, so the four on `trips` and `vehicles` were added manually.
+- **Dates:** "record not in the future" is checked in the API (step 7), not in the DB (a CHECK on `CURRENT_DATE` breaks restores). The DB rejects dates before 1990.
+- **Additions beyond the table below:** `trips.gnss_distance_km` (the cross-check value, so a flagged trip can be inspected) and an index on `reading_minutes (vehicle_id, signal_id, minute)` for per-car trends.
+
 ### Step 4: `trip.summarise` pipeline stage
 | File | Purpose |
 |---|---|
