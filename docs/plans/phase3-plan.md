@@ -89,7 +89,7 @@ Output: `ml/reports/phase3_distance.md` and the numbers in `wear.yaml` / setting
 
 **km/day:**
 - On VED, the trailing 60-day mean (45.5 % error) beat the 30-day mean (51.6 %) and the baseline (57.5 %). The simulator can't separate the methods.
-- **The trailing 30-day mean is kept as the PRD specifies, pending Wisdom's call.**
+- **Trailing 30-day mean: Wisdom's decision (2026-11-20)**, as the PRD specifies. It reacts faster to changes in driving; re-check against 60 days on field data (Phase 9).
 - Lagos prior: 30 km/day (M6), weighted as 7 days of data.
 
 ### Step 2: Service rules and wear config (SEED)
