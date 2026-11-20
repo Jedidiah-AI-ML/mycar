@@ -1,0 +1,57 @@
+# Service items and intervals (PRD 5, Layer 1). Phase 3 step 2.
+#
+# SEED - validate (M1): every interval below. PRD defaults are used where the PRD gives
+# one; the rest (spark plugs, coolant, transmission fluid, and the time half of some
+# items) are from general knowledge of severe-service schedules, NOT from the owner's
+# manuals. Wisdom: check against the Toyota / Lexus / Honda severe-service schedules for
+# the five cars and add per-model overrides at the bottom.
+#
+# How a rule is chosen for a car:
+#   - `profile`: every car uses ng_severe (Nigeria severe service: heat, dust, stop-go
+#     traffic, short trips) unless the car is given another profile later.
+#   - `variant`: only engine oil has variants (the car's oil type). An unknown oil type
+#     uses `mineral`, the shorter interval (Phase 3 decision Q1).
+#   - scope: a rule may name a make, make+model, or make+model+engine. The most specific
+#     rule that matches the car wins; rules without a scope are the default.
+# Whichever of km and months comes first is due. `km: null` = time-based only.
+
+version: 1
+
+profiles:
+  ng_severe: "Nigeria severe service (heat, dust, stop-go traffic, short trips)"
+
+due_soon:            # SEED - validate (M3): when an item turns from "ok" to "soon"
+  pct_of_interval: 10
+  days: 14
+
+items:
+  engine_oil:         {name: "Engine oil and filter", variants: [mineral, semi_synthetic, full_synthetic]}
+  tyre_rotation:      {name: "Tyre rotation"}
+  brake_inspection:   {name: "Brake pad inspection"}
+  engine_air_filter:  {name: "Engine air filter"}
+  cabin_filter:       {name: "Cabin air filter"}
+  spark_plugs:        {name: "Spark plugs"}
+  coolant:            {name: "Coolant"}
+  transmission_fluid: {name: "Transmission fluid"}
+  battery_check:      {name: "Battery check"}
+  wheel_alignment:    {name: "Wheel alignment check"}
+
+rules:
+  # --- PRD defaults ------------------------------------------------------------------
+  - {item: engine_oil, variant: mineral,        km: 5000,  months: 3}
+  - {item: engine_oil, variant: semi_synthetic, km: 5000,  months: 3}
+  - {item: engine_oil, variant: full_synthetic, km: 7500,  months: 6}
+  - {item: tyre_rotation,     km: 10000, months: 6}    # months: SEED (PRD gives km only)
+  - {item: brake_inspection,  km: 10000, months: 6}    # months: SEED
+  - {item: engine_air_filter, km: 10000, months: 12}   # dusty conditions; months: SEED
+  - {item: cabin_filter,      km: 15000, months: 12}   # months: SEED
+  - {item: battery_check,     km: null,  months: 6}    # time-based only (PRD)
+  - {item: wheel_alignment,   km: 10000, months: 12}   # months: SEED
+  # --- not in the PRD: general knowledge, all SEED --------------------------------------
+  - {item: spark_plugs,        km: 60000, months: 48}  # iridium plugs, severe service
+  - {item: coolant,            km: 80000, months: 48}  # long-life coolant after its first change
+  - {item: transmission_fluid, km: 40000, months: 36}  # automatic, severe service (often "lifetime" in normal service)
+
+# Per make / model / engine overrides go here once validated, e.g.:
+#   - {item: spark_plugs, make: Honda, model: Accord, engine: "K24", km: 100000, months: 72}
+overrides: []

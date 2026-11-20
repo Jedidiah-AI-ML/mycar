@@ -101,6 +101,18 @@ Output: `ml/reports/phase3_distance.md` and the numbers in `wear.yaml` / setting
 
 **Gate:** pytest: every item has both intervals; the resolver picks the most specific rule; an unknown key fails loudly; sync is idempotent.
 
+✅ **Done 2026-11-20:** 27 tests pass (`tests/test_service_rules.py`).
+- **Config:** the 10 items with intervals, the `ng_severe` profile, the oil variants, a `due_soon` threshold (10 % or 14 days, M3), and an empty `overrides` list that Wisdom fills once intervals are validated against the manuals.
+- **Battery check is time-only** (6 months, per the PRD); every other item has both km and months.
+- **Resolver:** the most specific matching rule wins (make+model+engine > make+model > make > default). Matching is case-insensitive, and the engine matches as a substring (`K24` matches `K24A 2.4L I4`). An unknown oil type → `mineral`, flagged as assumed (Q1).
+- **Wear:**
+  - A multiplier is picked from the highest band the 30-day metric is above, and shortens the **km** interval only.
+  - Multipliers on one item multiply together, but never below the 0.7 floor.
+  - No multiplier applies under 100 km of driving in the window.
+  - The heavy-idle bands start at 50 %, above the ~40–50 % that severe service already assumes for Lagos (P2).
+- **Bad config fails at load with the reason:** 12 rule mistakes and 6 wear mistakes are each tested.
+- **Moved to step 3:** syncing the rules into the DB (the tables arrive with migration 0004), and its idempotency test.
+
 ### Step 3: Migration `0004_maintenance`
 Tables below. **Gate:** upgrade / downgrade / upgrade round trip, `alembic check` clean, constraint tests (record dates not in the future; odometer values in range; one rule per item per scope).
 

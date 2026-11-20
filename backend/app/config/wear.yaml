@@ -1,0 +1,39 @@
+# Wear multipliers (PRD 5, Layer 1: "multipliers are config, documented, conservative").
+# Phase 3 step 2.
+#
+# SEED - validate (M2): no validated source exists for these numbers. They are
+# deliberately mild. The base profile is already *severe* service, which assumes Lagos
+# stop-go traffic, so a multiplier only kicks in for driving clearly harder than that.
+#
+# How it works: each multiplier reads one usage metric over the car's trailing 30 days
+# of trips, finds the highest band the metric is above, and multiplies the **km
+# interval** of the listed items by that band's factor (e.g. 10,000 km x 0.9 = 9,000 km).
+# Time intervals are not changed. Several multipliers on one item multiply together, but
+# the result never goes below `floor`.
+
+version: 1
+window_days: 30
+floor: 0.7            # never shorten a km interval by more than 30 %
+min_km_in_window: 100 # below this, rates per 100 km are too noisy: no multiplier
+
+multipliers:
+  harsh_braking:
+    metric: harsh_brakes_per_100km     # device harsh-brake events + speed-derivative events
+    items: [brake_inspection]
+    bands:
+      - {above: 5,  factor: 0.9}
+      - {above: 10, factor: 0.8}
+
+  harsh_acceleration:
+    metric: harsh_accels_per_100km
+    items: [engine_oil]
+    bands:
+      - {above: 5,  factor: 0.95}
+      - {above: 10, factor: 0.9}
+
+  heavy_idle:
+    metric: idle_share                 # share of engine-on time standing still
+    items: [engine_oil]                # idling wears oil with no km on the clock
+    bands:
+      - {above: 0.50, factor: 0.9}     # severe service already assumes ~40-50 % (P2)
+      - {above: 0.65, factor: 0.8}
