@@ -1,4 +1,11 @@
-# Phase 3 plan: Layer 1 maintenance (DRAFT, awaiting Wisdom's approval)
+# Phase 3 plan: Layer 1 maintenance (APPROVED 2026-11-20)
+
+**Decisions (Wisdom, 2026-11-20):** all five open questions approved as recommended:
+- **Q1:** unknown oil type → the shorter mineral/semi-synthetic interval (5,000 km / 3 months)
+- **Q2:** pre-install service history asked at onboarding; blanks show `unknown`
+- **Q3:** raw readings kept 180 days; per-minute summaries indefinitely (ADR-012)
+- **Q4:** Lagos prior (~30 km/day) for a car's first 7 days of data
+- **Q5:** `GET /vehicles/{id}/trips` included now
 
 **PRD 13, Phase 3:** distance integration, service rules (seed config), forecasts, service
 records, wear multipliers.
