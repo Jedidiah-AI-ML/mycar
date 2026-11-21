@@ -1,0 +1,16 @@
+# Usage settings: km per day and the odometer-mismatch check (Phase 3, step 5).
+#
+# From ml/notebooks/02_distance_and_usage.ipynb (ml/reports/phase3_distance.yaml,
+# `decisions.km_per_day` and `decisions.odometer_mismatch`). A test fails if they drift.
+# SEED - validate (M5, M6).
+
+version: 1
+
+km_per_day:
+  window_days: 30          # trailing window; days without driving count as 0 (Wisdom's decision)
+  lagos_prior: 30          # km/day for a car with little or no data (Q4)
+  prior_weight_days: 7     # the prior counts as this many days of data while a car has < 7 days
+
+odometer_mismatch:
+  floor_km: 500                 # flag when |entered - estimate| > max(floor, pct x km since anchor)
+  pct_of_km_since_anchor: 5     # 95 % of VED cars' speed sensors are within ±3.3 % of GPS

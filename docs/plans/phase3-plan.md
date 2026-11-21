@@ -159,6 +159,17 @@ Tables below. **Gate:** upgrade / downgrade / upgrade round trip, `alembic check
 
 **Gate:** pytest: the estimate after N trips equals the anchor + their distances; partial trips are counted and flagged; the mismatch flag sets and clears at the threshold; km/day handles a new car, a car parked for two weeks, and a car with no device.
 
+✅ **Done 2026-11-21:** 13 new tests (289 backend tests in total, all pass).
+- **Anchors** (`app/services/usage.py`, settings `app/config/usage.yaml`, drift-tested against the notebook):
+  - trusted: the install odometer, the car's own PID 0xA6, or an owner entry that agrees with the estimate; the newest wins
+  - a disagreeing entry is stored with `mismatch = true` and never becomes the anchor
+  - the install anchor is midnight of the install day, Lagos time
+- **The estimate** = anchor + summarised trips since it. Partial trips count and are reported.
+- **Mismatch:** > max(500 km, 5 % of km since the anchor). Tested exactly at the boundary (1,000 km after 20,000 km driven; the 500 km floor for short distances).
+- **km/day:** the trailing 30-day mean over calendar days (parked days count as 0). Under 7 days of data it blends with the 30 km/day prior; with no trips, it's the prior.
+- **Found by the tests:** readings saved in one transaction share Postgres `now()`, so "newest" was ambiguous. Ties now go to the later-saved reading (higher id).
+- **Lagos time** is a fixed UTC+1: exact (no daylight saving), and it needs no time-zone database, which Windows and slim images lack.
+
 ### Step 6: Forecast engine
 | File | Purpose |
 |---|---|
