@@ -1,0 +1,161 @@
+# Hand-calculated maintenance forecasts: the Phase 3 exit gate (PRD 13: "forecasts match
+# hand-calculated cases"). Wisdom: please check the working of each case with a
+# calculator. The engine must match every `expect` to the km and to the day.
+#
+# Rules used throughout (app/services/maintenance.py):
+#   - km remaining   = (km interval x wear factor) - km since the service
+#   - days by km     = km remaining / km per day, ROUNDED UP to whole days
+#   - due by time    = service date + interval months (31 Aug + 3 months = 30 Nov)
+#   - due date       = whichever comes first; days left = due date - today
+#   - status: overdue (km remaining < 0 or days left < 0) > due (= 0) >
+#             soon (km remaining <= 10 % of the interval, or days left <= 14) > ok
+#   - no service history at all -> unknown (decision Q2)
+# Dates are Lagos calendar days. "today" is 2026-11-21 in every case.
+
+today: 2026-11-21
+
+cases:
+
+  - name: new car, no service history
+    working: |
+      No record for engine oil, so nothing to count from: status unknown (decision Q2).
+    rule: {km: 5000, months: 3}
+    last: null
+    estimate_km: 120000
+    km_per_day: 30
+    expect: {status: unknown}
+
+  - name: oil comes due by km first
+    working: |
+      Changed 2026-10-01 at 100,000 km. Now 103,800 km -> 3,800 km since.
+      Remaining 5,000 - 3,800 = 1,200 km. At 60 km/day: 1,200 / 60 = 20 days -> 2026-12-11.
+      By time: 2026-10-01 + 3 months = 2027-01-01. Earlier: 2026-12-11 (km). 20 days left.
+      Soon? 1,200 > 500 (10 % of 5,000) and 20 > 14 -> ok.
+    rule: {km: 5000, months: 3}
+    last: {done_on: 2026-10-01, odometer_km: 100000}
+    estimate_km: 103800
+    km_per_day: 60
+    expect: {remaining_km: 1200, due_date: 2026-12-11, due_by: km, days_left: 20, status: ok}
+
+  - name: barely driven car, oil comes due by time
+    working: |
+      Changed 2026-09-01 at 50,000 km. Now 50,900 -> 900 km since; 4,100 km remaining.
+      At 8 km/day: 4,100 / 8 = 512.5 -> 513 days (2028-04-17).
+      By time: 2026-09-01 + 3 months = 2026-12-01. Earlier: 2026-12-01 (time), 10 days left.
+      10 <= 14 -> soon.
+    rule: {km: 5000, months: 3}
+    last: {done_on: 2026-09-01, odometer_km: 50000}
+    estimate_km: 50900
+    km_per_day: 8
+    expect: {remaining_km: 4100, due_date: 2026-12-01, due_by: time, days_left: 10, status: soon}
+
+  - name: full synthetic oil (7,500 km / 6 months)
+    working: |
+      Changed 2026-08-15 at 20,000. Now 26,500 -> 6,500 since; 7,500 - 6,500 = 1,000 left.
+      At 40 km/day: 1,000 / 40 = 25 days -> 2026-12-16. By time: 2027-02-15. Earlier: km.
+      1,000 > 750 (10 % of 7,500) and 25 > 14 -> ok.
+    rule: {km: 7500, months: 6}
+    last: {done_on: 2026-08-15, odometer_km: 20000}
+    estimate_km: 26500
+    km_per_day: 40
+    expect: {remaining_km: 1000, due_date: 2026-12-16, due_by: km, days_left: 25, status: ok}
+
+  - name: harsh braking shortens the brake inspection interval
+    working: |
+      Brake inspection 10,000 km / 6 months; this driver brakes hard often: factor 0.8 ->
+      10,000 x 0.8 = 8,000 km. Done 2026-09-01 at 30,000; now 37,000 -> 7,000 since.
+      Remaining 8,000 - 7,000 = 1,000. At 80 km/day: 1,000 / 80 = 12.5 -> 13 days -> 2026-12-04.
+      By time: 2027-03-01. Earlier: km. 13 <= 14 -> soon.
+      (Without the multiplier: 3,000 left, 38 days, ok. The multiplier is why it's soon.)
+    rule: {km: 10000, months: 6}
+    wear_factor: 0.8
+    last: {done_on: 2026-09-01, odometer_km: 30000}
+    estimate_km: 37000
+    km_per_day: 80
+    expect: {interval_km: 8000, remaining_km: 1000, due_date: 2026-12-04, due_by: km,
+             days_left: 13, status: soon}
+
+  - name: overdue by km
+    working: |
+      Oil changed 2026-09-10 at 60,000. Now 65,600 -> 5,600 since: 600 km past the interval.
+      Remaining -600. At 50 km/day: -600 / 50 = -12 days -> it came due on 2026-11-09.
+      By time: 2026-12-10. Earlier: 2026-11-09 (km). -12 days -> overdue.
+    rule: {km: 5000, months: 3}
+    last: {done_on: 2026-09-10, odometer_km: 60000}
+    estimate_km: 65600
+    km_per_day: 50
+    expect: {remaining_km: -600, due_date: 2026-11-09, due_by: km, days_left: -12, status: overdue}
+
+  - name: car parked for a month (0 km per day)
+    working: |
+      Oil changed 2026-10-15 at 40,000; now 40,200 -> 4,800 km left, but 0 km/day gives no
+      date by km. By time: 2026-10-15 + 3 months = 2027-01-15, 55 days left -> ok (time).
+    rule: {km: 5000, months: 3}
+    last: {done_on: 2026-10-15, odometer_km: 40000}
+    estimate_km: 40200
+    km_per_day: 0
+    expect: {remaining_km: 4800, due_date: 2027-01-15, due_by: time, days_left: 55, status: ok}
+
+  - name: service recorded after install, without an odometer value
+    working: |
+      Oil changed 2026-10-20 (after install) but no odometer was noted. The trips since that
+      day add up to 1,450 km -> 3,550 left. At 45 km/day: 3,550 / 45 = 78.9 -> 79 days ->
+      2027-02-08. By time: 2027-01-20, 60 days left. Earlier: time -> ok.
+    rule: {km: 5000, months: 3}
+    last: {done_on: 2026-10-20, odometer_km: null}
+    km_since_from_trips: 1450
+    estimate_km: 88000
+    km_per_day: 45
+    expect: {remaining_km: 3550, due_date: 2027-01-20, due_by: time, days_left: 60, status: ok}
+
+  - name: "history from before install, no odometer: time only"
+    working: |
+      Oil "around 2026-07-01" from before the device was fitted, odometer unknown, so km
+      since can't be known: only time counts. 2026-07-01 + 3 months = 2026-10-01, which was
+      51 days ago -> overdue (by time), km remaining unknown.
+    rule: {km: 5000, months: 3}
+    last: {done_on: 2026-07-01, odometer_km: null, before_install: true}
+    estimate_km: 75000
+    km_per_day: 30
+    expect: {remaining_km: null, due_date: 2026-10-01, due_by: time, days_left: -51,
+             status: overdue}
+
+  - name: battery check is time-only
+    working: |
+      Checked 2026-06-01; every 6 months -> 2026-12-01, 10 days left -> soon.
+    rule: {km: null, months: 6}
+    last: {done_on: 2026-06-01, odometer_km: 41000}
+    estimate_km: 52000
+    km_per_day: 30
+    expect: {remaining_km: null, due_date: 2026-12-01, due_by: time, days_left: 10, status: soon}
+
+  - name: month-end date (31 Aug + 3 months)
+    working: |
+      Oil changed 2026-08-31 at 10,000; now 10,500 -> 4,500 left, 4,500 / 20 = 225 days.
+      By time: November has 30 days, so 31 Aug + 3 months = 2026-11-30, 9 days left -> soon.
+    rule: {km: 5000, months: 3}
+    last: {done_on: 2026-08-31, odometer_km: 10000}
+    estimate_km: 10500
+    km_per_day: 20
+    expect: {remaining_km: 4500, due_date: 2026-11-30, due_by: time, days_left: 9, status: soon}
+
+  - name: due today
+    working: |
+      Oil changed 2026-08-21 at 70,000; now 72,000 -> 3,000 left. By time:
+      2026-08-21 + 3 months = 2026-11-21 = today -> 0 days left -> due.
+    rule: {km: 5000, months: 3}
+    last: {done_on: 2026-08-21, odometer_km: 70000}
+    estimate_km: 72000
+    km_per_day: 30
+    expect: {remaining_km: 3000, due_date: 2026-11-21, due_by: time, days_left: 0, status: due}
+
+  - name: soon by km although the date is far
+    working: |
+      Oil changed 2026-11-01 at 90,000; now 94,600 -> 400 km left, which is under 500 (10 %
+      of 5,000) -> soon, even though at 10 km/day that's 40 days (2026-12-31) and by time
+      2027-02-01. Earlier date: 2026-12-31 (km).
+    rule: {km: 5000, months: 3}
+    last: {done_on: 2026-11-01, odometer_km: 90000}
+    estimate_km: 94600
+    km_per_day: 10
+    expect: {remaining_km: 400, due_date: 2026-12-31, due_by: km, days_left: 40, status: soon}

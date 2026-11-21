@@ -178,6 +178,15 @@ Tables below. **Gate:** upgrade / downgrade / upgrade round trip, `alembic check
 
 **Gate (the PRD exit gate):** every case in `maintenance_cases.yaml` matches to the km and to the day; property tests (more km → never "later"; a service record resets the item).
 
+✅ **Done 2026-11-21:** 25 tests pass (`tests/test_maintenance.py`). **All 13 hand-calculated cases match to the km and the day, for Wisdom to check the working** (`tests/data/maintenance_cases.yaml`). Every status is covered, along with: wear multiplier, 0 km/day, a record without an odometer (trip distance since), pre-install history (time only), time-only battery, month-end dates, due today, and "soon by km while the date is far".
+- **Rules** (`app/services/maintenance.py`, pure):
+  - km days are **rounded up**
+  - calendar months are clamped to the month's end
+  - the earlier of km and time wins
+  - status order: overdue > due > soon > ok; unknown with no history
+  - "soon" uses the *effective* (wear-adjusted) interval
+- **Property tests:** more km, or more km/day, never makes a due date later; a new service resets the item; wear changes only the km interval; every item is listed, most urgent first.
+
 ### Step 7: API + Restfox list
 | File | Purpose |
 |---|---|
