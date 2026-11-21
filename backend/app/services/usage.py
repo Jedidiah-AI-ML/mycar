@@ -191,21 +191,35 @@ async def usage_for(session, vehicle, now: datetime | None = None) -> Usage:
     now = now or datetime.now(UTC)
     trips = await _trips(session, vehicle.id)
     est = odometer_estimate(pick_anchor(await trusted_anchors(session, vehicle)), trips)
-    first = trips[0].started_at if trips else None
+    # Data starts at install (quiet days after install are parked days, not missing ones),
+    # or at the first trip if that came earlier (install date entered late or not at all).
+    starts = [t.started_at for t in trips[:1]]
+    if vehicle.installed_at is not None:
+        starts.append(datetime.combine(vehicle.installed_at, time(), LAGOS).astimezone(UTC))
+    first = min(starts) if starts and trips else None
     return Usage(est, km_per_day(trips, first, now), len(trips))
 
 
-async def record_odometer(session, vehicle, km: int, source: str, user_id=None, at=None):
-    """Store an odometer value with our estimate at that moment and the mismatch verdict.
-    Returns (reading, mismatch-or-None). The caller commits."""
+async def record_odometer(
+    session, vehicle, km: int, source: str, user_id=None, at=None, service_record_id=None
+):
+    """Store an odometer value with our estimate *as of that moment* and the mismatch
+    verdict. `at` back-dates it (e.g. a service done last month): the comparison then
+    uses only anchors and trips before `at`, so later driving doesn't look like a
+    mismatch. Returns (reading, mismatch-or-None). The caller commits."""
     from app.models import OdometerReading
 
-    est = (await usage_for(session, vehicle)).estimate
+    trips = await _trips(session, vehicle.id)
+    anchors = await trusted_anchors(session, vehicle)
+    if at is not None:
+        trips = [t for t in trips if t.started_at < at]
+        anchors = [a for a in anchors if a.at <= at]
+    est = odometer_estimate(pick_anchor(anchors), trips)
     verdict = check_mismatch(km, est) if source not in TRUSTED_ALWAYS else None
     reading = OdometerReading(
         vehicle_id=vehicle.id, km=km, source=source, created_by=user_id,
         estimate_km_at_entry=est.km, mismatch=bool(verdict and verdict.flagged),
-        **({"ts": at} if at else {}),
+        service_record_id=service_record_id, **({"ts": at} if at else {}),
     )  # fmt: skip
     session.add(reading)
     await session.flush()

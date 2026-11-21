@@ -9,6 +9,8 @@ from app.models import VehicleRole, VinSource
 from app.models.vehicle import MAX_ODOMETER_KM, MIN_MODEL_YEAR
 from app.services.vin import normalise_vin
 
+OilType = Literal["mineral", "semi_synthetic", "full_synthetic"]
+
 
 class _VehicleFields(BaseModel):
     @field_validator("vin", mode="before", check_fields=False)
@@ -40,6 +42,7 @@ class VehicleCreate(_VehicleFields):
     nickname: str | None = Field(default=None, max_length=50)
     odometer_at_install_km: int | None = Field(default=None, ge=0, le=MAX_ODOMETER_KM)
     installed_at: date | None = None
+    oil_type: OilType | None = None  # unknown -> the shorter interval (Phase 3, Q1)
 
 
 class VehicleUpdate(_VehicleFields):
@@ -55,6 +58,7 @@ class VehicleUpdate(_VehicleFields):
     nickname: str | None = Field(default=None, max_length=50)
     odometer_at_install_km: int | None = Field(default=None, ge=0, le=MAX_ODOMETER_KM)
     installed_at: date | None = None
+    oil_type: OilType | None = None  # unknown -> the shorter interval (Phase 3, Q1)
 
 
 class VehicleOut(BaseModel):
@@ -73,6 +77,7 @@ class VehicleOut(BaseModel):
     nickname: str | None
     odometer_at_install_km: int | None
     installed_at: date | None
+    oil_type: str | None
     created_at: datetime
     updated_at: datetime
 

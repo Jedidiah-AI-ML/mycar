@@ -113,6 +113,11 @@ class OdometerReading(Base):
     created_by: Mapped[uuid.UUID | None] = mapped_column(
         ForeignKey("users.id", ondelete="SET NULL")
     )
+    # Set when the value came with a service record: deleting a mistaken record also
+    # removes its odometer value, so a typo can't linger as a trusted anchor.
+    service_record_id: Mapped[int | None] = mapped_column(
+        ForeignKey("service_records.id", ondelete="CASCADE")
+    )
 
     __table_args__ = (
         CheckConstraint(f"km >= 0 AND km <= {MAX_ODOMETER_KM}", name="km_range"),

@@ -196,6 +196,17 @@ Tables below. **Gate:** upgrade / downgrade / upgrade round trip, `alembic check
 
 **Gate:** pytest role matrix (viewer reads, manager writes, stranger 404) and validation; the Restfox list passes locally.
 
+✅ **Done 2026-11-21:** 34 new API tests (348 backend tests in total, all pass). **Restfox list 27/27 locally.**
+- **`GET /maintenance`:** all 10 items, most urgent first. Each shows why, the rule scope, oil variant and whether it was assumed, and the wear factor. Plus the odometer estimate (anchor, km since, partial trips, last entry mismatched?), km/day and its method, and the 30-day wear metrics.
+- **Service records:** item, a date not in the future and the odometer are checked, and writes are audited.
+  - **A back-dated record's odometer is compared with the estimate as of its own date**, so the driving since doesn't look like a mismatch.
+  - **Deleting a record deletes its odometer value too:** `odometer_readings.service_record_id`, ON DELETE CASCADE, added to 0004 before it was deployed. A typo can't linger as a trusted anchor.
+- **`POST /odometer`** answers in plain words: agreeing → the new anchor; flagged → kept, not trusted.
+- **Two fixes found by the tests:**
+  - km/day now counts data from **install** (or the first trip, if earlier), so quiet days after install count as parked days.
+  - The newest record per item is picked in Python, because SQLAlchemy 2.1 deprecates `DISTINCT ON` via `.distinct(col)`.
+- **ADR-011** (forecasts computed on read) and **ADR-012** (retention) written.
+
 ### Step 8: End-to-end gate
 `scripts/phase3_gate.py`: simulate 60 days for 2 cars (one gentle, one hard Lagos driving) with service records and an odometer entry part-way; ingest over HTTP (as in Phase 2); compare `GET /maintenance` with forecasts computed by hand-checked code from the simulator's **true** distances. Report to `ml/reports/phase3_gate.md`. Then deploy, and run the Restfox list against Railway.
 

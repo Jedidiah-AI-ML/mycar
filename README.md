@@ -4,7 +4,7 @@ Early-warning web app for petrol cars, fed by a cellular OBD-II device. Personal
 portfolio project. **Source of truth: [docs/PRD.md](docs/PRD.md).** Decisions are in
 [docs/decisions/](docs/decisions/), phase plans in [docs/plans/](docs/plans/).
 
-Status: **Phase 2 (simulator + device gateway) done** (2026-11-20). The simulator, device emulation, telemetry schema, device provisioning/claim, ingestion gateway and trip assembly are live on Railway + Neon. The exit gate passed locally (`ml/reports/phase2_gate.md`); the request list (25/25) and the 1 car-day smoke test passed live. **Phase 1 (backend foundation) done**: auth, consents, vehicles, sharing, job queue.
+Status: **Phase 3 (maintenance) in progress**: distance, service rules, forecasts and the maintenance API are built; the end-to-end gate is next. **Phase 2 (simulator + device gateway) done** (2026-11-20). The simulator, device emulation, telemetry schema, device provisioning/claim, ingestion gateway and trip assembly are live on Railway + Neon. The exit gate passed locally (`ml/reports/phase2_gate.md`); the request list (25/25) and the 1 car-day smoke test passed live. **Phase 1 (backend foundation) done**: auth, consents, vehicles, sharing, job queue.
 
 ## Run it locally (Windows, PowerShell)
 
@@ -33,7 +33,7 @@ Or everything in containers: `docker compose up --build -d` (db + api).
 ```powershell
 docker compose up -d db
 cd backend
-uv run pytest -q          # 203 tests; creates and drops its own autocare_test database
+uv run pytest -q          # 348 tests; creates and drops its own autocare_test database
 uv run ruff check .
 ```
 
@@ -101,6 +101,12 @@ cd ..\simulator; uv run python ../scripts/phase2_smoke.py https://mycar-api-prod
 ```
 
 Restfox: import `backend/restfox/autocare_phase2.postman_collection.json`.
+
+Phase 3 (maintenance) request list, no admin needed:
+
+```powershell
+cd backend; uv run python restfox/phase3_requests.py run https://mycar-api-production.up.railway.app
+```
 
 ## Layout
 

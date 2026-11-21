@@ -1,0 +1,549 @@
+{
+  "info": {
+    "name": "AutoCare Phase 3 (maintenance)",
+    "_postman_id": "722121a0-a295-5bc1-87d0-5c35da22af42",
+    "description": "Run in order. Change `run` before each full run.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "01 Liveness -> 200",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{base}}/health",
+        "description": "Expect HTTP 200."
+      }
+    },
+    {
+      "name": "02 Readiness (DB + migrations) -> 200",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{base}}/health/ready",
+        "description": "Expect HTTP 200. Check: checks.migrations = \"head\"."
+      }
+    },
+    {
+      "name": "03 Register owner -> 201",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base}}/auth/register",
+        "description": "Expect HTTP 201.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{email_owner}}\",\n  \"password\": \"restfox-pass-123\",\n  \"display_name\": \"email_owner\",\n  \"consents\": [\n    \"service_processing\"\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "04 Log in owner -> 200",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base}}/auth/login",
+        "description": "Expect HTTP 200. Then save: token = response.access_token.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{email_owner}}\",\n  \"password\": \"restfox-pass-123\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "05 Add a car (install odometer 120,000 km, semi-synthetic oil) -> 201",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{base}}/vehicles",
+        "description": "Expect HTTP 201. Check: oil_type = \"semi_synthetic\". Then save: vid = response.id.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"make\": \"Toyota\",\n  \"model\": \"Corolla\",\n  \"year\": 2010,\n  \"engine\": \"2ZR-FE 1.8L I4\",\n  \"odometer_at_install_km\": 120000,\n  \"installed_at\": \"2026-09-01\",\n  \"oil_type\": \"semi_synthetic\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "06 Maintenance view: no history yet -> 200",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{base}}/vehicles/{{vid}}/maintenance",
+        "description": "Expect HTTP 200. Check: odometer.estimate_km = 120000, odometer.anchor_source = \"install\", usage.method = \"prior\", items.0.status = \"unknown\"."
+      }
+    },
+    {
+      "name": "07 Record an oil change (with odometer) -> 201",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{base}}/vehicles/{{vid}}/service-records",
+        "description": "Expect HTTP 201. Check: odometer_check.flagged = false. Then save: rid = response.id.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"item_key\": \"engine_oil\",\n  \"done_on\": \"2026-10-01\",\n  \"odometer_km\": 120300,\n  \"notes\": \"Semi-synthetic 5W-30\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "08 Record a battery check (no odometer) -> 201",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{base}}/vehicles/{{vid}}/service-records",
+        "description": "Expect HTTP 201.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"item_key\": \"battery_check\",\n  \"done_on\": \"2026-06-01\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "09 Record an unknown item -> 422",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{base}}/vehicles/{{vid}}/service-records",
+        "description": "Expect HTTP 422.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"item_key\": \"flux_capacitor\",\n  \"done_on\": \"2026-10-01\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "10 Record a service in the future -> 422",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{base}}/vehicles/{{vid}}/service-records",
+        "description": "Expect HTTP 422.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"item_key\": \"engine_oil\",\n  \"done_on\": \"2999-01-01\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "11 List service records -> 200",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{base}}/vehicles/{{vid}}/service-records",
+        "description": "Expect HTTP 200."
+      }
+    },
+    {
+      "name": "12 Maintenance view: oil and battery now forecast -> 200",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{base}}/vehicles/{{vid}}/maintenance",
+        "description": "Expect HTTP 200. Check: odometer.estimate_km = 120300. Battery checked 2026-06-01 + 6 months; oil 2026-10-01 + 3 months or 5,000 km."
+      }
+    },
+    {
+      "name": "13 Odometer from the dash, agreeing -> 201",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{base}}/vehicles/{{vid}}/odometer",
+        "description": "Expect HTTP 201. Check: mismatch = false.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"km\": 120350\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "14 Odometer far off (flagged, not trusted) -> 201",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{base}}/vehicles/{{vid}}/odometer",
+        "description": "Expect HTTP 201. Check: mismatch = true.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"km\": 90000\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "15 Maintenance view keeps the trusted estimate -> 200",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{base}}/vehicles/{{vid}}/maintenance",
+        "description": "Expect HTTP 200. Check: odometer.estimate_km = 120350, odometer.last_entry_mismatch = true."
+      }
+    },
+    {
+      "name": "16 Change oil type to full synthetic -> 200",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{base}}/vehicles/{{vid}}",
+        "description": "Expect HTTP 200. Check: oil_type = \"full_synthetic\".",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"oil_type\": \"full_synthetic\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "17 Trips (none yet without a device) -> 200",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{base}}/vehicles/{{vid}}/trips",
+        "description": "Expect HTTP 200."
+      }
+    },
+    {
+      "name": "18 Trips with a bad page size -> 422",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{base}}/vehicles/{{vid}}/trips?limit=101",
+        "description": "Expect HTTP 422."
+      }
+    },
+    {
+      "name": "19 Delete the oil record (its odometer value goes too) -> 204",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{base}}/vehicles/{{vid}}/service-records/{{rid}}",
+        "description": "Expect HTTP 204."
+      }
+    },
+    {
+      "name": "20 Delete it again -> 404",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{base}}/vehicles/{{vid}}/service-records/{{rid}}",
+        "description": "Expect HTTP 404."
+      }
+    },
+    {
+      "name": "21 Register a stranger -> 201",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base}}/auth/register",
+        "description": "Expect HTTP 201.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{email_stranger}}\",\n  \"password\": \"restfox-pass-123\",\n  \"display_name\": \"email_stranger\",\n  \"consents\": [\n    \"service_processing\"\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "22 Log in stranger -> 200",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base}}/auth/login",
+        "description": "Expect HTTP 200. Then save: token_s = response.access_token.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{email_stranger}}\",\n  \"password\": \"restfox-pass-123\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "23 Stranger reads the maintenance view (hidden) -> 404",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_s}}"
+          }
+        ],
+        "url": "{{base}}/vehicles/{{vid}}/maintenance",
+        "description": "Expect HTTP 404."
+      }
+    },
+    {
+      "name": "24 Stranger records a service (hidden) -> 404",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_s}}"
+          }
+        ],
+        "url": "{{base}}/vehicles/{{vid}}/service-records",
+        "description": "Expect HTTP 404.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"item_key\": \"engine_oil\",\n  \"done_on\": \"2026-10-01\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "25 Delete the car -> 204",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{base}}/vehicles/{{vid}}",
+        "description": "Expect HTTP 204."
+      }
+    },
+    {
+      "name": "26 Delete the owner account -> 204",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{base}}/me",
+        "description": "Expect HTTP 204."
+      }
+    },
+    {
+      "name": "27 Delete the stranger account -> 204",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_s}}"
+          }
+        ],
+        "url": "{{base}}/me",
+        "description": "Expect HTTP 204."
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base",
+      "value": "http://localhost:8000"
+    },
+    {
+      "key": "run",
+      "value": "r1"
+    },
+    {
+      "key": "email_owner",
+      "value": "p3-owner-{{run}}@example.com"
+    },
+    {
+      "key": "email_stranger",
+      "value": "p3-stranger-{{run}}@example.com"
+    }
+  ]
+}
