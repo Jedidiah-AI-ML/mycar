@@ -102,6 +102,22 @@ Not in Phase 4 (later phases, per PRD 13):
 
 **Gate:** pytest with a **fake LLM** (no network in tests): a valid answer is stored; bad JSON → retried, then template; an invented code → rejected → template; a changed severity → rejected; over budget → template with no call; no key → template; every attempt logged with tokens and cost.
 
+✅ **Done 2026-11-23:** 20 new tests (388+ backend tests, all pass).
+- **Client** (`app/llm/client.py`):
+  - **LiteLLM 1.110.2** added as a dependency. Its bundled price table gives gpt-4o-mini at $0.15/M input and $0.60/M output, as the plan estimated.
+  - The monthly cap counts this calendar month's `llm_calls` cost.
+  - Every attempt is logged, including provider errors and timeouts.
+- **Rules:**
+  - The prompt is the versioned file `dtc_explain.v1.md`.
+  - The `DtcExplanation` schema and grounding check reject invented codes and a changed severity.
+  - `explain()` tries at most twice, then the template.
+  - The template is proven valid and grounded for all 184 definitions × stored/pending.
+- **Context** (`DtcContext`): has no field for a VIN, owner, email, position or device ID, and rejects unknown fields. Its canonical JSON → SHA-256 is the cache key.
+- **Safety:** the test harness forces `LLM_API_KEY=""`, so tests can never make a paid call. One test goes through LiteLLM's real response objects using its `mock_response` (no network).
+- **Two findings:**
+  - LiteLLM **downloads its price list at import** by default; it now uses the bundled one (`LITELLM_LOCAL_MODEL_COST_MAP`), and telemetry is off.
+  - Its import is heavy (~25 s warm, 84 s cold on this Windows PC), so it's imported **only when a call is made**. API start-up doesn't load it.
+
 ### Step 3: Context builder (retrieval)
 | File | Purpose |
 |---|---|
