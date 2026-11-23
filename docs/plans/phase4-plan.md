@@ -1,4 +1,11 @@
-# Phase 4 plan: Layer 2 fault codes (DRAFT, awaiting Wisdom's approval)
+# Phase 4 plan: Layer 2 fault codes (APPROVED 2026-11-23)
+
+**Decisions (Wisdom, 2026-11-23):** all five open questions approved as recommended:
+- **Q1:** our own plain-language definitions (~150 generic codes), reviewed by Wisdom
+- **Q2:** `openai/gpt-4o-mini` via LiteLLM, with a $2/month cap
+- **Q3:** only technical context is sent (no VIN, owner, location or device ID); the transfer basis goes in `docs/compliance/llm-processing.md`
+- **Q4:** personalised explanations on, cached by input hash and budget-capped
+- **Q5:** curated notes + keyword retrieval, no vector database
 
 **PRD 13, Phase 4:** Mode 03/07/0A/02 handling, `dtc_definitions` seed, an LLM explanation
 service with RAG, caching, prompt versioning.
