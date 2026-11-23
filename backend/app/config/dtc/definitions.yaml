@@ -1,0 +1,240 @@
+# Generic OBD-II fault codes: what each one means, in AutoCare's own words.
+# Source and licence: docs/compliance/dtc-definitions-source.md (written for AutoCare,
+# nothing copied from SAE J2012 or any code list).
+#
+# SEED - validate (D1, D2): every description, cause, system, severity tier and
+# stop-safely flag below is from general diagnostic knowledge. Wisdom: please correct
+# anything wrong, and the tiers you'd set differently.
+#
+# Fields:
+#   code       the generic code
+#   system     fuel_air / engine_sensors / ignition / cam_crank / emissions / evap /
+#              cooling / oil / charging / idle_speed / throttle / transmission / control_module /
+#              network / brakes / body
+#   severity   info         nothing to do now; worth knowing
+#              watch        keep an eye on it; get it looked at at the next service
+#              service_soon get it looked at within days; it can get worse or cost fuel
+#              stop_safely  stop when safe and don't keep driving (deterministic, PRD 5)
+#   desc       one plain sentence: what the car's computer noticed
+#   causes     the usual causes, most likely first
+#   escalation (optional) when Phase 6's rules should raise the tier
+# The LLM never changes a code's severity (PRD principle 2).
+
+version: 1
+
+codes:
+  # ---------------------------------------------------------------- cam / crank timing (P001x)
+  - {code: P0010, system: cam_crank, severity: service_soon, desc: "The intake camshaft timing actuator circuit (bank 1) isn't working as expected.", causes: [faulty VVT oil control solenoid, wiring or connector fault, low or dirty engine oil]}
+  - {code: P0011, system: cam_crank, severity: service_soon, desc: "Intake camshaft timing (bank 1) is more advanced than the computer asked for.", causes: [low or dirty engine oil, sticking VVT oil control valve, worn timing chain]}
+  - {code: P0012, system: cam_crank, severity: service_soon, desc: "Intake camshaft timing (bank 1) is more retarded than the computer asked for.", causes: [sticking VVT oil control valve, low oil pressure, stretched timing chain]}
+  - {code: P0013, system: cam_crank, severity: service_soon, desc: "The exhaust camshaft timing actuator circuit (bank 1) isn't working as expected.", causes: [faulty exhaust VVT solenoid, wiring fault]}
+  - {code: P0014, system: cam_crank, severity: service_soon, desc: "Exhaust camshaft timing (bank 1) is more advanced than the computer asked for.", causes: [dirty or low engine oil, sticking exhaust VVT valve, worn timing chain]}
+  - {code: P0016, system: cam_crank, severity: service_soon, desc: "The crankshaft and intake camshaft (bank 1) signals don't line up the way they should.", causes: [stretched timing chain or slipped belt, faulty cam or crank sensor, VVT fault]}
+  - {code: P0017, system: cam_crank, severity: service_soon, desc: "The crankshaft and exhaust camshaft (bank 1) signals don't line up the way they should.", causes: [stretched timing chain, faulty exhaust cam sensor, VVT fault]}
+  - {code: P0018, system: cam_crank, severity: service_soon, desc: "The crankshaft and intake camshaft (bank 2) signals don't line up the way they should.", causes: [stretched timing chain, faulty cam or crank sensor, VVT fault]}
+  - {code: P0021, system: cam_crank, severity: service_soon, desc: "Intake camshaft timing (bank 2) is more advanced than the computer asked for.", causes: [low or dirty oil, sticking VVT oil control valve, worn timing chain]}
+
+  # ---------------------------------------------------------------- O2 sensor heaters (P003x-P005x)
+  - {code: P0030, system: emissions, severity: watch, desc: "The heater control circuit of the upstream oxygen sensor (bank 1) has a fault.", causes: [failed oxygen sensor heater, wiring or fuse fault]}
+  - {code: P0031, system: emissions, severity: watch, desc: "The upstream oxygen sensor heater circuit (bank 1) reads too low.", causes: [failed sensor heater, open wiring, blown fuse]}
+  - {code: P0032, system: emissions, severity: watch, desc: "The upstream oxygen sensor heater circuit (bank 1) reads too high.", causes: [shorted sensor heater, wiring short]}
+  - {code: P0037, system: emissions, severity: watch, desc: "The downstream oxygen sensor heater circuit (bank 1) reads too low.", causes: [failed sensor heater, open wiring]}
+  - {code: P0038, system: emissions, severity: watch, desc: "The downstream oxygen sensor heater circuit (bank 1) reads too high.", causes: [shorted sensor heater, wiring short]}
+  - {code: P0050, system: emissions, severity: watch, desc: "The heater control circuit of the upstream oxygen sensor (bank 2) has a fault.", causes: [failed oxygen sensor heater, wiring or fuse fault]}
+
+  # ---------------------------------------------------------------- air flow, pressure, temperature (P010x-P012x)
+  - {code: P0100, system: fuel_air, severity: service_soon, desc: "The mass air flow (MAF) sensor circuit isn't working.", causes: [unplugged or damaged MAF connector, failed MAF sensor, wiring fault]}
+  - {code: P0101, system: fuel_air, severity: service_soon, desc: "The mass air flow sensor reading doesn't match what the engine should be breathing.", causes: [dirty MAF sensor, air leak after the MAF, clogged air filter, failing MAF]}
+  - {code: P0102, system: fuel_air, severity: service_soon, desc: "The mass air flow sensor signal is too low.", causes: [dirty or failed MAF, wiring open, air leak]}
+  - {code: P0103, system: fuel_air, severity: service_soon, desc: "The mass air flow sensor signal is too high.", causes: [failed MAF, wiring short, water in the connector]}
+  - {code: P0104, system: fuel_air, severity: watch, desc: "The mass air flow sensor signal drops in and out.", causes: [loose connector, intermittent wiring fault]}
+  - {code: P0105, system: fuel_air, severity: service_soon, desc: "The manifold pressure (MAP) sensor circuit isn't working.", causes: [failed MAP sensor, cracked vacuum hose, wiring fault]}
+  - {code: P0106, system: fuel_air, severity: service_soon, desc: "The manifold pressure sensor reading doesn't fit how the engine is running.", causes: [vacuum leak, blocked or cracked MAP hose, failing MAP sensor]}
+  - {code: P0107, system: fuel_air, severity: service_soon, desc: "The manifold pressure sensor signal is too low.", causes: [failed MAP sensor, wiring open]}
+  - {code: P0108, system: fuel_air, severity: service_soon, desc: "The manifold pressure sensor signal is too high.", causes: [failed MAP sensor, wiring short, vacuum hose disconnected]}
+  - {code: P0110, system: engine_sensors, severity: watch, desc: "The intake air temperature sensor circuit isn't working.", causes: [failed IAT sensor (often inside the MAF), wiring fault]}
+  - {code: P0112, system: engine_sensors, severity: watch, desc: "The intake air temperature sensor reads impossibly hot (signal too low).", causes: [shorted IAT sensor, wiring short]}
+  - {code: P0113, system: engine_sensors, severity: watch, desc: "The intake air temperature sensor reads impossibly cold (signal too high).", causes: [unplugged or failed IAT sensor, open wiring]}
+  - {code: P0115, system: cooling, severity: service_soon, desc: "The engine coolant temperature sensor circuit isn't working.", causes: [failed coolant temperature sensor, wiring fault]}
+  - {code: P0116, system: cooling, severity: service_soon, desc: "The coolant temperature sensor reading doesn't fit how long the engine has been running.", causes: [failing coolant temperature sensor, thermostat stuck open, low coolant]}
+  - {code: P0117, system: cooling, severity: service_soon, desc: "The coolant temperature sensor reads impossibly hot (signal too low).", causes: [shorted sensor, wiring short]}
+  - {code: P0118, system: cooling, severity: service_soon, desc: "The coolant temperature sensor reads impossibly cold (signal too high).", causes: [unplugged or failed sensor, open wiring]}
+  - {code: P0120, system: throttle, severity: service_soon, desc: "The throttle position sensor A circuit isn't working.", causes: [failed throttle position sensor, wiring fault]}
+  - {code: P0121, system: throttle, severity: service_soon, desc: "Throttle position sensor A gives a reading that doesn't fit the other sensors.", causes: [worn throttle position sensor, dirty throttle body, wiring fault]}
+  - {code: P0122, system: throttle, severity: service_soon, desc: "Throttle position sensor A signal is too low.", causes: [failed sensor, open wiring]}
+  - {code: P0123, system: throttle, severity: service_soon, desc: "Throttle position sensor A signal is too high.", causes: [failed sensor, wiring short]}
+  - {code: P0125, system: cooling, severity: watch, desc: "The engine takes too long to get warm enough for normal fuel control.", causes: [thermostat stuck open, failing coolant temperature sensor, low coolant]}
+  - {code: P0128, system: cooling, severity: watch, desc: "The coolant stays below the thermostat's normal temperature after warm-up.", causes: [thermostat stuck open, failing coolant temperature sensor, low coolant]}
+
+  # ---------------------------------------------------------------- oxygen sensors (P013x-P016x)
+  - {code: P0130, system: emissions, severity: watch, desc: "The upstream oxygen sensor (bank 1) circuit isn't working.", causes: [failed oxygen sensor, wiring fault, exhaust leak near the sensor]}
+  - {code: P0131, system: emissions, severity: watch, desc: "The upstream oxygen sensor (bank 1) reads lean all the time (voltage too low).", causes: [failed sensor, exhaust leak, real lean condition]}
+  - {code: P0132, system: emissions, severity: watch, desc: "The upstream oxygen sensor (bank 1) reads rich all the time (voltage too high).", causes: [failed sensor, wiring short, real rich condition]}
+  - {code: P0133, system: emissions, severity: watch, desc: "The upstream oxygen sensor (bank 1) reacts too slowly.", causes: [ageing oxygen sensor, exhaust leak, contaminated sensor (oil, coolant, silicone)]}
+  - {code: P0134, system: emissions, severity: watch, desc: "The upstream oxygen sensor (bank 1) shows no activity.", causes: [failed sensor, failed sensor heater, open wiring]}
+  - {code: P0135, system: emissions, severity: watch, desc: "The upstream oxygen sensor (bank 1) heater isn't working.", causes: [failed sensor heater, blown fuse, wiring fault]}
+  - {code: P0136, system: emissions, severity: watch, desc: "The downstream oxygen sensor (bank 1) circuit isn't working.", causes: [failed sensor, wiring fault]}
+  - {code: P0137, system: emissions, severity: watch, desc: "The downstream oxygen sensor (bank 1) voltage is too low.", causes: [failed sensor, exhaust leak, wiring fault]}
+  - {code: P0138, system: emissions, severity: watch, desc: "The downstream oxygen sensor (bank 1) voltage is too high.", causes: [failed sensor, wiring short, running rich]}
+  - {code: P0139, system: emissions, severity: watch, desc: "The downstream oxygen sensor (bank 1) reacts too slowly.", causes: [ageing sensor, exhaust leak]}
+  - {code: P0141, system: emissions, severity: watch, desc: "The downstream oxygen sensor (bank 1) heater isn't working.", causes: [failed sensor heater, wiring or fuse fault]}
+  - {code: P0150, system: emissions, severity: watch, desc: "The upstream oxygen sensor (bank 2) circuit isn't working.", causes: [failed sensor, wiring fault, exhaust leak]}
+  - {code: P0151, system: emissions, severity: watch, desc: "The upstream oxygen sensor (bank 2) reads lean all the time.", causes: [failed sensor, exhaust leak, real lean condition]}
+  - {code: P0152, system: emissions, severity: watch, desc: "The upstream oxygen sensor (bank 2) reads rich all the time.", causes: [failed sensor, wiring short, real rich condition]}
+  - {code: P0153, system: emissions, severity: watch, desc: "The upstream oxygen sensor (bank 2) reacts too slowly.", causes: [ageing sensor, exhaust leak, contaminated sensor]}
+  - {code: P0155, system: emissions, severity: watch, desc: "The upstream oxygen sensor (bank 2) heater isn't working.", causes: [failed sensor heater, wiring or fuse fault]}
+  - {code: P0156, system: emissions, severity: watch, desc: "The downstream oxygen sensor (bank 2) circuit isn't working.", causes: [failed sensor, wiring fault]}
+  - {code: P0161, system: emissions, severity: watch, desc: "The downstream oxygen sensor (bank 2) heater isn't working.", causes: [failed sensor heater, wiring fault]}
+
+  # ---------------------------------------------------------------- fuel trim and fuel delivery (P017x-P023x)
+  - {code: P0170, system: fuel_air, severity: service_soon, desc: "The fuel mixture control (bank 1) is outside its normal range.", causes: [vacuum leak, fuel pressure problem, faulty MAF, leaking injector]}
+  - {code: P0171, system: fuel_air, severity: service_soon, desc: "The engine (bank 1) is running lean: too much air or too little fuel, beyond what the computer can correct.", causes: [vacuum or intake air leak, dirty MAF sensor, weak fuel pump or clogged fuel filter, clogged injectors]}
+  - {code: P0172, system: fuel_air, severity: service_soon, desc: "The engine (bank 1) is running rich: too much fuel, beyond what the computer can correct.", causes: [leaking injector, high fuel pressure, faulty MAF or coolant sensor, clogged air filter]}
+  - {code: P0173, system: fuel_air, severity: service_soon, desc: "The fuel mixture control (bank 2) is outside its normal range.", causes: [vacuum leak, fuel pressure problem, faulty MAF]}
+  - {code: P0174, system: fuel_air, severity: service_soon, desc: "The engine (bank 2) is running lean: too much air or too little fuel, beyond what the computer can correct.", causes: [vacuum or intake air leak, dirty MAF sensor, weak fuel pump or clogged filter]}
+  - {code: P0175, system: fuel_air, severity: service_soon, desc: "The engine (bank 2) is running rich, beyond what the computer can correct.", causes: [leaking injector, high fuel pressure, faulty MAF]}
+  - {code: P0190, system: fuel_air, severity: service_soon, desc: "The fuel rail pressure sensor circuit isn't working.", causes: [failed fuel pressure sensor, wiring fault]}
+  - {code: P0191, system: fuel_air, severity: service_soon, desc: "The fuel rail pressure reading doesn't fit how the engine is running.", causes: [weak fuel pump, clogged fuel filter, failing pressure sensor]}
+  - {code: P0200, system: fuel_air, severity: service_soon, desc: "A fuel injector circuit has a fault.", causes: [failed injector, wiring or connector fault, injector driver fault]}
+  - {code: P0201, system: fuel_air, severity: service_soon, desc: "The cylinder 1 fuel injector circuit has a fault.", causes: [failed injector, wiring or connector fault]}
+  - {code: P0202, system: fuel_air, severity: service_soon, desc: "The cylinder 2 fuel injector circuit has a fault.", causes: [failed injector, wiring or connector fault]}
+  - {code: P0203, system: fuel_air, severity: service_soon, desc: "The cylinder 3 fuel injector circuit has a fault.", causes: [failed injector, wiring or connector fault]}
+  - {code: P0204, system: fuel_air, severity: service_soon, desc: "The cylinder 4 fuel injector circuit has a fault.", causes: [failed injector, wiring or connector fault]}
+  - {code: P0205, system: fuel_air, severity: service_soon, desc: "The cylinder 5 fuel injector circuit has a fault.", causes: [failed injector, wiring or connector fault]}
+  - {code: P0206, system: fuel_air, severity: service_soon, desc: "The cylinder 6 fuel injector circuit has a fault.", causes: [failed injector, wiring or connector fault]}
+  - {code: P0217, system: cooling, severity: stop_safely, stop_safely: true, desc: "The engine is overheating.", causes: [low coolant or a leak, failed cooling fan, thermostat stuck closed, failed water pump, blocked radiator]}
+  - {code: P0218, system: transmission, severity: stop_safely, stop_safely: true, desc: "The automatic transmission fluid is overheating.", causes: [low transmission fluid, heavy load or towing in heat, blocked transmission cooler]}
+  - {code: P0219, system: engine_sensors, severity: watch, desc: "The engine has run faster than its safe speed limit.", causes: [over-revving, a downshift at speed, a sensor fault]}
+  - {code: P0220, system: throttle, severity: service_soon, desc: "Throttle position sensor B circuit isn't working.", causes: [failed throttle position sensor, wiring fault]}
+  - {code: P0222, system: throttle, severity: service_soon, desc: "Throttle position sensor B signal is too low.", causes: [failed sensor, open wiring]}
+  - {code: P0223, system: throttle, severity: service_soon, desc: "Throttle position sensor B signal is too high.", causes: [failed sensor, wiring short]}
+  - {code: P0230, system: fuel_air, severity: service_soon, desc: "The fuel pump control circuit has a fault.", causes: [failed fuel pump relay, wiring fault, failing fuel pump]}
+
+  # ---------------------------------------------------------------- misfire (P030x-P031x)
+  - {code: P0300, system: ignition, severity: service_soon, desc: "The engine is misfiring in more than one cylinder, or the computer can't tell which.", causes: [worn spark plugs, failing ignition coil, vacuum leak, low fuel pressure, bad fuel], escalation: "stop_safely if the check-engine light is flashing (catalyst-damaging misfire)"}
+  - {code: P0301, system: ignition, severity: service_soon, desc: "Cylinder 1 is misfiring.", causes: [worn spark plug, failing ignition coil, leaking or clogged injector, low compression], escalation: "stop_safely if the check-engine light is flashing"}
+  - {code: P0302, system: ignition, severity: service_soon, desc: "Cylinder 2 is misfiring.", causes: [worn spark plug, failing ignition coil, leaking or clogged injector, low compression], escalation: "stop_safely if the check-engine light is flashing"}
+  - {code: P0303, system: ignition, severity: service_soon, desc: "Cylinder 3 is misfiring.", causes: [worn spark plug, failing ignition coil, leaking or clogged injector, low compression], escalation: "stop_safely if the check-engine light is flashing"}
+  - {code: P0304, system: ignition, severity: service_soon, desc: "Cylinder 4 is misfiring.", causes: [worn spark plug, failing ignition coil, leaking or clogged injector, low compression], escalation: "stop_safely if the check-engine light is flashing"}
+  - {code: P0305, system: ignition, severity: service_soon, desc: "Cylinder 5 is misfiring.", causes: [worn spark plug, failing ignition coil, leaking or clogged injector, low compression], escalation: "stop_safely if the check-engine light is flashing"}
+  - {code: P0306, system: ignition, severity: service_soon, desc: "Cylinder 6 is misfiring.", causes: [worn spark plug, failing ignition coil, leaking or clogged injector, low compression], escalation: "stop_safely if the check-engine light is flashing"}
+  - {code: P0316, system: ignition, severity: service_soon, desc: "The engine misfired in its first moments after starting.", causes: [worn spark plugs, failing ignition coil, damp ignition parts, bad fuel]}
+
+  # ---------------------------------------------------------------- knock, crank, cam sensors (P032x-P034x)
+  - {code: P0325, system: engine_sensors, severity: watch, desc: "The knock sensor (sensor 1, bank 1) circuit has a fault.", causes: [failed knock sensor, wiring fault]}
+  - {code: P0327, system: engine_sensors, severity: watch, desc: "The knock sensor (sensor 1, bank 1) signal is too low.", causes: [failed or loose knock sensor, wiring open]}
+  - {code: P0328, system: engine_sensors, severity: watch, desc: "The knock sensor (sensor 1, bank 1) signal is too high.", causes: [failed knock sensor, wiring short, real engine knock]}
+  - {code: P0330, system: engine_sensors, severity: watch, desc: "The knock sensor (sensor 2, bank 2) circuit has a fault.", causes: [failed knock sensor, wiring fault]}
+  - {code: P0335, system: cam_crank, severity: service_soon, desc: "The crankshaft position sensor circuit isn't working.", causes: [failed crank sensor, wiring fault, damaged reluctor ring], escalation: "the engine may stall or not restart"}
+  - {code: P0336, system: cam_crank, severity: service_soon, desc: "The crankshaft position sensor signal is erratic.", causes: [failing crank sensor, wiring or connector fault, damaged reluctor ring]}
+  - {code: P0340, system: cam_crank, severity: service_soon, desc: "The camshaft position sensor A (bank 1) circuit isn't working.", causes: [failed cam sensor, wiring fault, timing problem]}
+  - {code: P0341, system: cam_crank, severity: service_soon, desc: "The camshaft position sensor A (bank 1) signal is erratic.", causes: [failing cam sensor, wiring fault, timing chain stretch]}
+  - {code: P0345, system: cam_crank, severity: service_soon, desc: "The camshaft position sensor A (bank 2) circuit isn't working.", causes: [failed cam sensor, wiring fault]}
+
+  # ---------------------------------------------------------------- ignition coils (P035x)
+  - {code: P0350, system: ignition, severity: service_soon, desc: "An ignition coil circuit has a fault.", causes: [failed ignition coil, wiring or connector fault]}
+  - {code: P0351, system: ignition, severity: service_soon, desc: "The ignition coil A (usually cylinder 1) circuit has a fault.", causes: [failed ignition coil, wiring or connector fault]}
+  - {code: P0352, system: ignition, severity: service_soon, desc: "The ignition coil B (usually cylinder 2) circuit has a fault.", causes: [failed ignition coil, wiring or connector fault]}
+  - {code: P0353, system: ignition, severity: service_soon, desc: "The ignition coil C (usually cylinder 3) circuit has a fault.", causes: [failed ignition coil, wiring or connector fault]}
+  - {code: P0354, system: ignition, severity: service_soon, desc: "The ignition coil D (usually cylinder 4) circuit has a fault.", causes: [failed ignition coil, wiring or connector fault]}
+  - {code: P0355, system: ignition, severity: service_soon, desc: "The ignition coil E (usually cylinder 5) circuit has a fault.", causes: [failed ignition coil, wiring or connector fault]}
+  - {code: P0356, system: ignition, severity: service_soon, desc: "The ignition coil F (usually cylinder 6) circuit has a fault.", causes: [failed ignition coil, wiring or connector fault]}
+
+  # ---------------------------------------------------------------- EGR, secondary air, catalyst (P040x-P043x)
+  - {code: P0400, system: emissions, severity: watch, desc: "The exhaust gas recirculation (EGR) flow isn't right.", causes: [clogged EGR passages, failed EGR valve, vacuum or wiring fault]}
+  - {code: P0401, system: emissions, severity: watch, desc: "Not enough exhaust gas is being recirculated (EGR flow too low).", causes: [carbon-clogged EGR passages, sticking EGR valve]}
+  - {code: P0402, system: emissions, severity: watch, desc: "Too much exhaust gas is being recirculated (EGR flow too high).", causes: [EGR valve stuck open, faulty EGR control]}
+  - {code: P0410, system: emissions, severity: watch, desc: "The secondary air injection system has a fault.", causes: [failed air pump, stuck check valve, wiring or fuse fault]}
+  - {code: P0420, system: emissions, severity: watch, desc: "The catalytic converter (bank 1) isn't cleaning the exhaust as well as it should.", causes: [ageing or damaged catalytic converter, failing downstream oxygen sensor, exhaust leak, past misfires or oil burning], escalation: "service_soon if a misfire or rich code is also active"}
+  - {code: P0421, system: emissions, severity: watch, desc: "The warm-up catalytic converter (bank 1) isn't working as well as it should.", causes: [ageing warm-up catalyst, failing oxygen sensor, exhaust leak]}
+  - {code: P0430, system: emissions, severity: watch, desc: "The catalytic converter (bank 2) isn't cleaning the exhaust as well as it should.", causes: [ageing or damaged catalytic converter, failing downstream oxygen sensor, exhaust leak], escalation: "service_soon if a misfire or rich code is also active"}
+
+  # ---------------------------------------------------------------- evaporative emissions (P044x-P045x)
+  - {code: P0440, system: evap, severity: info, desc: "The fuel vapour (EVAP) system has a fault.", causes: [loose or faulty fuel cap, cracked EVAP hose, faulty purge or vent valve]}
+  - {code: P0441, system: evap, severity: info, desc: "The fuel vapour system's purge flow isn't right.", causes: [faulty purge valve, cracked or blocked purge hose]}
+  - {code: P0442, system: evap, severity: info, desc: "The fuel vapour system has a small leak.", causes: [loose or worn fuel cap seal, small crack in an EVAP hose, faulty purge or vent valve]}
+  - {code: P0443, system: evap, severity: info, desc: "The fuel vapour purge valve circuit has a fault.", causes: [failed purge valve, wiring fault]}
+  - {code: P0446, system: evap, severity: info, desc: "The fuel vapour system's vent control isn't working.", causes: [blocked or failed vent valve, wiring fault, debris in the charcoal canister]}
+  - {code: P0449, system: evap, severity: info, desc: "The fuel vapour vent valve circuit has a fault.", causes: [failed vent valve, wiring fault]}
+  - {code: P0451, system: evap, severity: info, desc: "The fuel tank pressure sensor reading doesn't fit.", causes: [failing tank pressure sensor, wiring fault]}
+  - {code: P0452, system: evap, severity: info, desc: "The fuel tank pressure sensor signal is too low.", causes: [failed sensor, wiring fault]}
+  - {code: P0453, system: evap, severity: info, desc: "The fuel tank pressure sensor signal is too high.", causes: [failed sensor, wiring fault, blocked vent]}
+  - {code: P0455, system: evap, severity: info, desc: "The fuel vapour system has a large leak.", causes: [fuel cap missing or loose, disconnected or cracked EVAP hose, failed purge valve]}
+  - {code: P0456, system: evap, severity: info, desc: "The fuel vapour system has a very small leak.", causes: [worn fuel cap seal, tiny crack in an EVAP hose]}
+  - {code: P0457, system: evap, severity: info, desc: "The fuel vapour system found a leak, most likely the fuel cap is loose or missing.", causes: [fuel cap loose or not clicked shut, fuel cap missing, worn cap seal]}
+  - {code: P0460, system: body, severity: info, desc: "The fuel level sensor circuit has a fault, so the fuel gauge may be wrong.", causes: [failed fuel level sender, wiring fault]}
+  - {code: P0461, system: body, severity: info, desc: "The fuel level sensor reading doesn't fit the fuel being used.", causes: [sticking fuel level sender, wiring fault]}
+
+  # ---------------------------------------------------------------- fan, speed, idle (P048x-P050x)
+  - {code: P0480, system: cooling, severity: service_soon, desc: "The cooling fan 1 control circuit has a fault, so the fan may not switch on.", causes: [failed fan relay, blown fuse, failed fan motor, wiring fault], escalation: "stop_safely if the engine starts overheating"}
+  - {code: P0500, system: engine_sensors, severity: service_soon, desc: "The vehicle speed sensor isn't working.", causes: [failed speed sensor, wiring fault, ABS sensor fault on some cars]}
+  - {code: P0501, system: engine_sensors, severity: watch, desc: "The vehicle speed sensor reading doesn't fit how the car is moving.", causes: [failing speed sensor, wrong tyre size, wiring fault]}
+  - {code: P0505, system: idle_speed, severity: watch, desc: "The idle speed control system isn't holding the idle where it should.", causes: [dirty throttle body or idle control valve, vacuum leak, failed idle control valve]}
+  - {code: P0506, system: idle_speed, severity: watch, desc: "The engine idles slower than it should.", causes: [dirty throttle body, carbon build-up, vacuum or intake restriction]}
+  - {code: P0507, system: idle_speed, severity: watch, desc: "The engine idles faster than it should.", causes: [vacuum leak, dirty or sticking idle control valve, throttle not closing fully]}
+
+  # ---------------------------------------------------------------- oil, voltage, control module (P052x-P064x)
+  - {code: P0520, system: oil, severity: service_soon, desc: "The engine oil pressure sensor or switch circuit has a fault.", causes: [failed oil pressure sensor, wiring fault, or real low oil pressure], escalation: "stop_safely if the oil pressure warning light is on"}
+  - {code: P0521, system: oil, severity: service_soon, desc: "The oil pressure reading doesn't fit how the engine is running.", causes: [low or wrong-grade oil, failing oil pressure sensor, worn oil pump]}
+  - {code: P0524, system: oil, severity: stop_safely, stop_safely: true, desc: "The engine oil pressure is too low.", causes: [low oil level, oil leak, failing oil pump, clogged oil pickup]}
+  - {code: P0530, system: body, severity: info, desc: "The air-conditioning refrigerant pressure sensor circuit has a fault.", causes: [failed A/C pressure sensor, wiring fault, low refrigerant]}
+  - {code: P0560, system: charging, severity: service_soon, desc: "The system voltage is not right.", causes: [failing alternator, weak battery, loose or corroded battery terminals]}
+  - {code: P0562, system: charging, severity: service_soon, desc: "The system voltage is too low: the battery isn't being charged properly.", causes: [failing alternator, slipping or worn drive belt, weak battery, corroded battery terminals or ground strap], escalation: "stop_safely if the voltage keeps falling while driving (the car may stall)"}
+  - {code: P0563, system: charging, severity: service_soon, desc: "The system voltage is too high: the battery is being over-charged.", causes: [faulty alternator voltage regulator, poor ground connection]}
+  - {code: P0571, system: body, severity: watch, desc: "The brake light switch circuit has a fault.", causes: [failed brake light switch, misadjusted switch, wiring fault]}
+  - {code: P0600, system: control_module, severity: service_soon, desc: "The engine computer has lost a serial communication link.", causes: [wiring or connector fault, failing control module]}
+  - {code: P0601, system: control_module, severity: service_soon, desc: "The engine computer's internal memory failed its self-check.", causes: [failing engine control module, failed software update]}
+  - {code: P0603, system: control_module, severity: watch, desc: "The engine computer lost its kept-alive memory (adaptations reset).", causes: [battery recently disconnected or flat, poor ground, failing control module]}
+  - {code: P0604, system: control_module, severity: service_soon, desc: "The engine computer's internal working memory failed its self-check.", causes: [failing engine control module]}
+  - {code: P0606, system: control_module, severity: service_soon, desc: "The engine computer's processor reported an internal fault.", causes: [failing engine control module, poor power or ground supply]}
+  - {code: P0620, system: charging, severity: service_soon, desc: "The alternator control circuit has a fault.", causes: [failing alternator, wiring fault between alternator and engine computer]}
+  - {code: P0622, system: charging, severity: service_soon, desc: "The alternator field control circuit has a fault.", causes: [failing alternator, wiring fault]}
+  - {code: P0627, system: fuel_air, severity: service_soon, desc: "The fuel pump control circuit is open.", causes: [failed fuel pump relay or driver, wiring fault]}
+  - {code: P0641, system: control_module, severity: service_soon, desc: "A sensor reference voltage circuit has a fault.", causes: [a shorted sensor on that circuit, wiring fault]}
+
+  # ---------------------------------------------------------------- transmission (P07xx)
+  - {code: P0700, system: transmission, severity: service_soon, desc: "The transmission's own computer found a fault and asked for the warning light.", causes: ["any stored transmission fault (read the transmission module's own codes)", low or old transmission fluid]}
+  - {code: P0705, system: transmission, severity: service_soon, desc: "The gear selector (range) sensor circuit has a fault.", causes: [misadjusted or failed range sensor, wiring fault]}
+  - {code: P0710, system: transmission, severity: watch, desc: "The transmission fluid temperature sensor circuit has a fault.", causes: [failed sensor, wiring fault]}
+  - {code: P0715, system: transmission, severity: service_soon, desc: "The transmission input (turbine) speed sensor circuit has a fault.", causes: [failed speed sensor, wiring fault, low fluid]}
+  - {code: P0720, system: transmission, severity: service_soon, desc: "The transmission output speed sensor circuit has a fault.", causes: [failed speed sensor, wiring fault]}
+  - {code: P0730, system: transmission, severity: service_soon, desc: "The transmission is in a gear ratio that doesn't match the gear it should be in (slipping).", causes: [low or burnt transmission fluid, worn clutches, faulty shift solenoid]}
+  - {code: P0740, system: transmission, severity: service_soon, desc: "The torque converter clutch circuit has a fault.", causes: [faulty lock-up solenoid, low or old fluid, wiring fault]}
+  - {code: P0741, system: transmission, severity: service_soon, desc: "The torque converter clutch isn't locking up properly.", causes: [old or low transmission fluid, faulty lock-up solenoid, worn torque converter]}
+  - {code: P0750, system: transmission, severity: service_soon, desc: "Shift solenoid A has a fault.", causes: [failed shift solenoid, dirty fluid, wiring fault]}
+  - {code: P0755, system: transmission, severity: service_soon, desc: "Shift solenoid B has a fault.", causes: [failed shift solenoid, dirty fluid, wiring fault]}
+
+  # ---------------------------------------------------------------- P2xxx (throttle by wire, fuel trims, sensors)
+  - {code: P2096, system: fuel_air, severity: watch, desc: "The fine fuel correction after the catalytic converter (bank 1) is at its lean limit.", causes: [exhaust leak, vacuum leak, failing oxygen sensor]}
+  - {code: P2097, system: fuel_air, severity: watch, desc: "The fine fuel correction after the catalytic converter (bank 1) is at its rich limit.", causes: [failing oxygen sensor, leaking injector, high fuel pressure]}
+  - {code: P2101, system: throttle, severity: service_soon, desc: "The electronic throttle motor isn't responding as expected.", causes: [dirty or sticking throttle body, failing throttle motor, wiring fault], escalation: "the car may go into reduced-power mode"}
+  - {code: P2111, system: throttle, severity: stop_safely, stop_safely: true, desc: "The electronic throttle is stuck open.", causes: [sticking throttle body, failed throttle motor, carbon build-up]}
+  - {code: P2112, system: throttle, severity: service_soon, desc: "The electronic throttle is stuck closed; the car will have little or no power.", causes: [carbon build-up in the throttle body, failed throttle motor]}
+  - {code: P2118, system: throttle, severity: service_soon, desc: "The electronic throttle motor current isn't right.", causes: [failing throttle motor, wiring fault]}
+  - {code: P2135, system: throttle, severity: service_soon, desc: "The two throttle position sensor signals disagree.", causes: [failing throttle body sensor, wiring or connector fault], escalation: "the car may go into reduced-power mode"}
+  - {code: P2138, system: throttle, severity: service_soon, desc: "The two accelerator pedal position signals disagree.", causes: [failing pedal position sensor, wiring fault], escalation: "the car may go into reduced-power mode"}
+  - {code: P2187, system: fuel_air, severity: service_soon, desc: "The engine (bank 1) is running lean at idle.", causes: [vacuum leak (most noticeable at idle), leaking intake gasket, PCV hose crack, dirty MAF]}
+  - {code: P2188, system: fuel_air, severity: service_soon, desc: "The engine (bank 1) is running rich at idle.", causes: [leaking injector, high fuel pressure at idle, purge valve stuck open]}
+  - {code: P2195, system: emissions, severity: watch, desc: "The upstream oxygen sensor (bank 1) signal is stuck lean.", causes: [ageing sensor, exhaust leak, real lean condition]}
+  - {code: P2196, system: emissions, severity: watch, desc: "The upstream oxygen sensor (bank 1) signal is stuck rich.", causes: [ageing sensor, real rich condition, leaking injector]}
+  - {code: P2237, system: emissions, severity: watch, desc: "The upstream air-fuel ratio sensor (bank 1) control circuit is open.", causes: [failed air-fuel ratio sensor, wiring fault]}
+  - {code: P2270, system: emissions, severity: watch, desc: "The downstream oxygen sensor (bank 1) signal is stuck lean.", causes: [exhaust leak, failing sensor]}
+  - {code: P2271, system: emissions, severity: watch, desc: "The downstream oxygen sensor (bank 1) signal is stuck rich.", causes: [failing sensor, running rich]}
+  - {code: P2440, system: emissions, severity: watch, desc: "The secondary air injection switching valve is stuck open.", causes: [failed air switching valve, water in the valve]}
+  - {code: P2610, system: control_module, severity: watch, desc: "The engine computer's internal engine-off timer isn't working right.", causes: [weak battery or recent battery disconnect, failing control module]}
+
+  # ---------------------------------------------------------------- network (U0xxx)
+  - {code: U0001, system: network, severity: service_soon, desc: "The car's high-speed data network (CAN) has a communication fault.", causes: [wiring or connector fault on the network, a failing module, low battery voltage]}
+  - {code: U0073, system: network, severity: service_soon, desc: "A control module's communication bus went quiet.", causes: [network wiring fault, failing module, low battery voltage]}
+  - {code: U0100, system: network, severity: service_soon, desc: "Other modules lost contact with the engine computer.", causes: [wiring or connector fault, engine computer power or ground fault, failing engine computer], escalation: "stop_safely if the engine stalls or won't restart"}
+  - {code: U0101, system: network, severity: service_soon, desc: "Other modules lost contact with the transmission computer.", causes: [wiring fault, transmission computer power or ground fault]}
+  - {code: U0121, system: network, severity: service_soon, desc: "Other modules lost contact with the ABS (anti-lock brakes) module.", causes: [wiring fault, ABS module power or ground fault], escalation: "normal brakes still work; ABS may not"}
+  - {code: U0140, system: network, severity: watch, desc: "Other modules lost contact with the body control module.", causes: [wiring fault, body module power fault]}
+  - {code: U0155, system: network, severity: watch, desc: "Other modules lost contact with the instrument cluster.", causes: [wiring fault, instrument cluster power fault]}
+
+  # ---------------------------------------------------------------- brakes (C0xxx) and body (B0xxx)
+  - {code: C0035, system: brakes, severity: service_soon, desc: "The left front wheel speed sensor has a fault; ABS may be off.", causes: [dirty or damaged wheel speed sensor, wiring fault, damaged tone ring], escalation: "normal brakes still work; ABS and stability control may not"}
+  - {code: C0040, system: brakes, severity: service_soon, desc: "The right front wheel speed sensor has a fault; ABS may be off.", causes: [dirty or damaged wheel speed sensor, wiring fault, damaged tone ring], escalation: "normal brakes still work; ABS and stability control may not"}
+  - {code: C0045, system: brakes, severity: service_soon, desc: "The left rear wheel speed sensor has a fault; ABS may be off.", causes: [dirty or damaged wheel speed sensor, wiring fault, damaged tone ring], escalation: "normal brakes still work; ABS and stability control may not"}
+  - {code: C0050, system: brakes, severity: service_soon, desc: "The right rear wheel speed sensor has a fault; ABS may be off.", causes: [dirty or damaged wheel speed sensor, wiring fault, damaged tone ring], escalation: "normal brakes still work; ABS and stability control may not"}
+  - {code: B0001, system: body, severity: service_soon, desc: "The driver's front airbag (stage 1) deployment circuit has a fault; the airbag may not work in a crash.", causes: [clock spring fault, connector under the seat or steering wheel, airbag module fault]}

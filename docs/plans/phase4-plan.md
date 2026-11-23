@@ -82,6 +82,16 @@ Not in Phase 4 (later phases, per PRD 13):
 
 **Gate:** pytest: config validates (code format, known system and tier, causes present); every simulator code has a definition; every top-50 code has a definition; sync is idempotent; migration round trip and `alembic check` are clean.
 
+✅ **Done 2026-11-23:** 21 new tests (369 backend tests in total, all pass).
+- **`definitions.yaml`: 184 generic codes in our own words** (172 P, 7 U, 4 C, 1 B), including all 14 codes the simulator's faults can set.
+  - By tier: 4 stop safely (P0217 overheat, P0218 transmission overheat, P0524 low oil pressure, P2111 throttle stuck open), 105 service soon, 60 watch, 15 info (mostly fuel-cap/EVAP).
+  - 18 codes carry an `escalation` note for Phase 6's rules (e.g. a misfire → stop safely if the light flashes).
+- **Validation:** strict, and found a real bug at once: an unquoted colon in P0700's causes had turned it into a mapping.
+- **The flag must match the tier:** `stop_safely` must equal `severity == stop_safely`, both in the config and as a DB CHECK.
+- **`top50.yaml`:** 50 defined codes for the PRD gate.
+- **Migration 0005** (round trip and `alembic check` clean): `dtc_definitions`, `insights` (its unique key `(vehicle, kind, subject, input_hash)` with NULLS NOT DISTINCT is the cache), `llm_calls` (cost history survives a deleted vehicle).
+- **`docs/compliance/dtc-definitions-source.md`:** why SAE J2012 and python-OBD (GPL-2.0) weren't copied, and what we wrote instead.
+
 ### Step 2: LLM client, prompts, schemas
 | File | Purpose |
 |---|---|

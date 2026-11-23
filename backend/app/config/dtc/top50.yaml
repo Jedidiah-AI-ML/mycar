@@ -1,0 +1,73 @@
+# The 50 codes whose explanations are pre-generated and reviewed by Wisdom
+# (PRD 13, Phase 4 exit gate).
+#
+# SEED - validate (D3): "common" here is from general experience with petrol cars, not
+# from Nigerian repair-shop data. Wisdom: swap in any codes you see more often in Lagos.
+# Every code must exist in definitions.yaml (a test checks).
+
+version: 1
+
+codes:
+  # misfire (all six cylinders, plus random/multiple)
+  - P0300
+  - P0301
+  - P0302
+  - P0303
+  - P0304
+  - P0305
+  - P0306
+  # fuel mixture
+  - P0171
+  - P0172
+  - P0174
+  - P0175
+  - P2187
+  # catalyst and oxygen sensors
+  - P0420
+  - P0430
+  - P0133
+  - P0135
+  - P0141
+  - P0136
+  - P0155
+  - P2195
+  # fuel vapour (EVAP): the fuel-cap family
+  - P0440
+  - P0442
+  - P0455
+  - P0456
+  - P0457
+  # air flow and manifold pressure
+  - P0101
+  - P0102
+  - P0106
+  # cooling and temperature
+  - P0128
+  - P0125
+  - P0117
+  - P0118
+  - P0217
+  - P0480
+  # cam/crank timing and VVT
+  - P0011
+  - P0014
+  - P0016
+  - P0335
+  - P0340
+  # idle and throttle
+  - P0505
+  - P0507
+  - P2135
+  # charging, oil
+  - P0562
+  - P0563
+  - P0524
+  # ignition coil
+  - P0351
+  # EGR
+  - P0401
+  # transmission
+  - P0700
+  - P0741
+  # network
+  - U0100

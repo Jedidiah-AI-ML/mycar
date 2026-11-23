@@ -3,6 +3,7 @@
 from app.models.access import AuditEvent, VehicleAccess
 from app.models.consent import Consent
 from app.models.device import Device, DeviceAssignment, DeviceBatch, DeviceCommand
+from app.models.dtc import DtcDefinition, Insight, LlmCall
 from app.models.enums import (
     ConsentPurpose,
     DeviceCommandStatus,
@@ -37,10 +38,13 @@ __all__ = [
     "DeviceCommand",
     "DeviceCommandStatus",
     "DeviceCommandType",
+    "DtcDefinition",
     "DtcEvent",
     "DtcStatus",
+    "Insight",
     "Job",
     "JobStatus",
+    "LlmCall",
     "Mode06Result",
     "OdometerReading",
     "RefreshToken",
