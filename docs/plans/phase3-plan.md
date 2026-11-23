@@ -1,4 +1,12 @@
-# Phase 3 plan: Layer 1 maintenance (APPROVED 2026-11-20)
+# Phase 3 plan: Layer 1 maintenance (APPROVED 2026-11-20, ✅ DONE 2026-11-23)
+
+**Status:** all 8 steps done.
+- The PRD exit gate is met: 13 hand-calculated cases match to the km and the day, and gaps and odometer mismatches are tested.
+- The end-to-end gate passed locally (`ml/reports/phase3_gate.md`, 32/32).
+- The request list passed **27/27 live** on Railway + Neon (migration 0004 applied).
+- Open for Wisdom:
+  - review the two reports and the golden cases
+  - SEED values M1–M7 and S9, especially the service intervals for the five cars
 
 **Decisions (Wisdom, 2026-11-20):** all five open questions approved as recommended:
 - **Q1:** unknown oil type → the shorter mineral/semi-synthetic interval (5,000 km / 3 months)
@@ -232,6 +240,8 @@ Found and fixed while running it:
 - **Gate script, logins:** access tokens (30 min) expired during long uploads, so the owners log in again before entering the service history.
 - **Gate script, km/day:** the true km/day is now computed at the moment the API is queried. A sleeping PC had put "now" days after the simulated data.
 - **Gate script, errors:** psql failures now show Docker's own message (e.g. "db is not running").
+
+✅ **Live 2026-11-23:** deployed automatically within ~1 min of the push. Readiness reports `migrations: head` (0004 on Neon). `restfox/phase3_requests.py` passed **27/27 against Railway**.
 
 ## Phase 3 schema (migration 0004)
 
