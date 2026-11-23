@@ -215,6 +215,24 @@ Tables below. **Gate:** upgrade / downgrade / upgrade round trip, `alembic check
 - the hard-driving car's brake and oil items come due earlier, by exactly the configured multipliers
 - the Restfox list passes live
 
+✅ **Local gate passed 2026-11-23** (`ml/reports/phase3_gate.md`, **for Wisdom to review**): 32/32 checks. Two Corollas, 60 days, 290 trips, 10,209 batches over HTTP with Lagos coverage.
+- **Odometer estimate:** within 1 km of the true distance for both cars.
+- **km/day:** 34.0 vs a true 34.1, and 20.3 vs 20.3.
+- **All 18 items:** km left within 1 % of the truth-based forecast.
+- **Odometer entries:** the day-30 oil-change odometer agreed and became the anchor; the mistyped (−3,000 km) cabin-filter odometer was flagged.
+- **Hard driver** (39 hard stops / 100 km): brake inspection ×0.8 → 8,000 km. Oil is ×0.9 → 4,500 km, from harsh acceleration above 10 per 100 km; its idle share of 38.5 % is below the 50 % band, so idling adds nothing. The gentle car keeps the standard intervals.
+
+Built for it:
+- **Simulator `drivers`** (`normal` unchanged; `hard` = 2× accel/decel, SEED). 71 simulator tests still pass.
+- **`scripts/phase3_gate.py`**, which reuses the Phase 2 gate's plumbing.
+
+Found and fixed while running it:
+- **The simulator's HTTPS client crashed on a socket timeout.** It now treats it as a failed upload and retries, as a device would.
+- **On Windows, stopping `uv run` left its uvicorn child holding the port.** A later run then silently talked to that stale server. The gate now refuses a busy port and kills the whole process tree.
+- **Gate script, logins:** access tokens (30 min) expired during long uploads, so the owners log in again before entering the service history.
+- **Gate script, km/day:** the true km/day is now computed at the moment the API is queried. A sleeping PC had put "now" days after the simulated data.
+- **Gate script, errors:** psql failures now show Docker's own message (e.g. "db is not running").
+
 ## Phase 3 schema (migration 0004)
 
 | Table / change | Key columns | Notes |

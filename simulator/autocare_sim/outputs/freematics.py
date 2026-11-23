@@ -60,3 +60,7 @@ class FreematicsHttpSink:
             raise ConnectionError(f"{e.code} from gateway: {detail}") from e
         except urllib.error.URLError as e:
             raise ConnectionError(f"gateway unreachable: {e.reason}") from e
+        except (TimeoutError, OSError) as e:
+            # A request that times out is a failed upload like any other: the device backs
+            # off and retries (the batch stays in flash), it doesn't crash.
+            raise ConnectionError(f"upload failed: {e!r}") from e

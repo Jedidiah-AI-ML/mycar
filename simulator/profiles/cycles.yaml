@@ -50,6 +50,13 @@ presets:
       crawl:  {weight: 0.20, dur_s: [20, 60],  speed_kmh: [5, 20]}
       flow:   {weight: 0.55, dur_s: [20, 90],  speed_kmh: [20, 45]}
 
+drivers:
+  # How hard a driver accelerates and brakes: multipliers on each preset's accel/decel.
+  # SEED - validate: `hard` is a test persona for Phase 3's wear multipliers (it brakes
+  # past the 0.35 g harsh threshold regularly), not a measured Lagos driver.
+  normal: {accel: 1.0, decel: 1.0}
+  hard:   {accel: 2.0, decel: 2.0}
+
 schedule:
   # How many trips a car makes on a driving day, and when they start (local time).
   trips_per_day: {1: 0.15, 2: 0.45, 3: 0.25, 4: 0.15}

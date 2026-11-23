@@ -61,8 +61,10 @@ def psql(sql: str, db: str = GATE_DB) -> str:
     out = subprocess.run(
         ["docker", "compose", "-f", str(REPO / "docker-compose.yml"), "exec", "-T", "db",
          "psql", "-U", "autocare", "-d", db, "-tAc", sql],
-        capture_output=True, text=True, check=True,
+        capture_output=True, text=True,
     )  # fmt: skip
+    if out.returncode != 0:  # show Docker's/Postgres's own message, e.g. "db is not running"
+        raise RuntimeError(f"psql failed ({out.returncode}): {(out.stderr or out.stdout).strip()}")
     return out.stdout.strip()
 
 
@@ -84,6 +86,27 @@ def api(method: str, path: str, body: dict | None = None, token: str | None = No
         raise RuntimeError(f"{method} {path}: {e.code} {e.read()[:300]!r}") from None
 
 
+def port_in_use(port: int) -> bool:
+    import socket
+
+    with socket.socket() as sock:
+        sock.settimeout(1)
+        return sock.connect_ex(("127.0.0.1", port)) == 0
+
+
+def stop_api(proc: subprocess.Popen) -> None:
+    """Stop the API and everything it started. On Windows, stopping `uv run` alone leaves
+    its uvicorn child running (and holding the port), so kill the whole process tree."""
+    if os.name == "nt":
+        subprocess.run(["taskkill", "/T", "/F", "/PID", str(proc.pid)], capture_output=True)
+    else:
+        proc.terminate()
+    try:
+        proc.wait(timeout=20)
+    except subprocess.TimeoutExpired:
+        proc.kill()
+
+
 def start_api(log_path: Path) -> subprocess.Popen:
     env = {
         **os.environ,
@@ -95,11 +118,18 @@ def start_api(log_path: Path) -> subprocess.Popen:
         "WORKER_MODE": "embedded",
         "LOG_LEVEL": "WARNING",
     }
+    if port_in_use(PORT):
+        raise RuntimeError(
+            f"port {PORT} is already in use (a leftover API from an earlier run?). Stop it "
+            "first; otherwise this run would silently talk to the wrong server."
+        )
     proc = subprocess.Popen(
         ["uv", "run", "uvicorn", "app.main:app", "--port", str(PORT), "--log-level", "warning"],
         cwd=REPO / "backend", env=env, stdout=log_path.open("w"), stderr=subprocess.STDOUT,
     )  # fmt: skip
     for _ in range(60):
+        if proc.poll() is not None:
+            raise RuntimeError(f"API exited during start-up; see {log_path}")
         try:
             if api("GET", "/health").get("status") == "ok":
                 return proc
@@ -176,11 +206,7 @@ def main() -> int:  # noqa: C901, PLR0915 - a linear script reads best top to bo
     try:
         return run(args, started, tmp)
     finally:
-        proc.terminate()
-        try:
-            proc.wait(timeout=20)
-        except subprocess.TimeoutExpired:
-            proc.kill()
+        stop_api(proc)
 
 
 def run(args, started: float, tmp: Path) -> int:  # noqa: C901, PLR0912, PLR0915

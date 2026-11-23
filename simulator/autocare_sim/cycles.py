@@ -22,8 +22,12 @@ def trip_duration_s(preset: str, rng: np.random.Generator) -> int:
     return int(round(np.clip(minutes, lo, hi) * 60))
 
 
-def speed_trace(preset: str, rng: np.random.Generator, duration_s: int | None = None) -> np.ndarray:
-    """km/h at 1 Hz, starting and ending at standstill."""
+def speed_trace(
+    preset: str, rng: np.random.Generator, duration_s: int | None = None, driver: str = "normal"
+) -> np.ndarray:
+    """km/h at 1 Hz, starting and ending at standstill. `driver` scales how hard the car
+    accelerates and brakes (profiles/cycles.yaml `drivers`); it draws no extra random
+    numbers, so a `normal` trace is unchanged."""
     spec = cycles()["presets"][preset]
     total = duration_s or trip_duration_s(preset, rng)
     seg_names = list(spec["segments"])
@@ -44,8 +48,9 @@ def speed_trace(preset: str, rng: np.random.Generator, duration_s: int | None = 
         targets += list(np.clip(tgt + wander, max(lo - 3, 0), hi + 5) if tgt > 0 else wander)
     targets = targets[:total] + [0.0] * 20  # come to a stop and park
 
-    acc = spec["accel_ms2"] * 3.6  # km/h per second
-    dec = spec["decel_ms2"] * 3.6
+    style = cycles()["drivers"][driver]
+    acc = spec["accel_ms2"] * style["accel"] * 3.6  # km/h per second
+    dec = spec["decel_ms2"] * style["decel"] * 3.6
     v = np.zeros(len(targets))
     for i in range(1, len(targets)):
         dv = np.clip(targets[i] - v[i - 1], -dec, acc)

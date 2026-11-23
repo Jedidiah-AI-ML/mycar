@@ -168,6 +168,7 @@ def simulate(
     start: datetime = DEFAULT_START,
     health_fn: HealthFn | None = None,
     faults: list[Fault] | None = None,
+    driver: str = "normal",
 ) -> Timeline:
     profile = load_profile(profile_id)
     # crc32, not hash(): Python's str hash changes between runs.
@@ -200,7 +201,7 @@ def simulate(
                 state.fuel_l = profile.fuel_tank_l * float(rng.uniform(0.7, 1.0))  # refuel
             days_since = (t_start - start).total_seconds() / 86400
             health = health_fn(days_since, state.odometer_km)
-            speed = speed_trace(preset, rng)
+            speed = speed_trace(preset, rng, driver=driver)
             warmups_before = state.warmups_since_clear
             out = simulate_trip(profile, speed, amb, clim["baro_kpa"], parked, state, health, rng)
             t0_ms = int(t_start.timestamp() * 1000)
