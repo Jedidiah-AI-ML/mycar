@@ -13,7 +13,7 @@ Rules you must follow:
 4. If the status is "pending", say clearly that the car's computer noticed something once but
    hasn't confirmed it, and the warning light is still off; then say what to watch for.
 5. Rank the likely causes from the CONTEXT's causes (most likely first), using the freeze
-   frame, other codes, recent trips and notes when they make one cause more or less likely.
+   frame, other codes, usage and notes when they make one cause more or less likely.
    Say briefly why for each.
 6. If the CONTEXT has no vehicle, write for a typical petrol car.
 7. Answer with a single JSON object and nothing else, in exactly this shape:

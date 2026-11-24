@@ -144,6 +144,22 @@ Not in Phase 4 (later phases, per PRD 13):
 
 **Gate (PRD):** 100 % of the generated explanations are schema-valid and grounding-clean, and **Wisdom reviews the sheet**: corrections are applied, and each code is marked reviewed.
 
+🟡 **Generated 2026-11-24; waiting for Wisdom's review.** 100 of 100 schema-valid and grounded at the first attempt (no retries). 100 calls, 74k tokens in / 24k out, **$0.026**. 26 new tests (420 backend tests, all pass); one checks that the committed file is complete, valid and grounded.
+- **Files:** `app/services/dtc/pregenerated.py` (generate, check, serve), `review_sheet.py`, `scripts/pregenerate_dtc.py` (`--codes` for a trial, `--force`, `--sheet`). The output is `app/config/dtc/explanations.v1.yaml` and `docs/review/dtc_explanations_v1.md`.
+- **Serving rule:** only `reviewed: true` entries that still validate, ground, and match today's context hash are served. Changing a definition or note makes an entry stale.
+- **Provider change:** the key in `.env` is an **OpenRouter** key, so the model is now `openrouter/openai/gpt-4o-mini`. It's the same model at the same per-token price, still pay-as-you-go with no monthly fee. **Railway's `LLM_MODEL` must be set to this in step 6.**
+- **Fixes the first, failed run exposed** (200 calls refused at authentication, $0):
+  - a fatal provider error (bad key or model) now stops the run after **one** call instead of retrying every code;
+  - error text is scrubbed of key fragments before it's stored;
+  - OpenRouter's route isn't in LiteLLM's bundled price list, so cost falls back to the base model's price (otherwise the $2 cap would see $0).
+- The prompt's rule 5 now says "usage" instead of "recent trips", to match step 3.
+- **Flagged for the review:**
+  1. **P0217 stored** (overheating) says "check the coolant level" without "only once the engine has cooled": opening a hot radiator scalds. The pending versions of the stop-safely codes (P0217, P0524) also sound softer than "stop safely".
+  2. 15 of 50 pending versions don't say the warning light is still off (prompt rule 4).
+  3. Some jargon (MAF, EVAP, VVT, EGR) is used without a plain-words explanation.
+
+  Options: fix by hand in the YAML, or make a `dtc_explain.v2` prompt that addresses 1–3 and regenerate (~$0.03).
+
 ### Step 5: Interpretation stage + API
 | File | Purpose |
 |---|---|

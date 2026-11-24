@@ -1,0 +1,2536 @@
+# Pre-generated explanations of the top-50 codes (Phase 4 step 4). Written by
+# scripts/pregenerate_dtc.py; reviewed by Wisdom (docs/review/dtc_explanations_v1.md).
+#
+# To approve one: fix the text if needed, then set `reviewed: true`. Only reviewed entries
+# are served. Severity must stay equal to the definition's, and no other code may be
+# mentioned (checked when loaded, and by a test).
+
+version: 1
+prompt_version: dtc_explain.v1
+entries:
+- code: P0011
+  status: stored
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 41dacf52fc531a93d0862b985a99a1b06a6d38248e2fca0c38b5dda18dc2ddf7
+  explanation:
+    summary: The car's computer noticed that the intake camshaft timing is off. This means the engine
+      might not be running as efficiently as it should.
+    severity: service_soon
+    likely_causes:
+    - cause: low or dirty engine oil
+      why: Old or incorrect oil can affect how the engine parts move.
+    - cause: sticking VVT oil control valve
+      why: If this valve gets stuck, it can cause timing issues.
+    - cause: worn timing chain
+      why: A stretched timing chain can lead to bigger problems if not checked.
+    what_to_do_now: You should plan to have the engine oil checked and possibly changed. It's also a good
+      idea to have a mechanic look at it soon.
+    questions_for_mechanic:
+    - What type of oil is best for my car?
+    - Could the timing chain be causing this issue?
+    - How soon should I get this fixed?
+    confidence: high
+- code: P0011
+  status: pending
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: d4cf4948ecaa1de730894f4bdcb29864c63dab0f2e4c7ef57f0cdd6c44ca8d75
+  explanation:
+    summary: The car's computer noticed that the intake camshaft timing is not what it should be. This
+      could mean there's an issue with the engine oil or the timing system, but it hasn't confirmed it
+      yet.
+    severity: service_soon
+    likely_causes:
+    - cause: low or dirty engine oil
+      why: Old or incorrect oil can affect how the timing system works.
+    - cause: sticking VVT oil control valve
+      why: If the valve is stuck, it can cause timing issues.
+    - cause: worn timing chain
+      why: If the timing chain is stretched, it can lead to bigger problems.
+    what_to_do_now: Keep an eye on the engine performance. If you notice any unusual noises or the engine
+      stalling, get it checked soon.
+    questions_for_mechanic:
+    - What type of engine oil should I use?
+    - Could the timing chain be stretched?
+    - How can I check the VVT oil control valve?
+    confidence: medium
+- code: P0014
+  status: stored
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: a8b8c4addc58baa416ed1e92e5f8484fbbcc97ab2fcfb6cd16437a8fdbf212b6
+  explanation:
+    summary: The car's computer noticed that the exhaust camshaft timing is off. This means the timing
+      is more advanced than it should be, which can affect engine performance.
+    severity: service_soon
+    likely_causes:
+    - cause: dirty or low engine oil
+      why: Old or incorrect oil can affect the timing system.
+    - cause: sticking exhaust VVT valve
+      why: This valve controls the timing and can get stuck, causing issues.
+    - cause: worn timing chain
+      why: A stretched timing chain can lead to timing problems and needs checking.
+    what_to_do_now: You should schedule a service soon to check the engine oil and timing system. Ignoring
+      this could lead to more serious problems.
+    questions_for_mechanic:
+    - Is the engine oil clean and at the right level?
+    - Is the VVT valve functioning properly?
+    - Does the timing chain need replacement?
+    confidence: high
+- code: P0014
+  status: pending
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 612c456a0516cc976ad995278aec8c1a9a64056ec03f00ecbe36850be9ef914b
+  explanation:
+    summary: The car's computer noticed that the exhaust camshaft timing is off, but it hasn't confirmed
+      this yet. The warning light is still off, so keep an eye on how the car runs.
+    severity: service_soon
+    likely_causes:
+    - cause: dirty or low engine oil
+      why: Old or wrong engine oil can cause timing issues.
+    - cause: sticking exhaust VVT valve
+      why: This valve controls the timing and can get stuck.
+    - cause: worn timing chain
+      why: If the timing chain is stretched, it can lead to bigger problems.
+    what_to_do_now: Check your engine oil level and quality. If it's low or dirty, consider an oil change.
+      Watch for any unusual noises or performance issues.
+    questions_for_mechanic:
+    - What is the condition of my engine oil?
+    - Is the VVT valve functioning properly?
+    - Could the timing chain be worn?
+    confidence: medium
+- code: P0016
+  status: stored
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: fcbb0177b75511fc909bb87867922a38ea4f3993c2f985ad902af7368e58961d
+  explanation:
+    summary: The car's computer noticed that the signals from the crankshaft and intake camshaft aren't
+      matching up as they should. This can affect engine performance and may lead to more serious issues
+      if not checked soon.
+    severity: service_soon
+    likely_causes:
+    - cause: stretched timing chain or slipped belt
+      why: This is a common issue that can cause the signals to misalign.
+    - cause: faulty cam or crank sensor
+      why: If these sensors are not working properly, they can send incorrect signals.
+    - cause: VVT fault
+      why: Problems with the variable valve timing can also lead to signal misalignment.
+    what_to_do_now: You should have the car checked soon to avoid potential engine damage. Consider getting
+      an oil change if it's overdue, as this can sometimes help clear the issue.
+    questions_for_mechanic:
+    - What is causing the signal misalignment?
+    - Do I need to replace the timing chain or belt?
+    - Is my oil in good condition?
+    - Could the sensors be faulty?
+    confidence: high
+- code: P0016
+  status: pending
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: aefb5ae6b5774612c08591eb819480fb7869fe62ba5471f2354ccc46bc3191d2
+  explanation:
+    summary: The car's computer noticed a possible issue with the timing of the crankshaft and camshaft
+      signals, but it hasn't confirmed it yet. The warning light is still off, so keep an eye on how the
+      car runs.
+    severity: service_soon
+    likely_causes:
+    - cause: stretched timing chain or slipped belt
+      why: This is a common issue that can cause the signals to not line up correctly.
+    - cause: faulty cam or crank sensor
+      why: If these sensors are not working right, they can lead to timing problems.
+    - cause: VVT fault
+      why: Variable valve timing issues can also affect how the crankshaft and camshaft work together.
+    what_to_do_now: Watch for any unusual sounds or performance issues in the engine. It's best to have
+      this checked soon to avoid further damage.
+    questions_for_mechanic:
+    - What could be causing the timing issue?
+    - Is my oil in good condition and the right type?
+    - How urgent is it to fix this problem?
+    confidence: medium
+- code: P0101
+  status: stored
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 94b84fe09e54551ef481fdfa1ebee7006ae06e2d442c5365b840fd83a1a90a58
+  explanation:
+    summary: Your car's computer noticed a problem with the mass air flow sensor. This sensor helps the
+      engine know how much air is coming in, and it might not be reading correctly.
+    severity: service_soon
+    likely_causes:
+    - cause: dirty MAF sensor
+      why: Dust can coat the sensor, making it read less air than is actually coming in.
+    - cause: air leak after the MAF
+      why: If there's a leak in the hoses after the sensor, it can confuse the readings.
+    - cause: clogged air filter
+      why: A dirty air filter can restrict airflow, affecting the sensor's performance.
+    - cause: failing MAF
+      why: The sensor itself might be malfunctioning and not working properly.
+    what_to_do_now: It's best to have a mechanic check this soon. They can clean or replace the sensor
+      if needed.
+    questions_for_mechanic:
+    - How can we clean the mass air flow sensor?
+    - Are there any air leaks I should be worried about?
+    - Is my air filter clogged?
+    - Do I need to replace the mass air flow sensor?
+    confidence: high
+- code: P0101
+  status: pending
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 24cb46f706fdb3ad64532426baf1495edaca4e7ebe57fdbdd613acb837be2146
+  explanation:
+    summary: The car's computer noticed a possible issue with the mass air flow sensor, which measures
+      how much air enters the engine. This could affect how the engine runs, but the warning light is
+      still off for now.
+    severity: service_soon
+    likely_causes:
+    - cause: dirty MAF sensor
+      why: Dust can coat the sensor, making it read less air than there actually is.
+    - cause: air leak after the MAF
+      why: An air leak can cause incorrect readings, leading to engine performance issues.
+    - cause: clogged air filter
+      why: A dirty air filter can restrict airflow, affecting the sensor's readings.
+    - cause: failing MAF
+      why: If the sensor itself is failing, it won't provide accurate information to the engine.
+    what_to_do_now: Keep an eye on how the car is running. Listen for any hissing sounds at idle or check
+      if the engine feels sluggish. If you notice anything unusual, it’s best to see a mechanic soon.
+    questions_for_mechanic:
+    - What could be causing the mass air flow sensor issue?
+    - Should I clean or replace the air filter?
+    - Are there any leaks in the hoses?
+    - How can I prevent this from happening again?
+    confidence: medium
+- code: P0102
+  status: stored
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 7e2ab7ca51f9cf01e9f27f46963184a3390e6407455f73eeaab0071dc224c4ab
+  explanation:
+    summary: The car's computer noticed that the mass air flow sensor is not getting enough signal. This
+      means it might not be measuring the air entering the engine correctly, which can affect performance.
+    severity: service_soon
+    likely_causes:
+    - cause: dirty or failed MAF
+      why: Dust can coat the sensor, making it read low.
+    - cause: wiring open
+      why: If there's a break in the wiring, the sensor can't send the right signal.
+    - cause: air leak
+      why: An air leak can cause the sensor to read incorrectly, affecting the air-fuel mixture.
+    what_to_do_now: It's important to have this checked soon. Look for any hissing sounds from hoses or
+      check the air filter for dirt. This can help prevent further issues.
+    questions_for_mechanic:
+    - How can we clean or replace the mass air flow sensor?
+    - Are there any air leaks in the hoses?
+    - Is the wiring to the sensor intact?
+    confidence: high
+- code: P0102
+  status: pending
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 3731b63770e9e76901a7b2bf579a0f94a725ed28aa9501bc46d151bdb48e195d
+  explanation:
+    summary: The car's computer noticed a low signal from the mass air flow sensor, which measures how
+      much air enters the engine. This could mean the engine is not getting the right amount of air, affecting
+      performance.
+    severity: service_soon
+    likely_causes:
+    - cause: dirty or failed MAF
+      why: Dust can coat the sensor, making it read low.
+    - cause: wiring open
+      why: If there's a break in the wiring, the sensor can't send the right signal.
+    - cause: air leak
+      why: An air leak can cause too much air to enter, confusing the sensor.
+    what_to_do_now: Keep an eye on how the car runs. If you notice any strange sounds or performance issues,
+      it’s best to get it checked soon.
+    questions_for_mechanic:
+    - What could be causing the low signal from the MAF sensor?
+    - Can you check for any air leaks?
+    - Is the mass air flow sensor dirty or damaged?
+    confidence: medium
+- code: P0106
+  status: stored
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: d76e5c2aa195fad41785e60927ed8c377f99dac60f8ab495d0095db2369ba4d3
+  explanation:
+    summary: The car's computer noticed a problem with the manifold pressure sensor reading. This means
+      the engine is not getting the right amount of air or fuel, which can affect performance.
+    severity: service_soon
+    likely_causes:
+    - cause: vacuum leak
+      why: A vacuum leak can let in extra air, causing the engine to run lean.
+    - cause: blocked or cracked MAP hose
+      why: If the MAP hose is blocked or cracked, it can give incorrect readings to the sensor.
+    - cause: failing MAP sensor
+      why: A failing MAP sensor may not read the pressure correctly, affecting engine performance.
+    what_to_do_now: You should have this checked soon to avoid further issues. Listen for hissing sounds
+      and inspect hoses and the air filter.
+    questions_for_mechanic:
+    - What could be causing the vacuum leak?
+    - Can you check the MAP sensor and hoses?
+    - Is the air filter clean?
+    - How urgent is this issue?
+    confidence: high
+- code: P0106
+  status: pending
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 021fa06e2468a6400a649b38a4e033b4ebab3ddd84c25d89ce45d408b1911a61
+  explanation:
+    summary: The car's computer noticed a possible issue with the manifold pressure sensor, which helps
+      measure how much air is in the engine. This could affect how well the engine runs, but the warning
+      light is still off for now.
+    severity: service_soon
+    likely_causes:
+    - cause: vacuum leak
+      why: A vacuum leak can cause too much air to enter the engine, affecting performance.
+    - cause: blocked or cracked MAP hose
+      why: If the hose is blocked or cracked, it can give incorrect readings to the sensor.
+    - cause: failing MAP sensor
+      why: If the sensor itself is failing, it won't measure the air pressure correctly.
+    what_to_do_now: Keep an eye on how the car is running. If you notice any strange noises or changes
+      in performance, it’s best to get it checked soon.
+    questions_for_mechanic:
+    - What could be causing the manifold pressure sensor issue?
+    - How can I check for vacuum leaks?
+    - Is my air filter clean and in good condition?
+    confidence: medium
+- code: P0117
+  status: stored
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: c6159d4f89ea9605789857fde1ad4b8ebe53b207121ebba5727b02e0ae077e90
+  explanation:
+    summary: The car's computer noticed that the coolant temperature sensor is reading too low, which
+      means it thinks the engine is too hot. This could lead to overheating if not fixed soon.
+    severity: service_soon
+    likely_causes:
+    - cause: shorted sensor
+      why: The sensor may be damaged or malfunctioning, causing incorrect readings.
+    - cause: wiring short
+      why: There could be a problem with the wiring connected to the sensor, affecting its performance.
+    what_to_do_now: You should have this checked soon to avoid engine problems. Keep an eye on the temperature
+      gauge while driving.
+    questions_for_mechanic:
+    - What is causing the coolant temperature sensor to read low?
+    - Could there be a wiring issue affecting the sensor?
+    - Is the thermostat functioning properly?
+    - How can I prevent overheating in traffic?
+    confidence: high
+- code: P0117
+  status: pending
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 59946d8ba48b9d2fb79a42358843cd793234eb59abc1a0006983cd9e0ff28706
+  explanation:
+    summary: The car's computer noticed that the coolant temperature sensor might be reading too low,
+      which could mean the engine is overheating. This hasn't been confirmed yet, so the warning light
+      is still off. Keep an eye on the temperature gauge and watch for any signs of overheating.
+    severity: service_soon
+    likely_causes:
+    - cause: shorted sensor
+      why: This is a common issue that can cause incorrect readings.
+    - cause: wiring short
+      why: Wiring problems can also lead to wrong signals from the sensor.
+    what_to_do_now: Monitor the temperature gauge closely. If it rises too high, stop the car safely and
+      turn off the engine. It's important to check this soon.
+    questions_for_mechanic:
+    - What could be causing the coolant temperature sensor to read low?
+    - Should I check the wiring for any issues?
+    - Is the thermostat functioning properly?
+    - Could there be any other underlying problems?
+    confidence: medium
+- code: P0118
+  status: stored
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: d5db1f74b6e22c0750709bfda2dc7e5ab9437bd3784c49b19e808d492cc02577
+  explanation:
+    summary: The car's computer noticed that the coolant temperature sensor is reading too high, which
+      means it thinks the engine is too cold. This could lead to the engine not running efficiently and
+      using more fuel.
+    severity: service_soon
+    likely_causes:
+    - cause: unplugged or failed sensor
+      why: This is the most common reason for the sensor to send a wrong signal.
+    - cause: open wiring
+      why: Damaged or disconnected wires can also cause incorrect readings.
+    what_to_do_now: You should have the sensor checked and possibly replaced soon. Keep an eye on the
+      engine temperature while driving.
+    questions_for_mechanic:
+    - Is the coolant temperature sensor working properly?
+    - Could there be an issue with the wiring?
+    - Should I check the thermostat as well?
+    confidence: high
+- code: P0118
+  status: pending
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 28dde0aa24e905f87c4f6e0c7b4abd49534136e307245fe73d98b6eac6a2c483
+  explanation:
+    summary: The car's computer noticed that the coolant temperature sensor is reading too cold, but it
+      hasn't confirmed this yet. The warning light is still off, so keep an eye on the engine temperature.
+    severity: service_soon
+    likely_causes:
+    - cause: unplugged or failed sensor
+      why: This is the most common reason for the sensor to read incorrectly.
+    - cause: open wiring
+      why: Damaged or disconnected wires can also cause the sensor to fail.
+    what_to_do_now: Monitor the engine temperature closely. If it seems too low or the engine is not warming
+      up properly, consider getting it checked soon.
+    questions_for_mechanic:
+    - What could be causing the coolant temperature sensor to read too cold?
+    - Should I check the wiring or the sensor itself?
+    - Is the thermostat functioning properly?
+    confidence: medium
+- code: P0125
+  status: stored
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 5df43464a851d02035e6c1bd85c21f6dac00c9d13da5d7d97e6108d2eeb8feb6
+  explanation:
+    summary: Your car's computer noticed that the engine takes too long to warm up. This can mean more
+      fuel is used and the heater may not work well.
+    severity: watch
+    likely_causes:
+    - cause: thermostat stuck open
+      why: This part keeps the engine at the right temperature. If it sticks open, the engine runs too
+        cool.
+    - cause: failing coolant temperature sensor
+      why: This sensor tells the computer the engine's temperature. If it fails, it can give the same
+        warning.
+    - cause: low coolant
+      why: If there's not enough coolant, the engine may not heat up properly.
+    what_to_do_now: Keep an eye on your engine's temperature. If it seems to take too long to warm up,
+      consider having it checked.
+    questions_for_mechanic:
+    - What is causing the engine to take long to warm up?
+    - Should I check the thermostat or coolant temperature sensor?
+    - Is my coolant level okay?
+    confidence: high
+- code: P0125
+  status: pending
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 44040350cf0d4635a37b4f7bac18afd5555e0ad46ff3b3013d89e50e323cd018
+  explanation:
+    summary: The car's computer noticed that the engine is taking too long to warm up. This could mean
+      the engine is running cooler than it should, which can use more fuel and affect the heater.
+    severity: watch
+    likely_causes:
+    - cause: thermostat stuck open
+      why: This is the most likely cause because it can prevent the engine from reaching the right temperature.
+    - cause: failing coolant temperature sensor
+      why: This can also cause the same issue, but it's less common than a stuck thermostat.
+    - cause: low coolant
+      why: If there's not enough coolant, it can affect engine temperature, but it's less likely if the
+        coolant level is normal.
+    what_to_do_now: Keep an eye on the engine temperature. If it seems to take too long to warm up or
+      if you notice any unusual behavior, consider having it checked.
+    questions_for_mechanic:
+    - What could be causing the engine to run cooler?
+    - Should I check the thermostat or the coolant temperature sensor?
+    - Is my coolant level okay?
+    - Could this affect my fuel efficiency?
+    confidence: high
+- code: P0128
+  status: stored
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: d7282643a7db27c1e8e2db89fb94399ccdeff3c81f788c8d021a71a936bb15b1
+  explanation:
+    summary: The car's computer noticed that the engine coolant is staying too cool after warming up.
+      This can lead to higher fuel use and a weak heater.
+    severity: watch
+    likely_causes:
+    - cause: thermostat stuck open
+      why: This is the most common reason. The thermostat controls the engine temperature, and if it sticks
+        open, the engine runs too cool.
+    - cause: failing coolant temperature sensor
+      why: This can also cause the same code, but it's less likely than a stuck thermostat.
+    - cause: low coolant
+      why: If the coolant level is low, it can affect the engine temperature, but this is less common
+        than the first two causes.
+    what_to_do_now: Keep an eye on the engine temperature. If it runs too cool or you notice any issues
+      with heating, consider having it checked.
+    questions_for_mechanic:
+    - What is causing the thermostat to stick open?
+    - Is the coolant temperature sensor working properly?
+    - Do I have enough coolant in the system?
+    confidence: high
+- code: P0128
+  status: pending
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: c4a5c61e8193b9160cd91e1967b764ead556071e96610279437dfe2e042f7564
+  explanation:
+    summary: The car's computer noticed that the engine coolant is staying too cool after warming up.
+      This could mean the thermostat is stuck open, which can lead to more fuel use and a weak heater.
+    severity: watch
+    likely_causes:
+    - cause: thermostat stuck open
+      why: This is the most likely cause since it directly affects the engine temperature.
+    - cause: failing coolant temperature sensor
+      why: This can also cause the same issue, but it's less likely than the thermostat sticking.
+    - cause: low coolant
+      why: While this can affect temperature, it's not as common as the other two causes.
+    what_to_do_now: Keep an eye on the engine temperature. If it seems to stay cool or the heater isn't
+      working well, it may need attention.
+    questions_for_mechanic:
+    - How do I check if the thermostat is stuck?
+    - Could the coolant temperature sensor be faulty?
+    - Is my coolant level okay?
+    confidence: medium
+- code: P0133
+  status: stored
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: fe178755123f85317659808acb25fab42c46308e5ec3fcd7b9f8b26d7eca36b2
+  explanation:
+    summary: The car's computer noticed that the upstream oxygen sensor is reacting too slowly. This sensor
+      helps manage fuel use by measuring leftover oxygen in the exhaust.
+    severity: watch
+    likely_causes:
+    - cause: ageing oxygen sensor
+      why: Oxygen sensors can slow down as they get older, which is the most common reason for this issue.
+    - cause: exhaust leak
+      why: An exhaust leak can affect the sensor's readings, but it's less likely than the sensor aging.
+    - cause: contaminated sensor (oil, coolant, silicone)
+      why: Contaminants can interfere with the sensor's function, but this is less common compared to
+        the sensor aging.
+    what_to_do_now: Keep an eye on your fuel usage and any changes in engine performance. If you notice
+      anything unusual, it may be time to have it checked.
+    questions_for_mechanic:
+    - How old is the oxygen sensor?
+    - Could there be an exhaust leak?
+    - Is there any contamination affecting the sensor?
+    confidence: high
+- code: P0133
+  status: pending
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: ad0a24e1c69103a284ea2c4a1cd3e881d6b2b5f6069900f6218d24d5076205fc
+  explanation:
+    summary: The car's computer noticed that the oxygen sensor is reacting too slowly, but it hasn't confirmed
+      this yet. The warning light is still off, so keep an eye on how the car is running.
+    severity: watch
+    likely_causes:
+    - cause: ageing oxygen sensor
+      why: Oxygen sensors can slow down as they get older, which is a common issue.
+    - cause: exhaust leak
+      why: An exhaust leak can affect how the sensor reads the exhaust, making it seem slow.
+    - cause: contaminated sensor (oil, coolant, silicone)
+      why: If the sensor gets contaminated, it can also react slowly.
+    what_to_do_now: Monitor how your car is performing. If you notice any changes, like poor fuel efficiency
+      or strange noises, it might be time to see a mechanic.
+    questions_for_mechanic:
+    - What could be causing the oxygen sensor to react slowly?
+    - Should I replace the oxygen sensor now or wait?
+    - Are there any other issues I should be aware of?
+    confidence: medium
+- code: P0135
+  status: stored
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: d68a2a879cc69cb0633a95d52983c04c7f1b4de2bc5db31bf854be4a1439ffb0
+  explanation:
+    summary: The car's computer noticed that the heater in the oxygen sensor isn't working. This sensor
+      helps manage fuel use by measuring oxygen in the exhaust.
+    severity: watch
+    likely_causes:
+    - cause: failed sensor heater
+      why: This is the most common reason for this code, as the heater is essential for the sensor to
+        work quickly.
+    - cause: blown fuse
+      why: A blown fuse can stop the heater from working, making it a likely cause.
+    - cause: wiring fault
+      why: Damaged wires can disrupt the sensor's heater function, but it's less common than the first
+        two.
+    what_to_do_now: Keep an eye on your fuel efficiency. If it gets worse, consider having it checked.
+      The warning light is off for now.
+    questions_for_mechanic:
+    - What is the condition of the oxygen sensor?
+    - Could a blown fuse be causing this issue?
+    - Are there any wiring problems I should know about?
+    confidence: high
+- code: P0135
+  status: pending
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 1d3f23aea5a4c409cf64a33b0e0b61856b3311525ec83b73c0b227cedb3dd587
+  explanation:
+    summary: The car's computer noticed a problem with the oxygen sensor heater, but it hasn't confirmed
+      it yet. This means the warning light is still off, but you should watch for any changes in fuel
+      efficiency or exhaust smell.
+    severity: watch
+    likely_causes:
+    - cause: failed sensor heater
+      why: This is the most common reason for this code, as the heater helps the sensor work quickly.
+    - cause: blown fuse
+      why: A blown fuse can stop the heater from working, but it's less common than a failed sensor.
+    - cause: wiring fault
+      why: Damaged wires can also cause the heater to fail, but this is usually less likely.
+    what_to_do_now: Keep an eye on your fuel usage and any unusual smells from the exhaust. If you notice
+      anything strange, consider having it checked.
+    questions_for_mechanic:
+    - What could be causing the oxygen sensor heater issue?
+    - Is it safe to drive the car right now?
+    - How can I prevent this from happening again?
+    confidence: medium
+- code: P0136
+  status: stored
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 921e1db7378489f29f693f6f018050c1627094f7b415da0cd3bee6e7c2c39bba
+  explanation:
+    summary: The car's computer noticed a problem with the downstream oxygen sensor, which helps manage
+      fuel use. This means the sensor isn't working properly, but it hasn't confirmed the issue yet.
+    severity: watch
+    likely_causes:
+    - cause: failed sensor
+      why: The sensor may be old or worn out, which is common over time.
+    - cause: wiring fault
+      why: There could be a problem with the wires connecting to the sensor.
+    what_to_do_now: Keep an eye on how the car is running. If you notice any changes in fuel efficiency
+      or performance, it might need attention.
+    questions_for_mechanic:
+    - What is the condition of the oxygen sensor?
+    - Are there any wiring issues?
+    - Could there be an exhaust leak affecting the sensor?
+    confidence: high
+- code: P0136
+  status: pending
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 3092cc9c4b6393ac9e0e5a7b19e2c734d374d11179b975573708159d02713628
+  explanation:
+    summary: The car's computer noticed a possible issue with the downstream oxygen sensor, which helps
+      manage fuel use. This means the sensor might not be working properly, but it hasn't confirmed the
+      problem yet.
+    severity: watch
+    likely_causes:
+    - cause: failed sensor
+      why: The sensor may be aging or slowing down, which is common over time.
+    - cause: wiring fault
+      why: There could be a problem with the wires connecting to the sensor.
+    what_to_do_now: Keep an eye on the car's performance. If you notice any changes in fuel efficiency
+      or strange smells, it may need attention.
+    questions_for_mechanic:
+    - What could be causing the oxygen sensor issue?
+    - Should I be worried about my fuel efficiency?
+    - Is there a risk of further damage if I wait?
+    - What are the next steps to check this?
+    confidence: medium
+- code: P0141
+  status: stored
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: f6ce0547a65f81253839f389f645a839b88af41eea503606fcd1c6a22b5f0408
+  explanation:
+    summary: The car's computer noticed a problem with the downstream oxygen sensor's heater. This part
+      helps the sensor work quickly after starting the car, but it's not heating up properly.
+    severity: watch
+    likely_causes:
+    - cause: failed sensor heater
+      why: This is the most common reason for the code, as the heater is essential for the sensor's quick
+        operation.
+    - cause: wiring or fuse fault
+      why: A damaged wire or blown fuse can also stop the heater from working, but this is less likely
+        than the heater itself failing.
+    what_to_do_now: Keep an eye on your fuel usage. If it starts to increase, it might mean the sensor
+      is failing. It's a good idea to have it checked soon.
+    questions_for_mechanic:
+    - What is the condition of the downstream oxygen sensor?
+    - Could there be a wiring issue affecting the heater?
+    - Is there a risk of increased fuel consumption?
+    - Should I replace the sensor now or wait?
+    confidence: high
+- code: P0141
+  status: pending
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 8b1f1ac26be1a7101bb1c5e9537b22f4d23d3da393482876e5c2dc776b21615f
+  explanation:
+    summary: The car's computer noticed a problem with the oxygen sensor heater, but it hasn't confirmed
+      it yet. This means the warning light is still off, but you should watch for any changes in how the
+      car runs or if the light comes on.
+    severity: watch
+    likely_causes:
+    - cause: failed sensor heater
+      why: This is the most common reason for this code, as the heater helps the sensor work quickly.
+    - cause: wiring or fuse fault
+      why: A damaged wire or blown fuse could also cause the heater to fail, but it's less likely than
+        the sensor itself.
+    what_to_do_now: Keep an eye on your car's performance. If you notice any issues or the warning light
+      comes on, it’s time to see a mechanic.
+    questions_for_mechanic:
+    - What is the condition of the oxygen sensor?
+    - Could there be a wiring issue?
+    - Is there a blown fuse affecting the sensor?
+    confidence: medium
+- code: P0155
+  status: stored
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 9604b2428b2fb7a8e384b8609adeedb2c4de0167366bb5937f6e6d136d306dd1
+  explanation:
+    summary: The car's computer noticed that the heater for the oxygen sensor isn't working. This sensor
+      helps the engine use fuel efficiently, so it’s important to fix it soon.
+    severity: watch
+    likely_causes:
+    - cause: failed sensor heater
+      why: This is the most common reason for this code, as the heater helps the sensor work quickly.
+    - cause: wiring or fuse fault
+      why: A problem with the wiring or a blown fuse can also cause the heater to fail.
+    what_to_do_now: Keep an eye on how the car is running. If you notice any changes in fuel efficiency
+      or performance, it’s best to have it checked.
+    questions_for_mechanic:
+    - What is causing the oxygen sensor heater to fail?
+    - Will this affect my car's fuel efficiency?
+    - Is it safe to drive my car like this?
+    - What will it cost to fix?
+    confidence: high
+- code: P0155
+  status: pending
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 115fd86473d5b228c98e38f4296d6910e3c640d962e07e05d8995c3088e24a1c
+  explanation:
+    summary: The car's computer noticed a problem with the heater in the oxygen sensor but hasn't confirmed
+      it yet. This means the warning light is still off, but you should keep an eye on how the car is
+      running.
+    severity: watch
+    likely_causes:
+    - cause: failed sensor heater
+      why: This is the most common issue when the heater in the oxygen sensor doesn't work.
+    - cause: wiring or fuse fault
+      why: If the wiring or fuse is damaged, it can also stop the heater from working.
+    what_to_do_now: Monitor your car's performance. If you notice any changes in how it drives or if the
+      warning light comes on, it’s time to get it checked.
+    questions_for_mechanic:
+    - What could be causing the oxygen sensor heater issue?
+    - Do I need to replace the sensor or check the wiring?
+    - How can I prevent this from happening again?
+    confidence: medium
+- code: P0171
+  status: stored
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: ef62992d88fd39b342c842e10d3e25dc7d53ff614a7fff43e54e744fa06e8a42
+  explanation:
+    summary: The car's computer noticed that the engine is getting too much air and not enough fuel. This
+      can lead to poor performance and may cause damage if not fixed soon.
+    severity: service_soon
+    likely_causes:
+    - cause: vacuum or intake air leak
+      why: Hoses can crack and leak air, especially in hot weather.
+    - cause: dirty MAF sensor
+      why: Dust can coat the sensor, causing it to read air incorrectly.
+    - cause: weak fuel pump or clogged fuel filter
+      why: If the fuel system is weak or blocked, the engine won't get enough fuel.
+    - cause: clogged injectors
+      why: If the injectors are blocked, they can't deliver enough fuel to the engine.
+    what_to_do_now: Have a mechanic check the car soon. Look for any hissing sounds from hoses and check
+      the air filter yourself.
+    questions_for_mechanic:
+    - What could be causing the air leak?
+    - Can you clean the MAF sensor?
+    - Is the fuel pump working properly?
+    - Are the injectors clogged?
+    confidence: high
+- code: P0171
+  status: pending
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: d92b573e8d7827f237224f97d95e6000dd550e6ee0a4135a2f215bab34f9a538
+  explanation:
+    summary: The car's computer noticed that the engine might be getting too much air and not enough fuel.
+      This could lead to performance issues if it gets worse.
+    severity: service_soon
+    likely_causes:
+    - cause: vacuum or intake air leak
+      why: Hoses can crack in hot weather, causing air leaks.
+    - cause: dirty MAF sensor
+      why: Dust can coat the sensor, making it read incorrectly.
+    - cause: weak fuel pump or clogged fuel filter
+      why: These can restrict fuel flow to the engine.
+    - cause: clogged injectors
+      why: If injectors are blocked, they can't deliver enough fuel.
+    what_to_do_now: Keep an eye on how the car runs. If it starts to lose power or the warning light comes
+      on, get it checked soon.
+    questions_for_mechanic:
+    - What could be causing the air leak?
+    - How can I clean the MAF sensor?
+    - Is the fuel pump working properly?
+    - Are the injectors clogged?
+    confidence: medium
+- code: P0172
+  status: stored
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 767436991475b4fc7e951a55336bb753cccdd5f805d343e929651844a5c292a9
+  explanation:
+    summary: The car's computer noticed that the engine is getting too much fuel. This can waste fuel
+      and may harm the engine if not fixed soon.
+    severity: service_soon
+    likely_causes:
+    - cause: leaking injector
+      why: This is a common issue that can cause too much fuel to enter the engine.
+    - cause: high fuel pressure
+      why: If the fuel pressure is too high, it can lead to a rich fuel mixture.
+    - cause: faulty MAF or coolant sensor
+      why: These sensors can misread and cause the engine to get more fuel than needed.
+    - cause: clogged air filter
+      why: A blocked air filter can restrict airflow, leading to a rich mixture.
+    what_to_do_now: It's important to have this checked soon. A mechanic can find the exact cause and
+      fix it.
+    questions_for_mechanic:
+    - What is causing the engine to run rich?
+    - How can I prevent this from happening again?
+    - Will this affect my fuel economy?
+    - Is there any immediate damage to the engine?
+    confidence: high
+- code: P0172
+  status: pending
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: dae405729f78ddee6d928900c9bdcee610d798e5c4ff57c571e2b4b4a27cb5dc
+  explanation:
+    summary: The car's computer noticed that the engine might be using too much fuel. This could mean
+      there is a problem that needs checking soon.
+    severity: service_soon
+    likely_causes:
+    - cause: leaking injector
+      why: This is a common issue that can cause too much fuel to enter the engine.
+    - cause: high fuel pressure
+      why: If the fuel pressure is too high, it can lead to a rich fuel mixture.
+    - cause: faulty MAF or coolant sensor
+      why: These sensors help the computer manage fuel and air; if they fail, it can cause too much fuel
+        to be added.
+    - cause: clogged air filter
+      why: A dirty air filter can restrict airflow, leading to a rich mixture.
+    what_to_do_now: Keep an eye on how the car runs. If you notice any unusual smells or poor performance,
+      have it checked soon.
+    questions_for_mechanic:
+    - What could be causing the rich fuel mixture?
+    - How can we check the fuel injectors?
+    - Is the air filter clean?
+    - Do the sensors need testing?
+    confidence: medium
+- code: P0174
+  status: stored
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: bf7ad32ca355395cdeea29ef605bfb0a6d2d75ca6da1e4052618fcfe1c37069f
+  explanation:
+    summary: The car's computer noticed that the engine is getting too much air and not enough fuel. This
+      can cause performance issues and may lead to engine damage if not fixed soon.
+    severity: service_soon
+    likely_causes:
+    - cause: vacuum or intake air leak
+      why: Hoses can crack and leak air, especially in hot climates like Lagos.
+    - cause: dirty MAF sensor
+      why: Dust can coat the air-flow sensor, causing it to misread the air entering the engine.
+    - cause: weak fuel pump or clogged filter
+      why: If the fuel pump isn't strong enough or the filter is blocked, the engine won't get enough
+        fuel.
+    what_to_do_now: It's important to have this checked soon. Listen for any hissing sounds from hoses
+      and look for cracks or dirt in the air filter.
+    questions_for_mechanic:
+    - What could be causing the air leak?
+    - Can you check the MAF sensor?
+    - Is the fuel pump working properly?
+    - How soon should I get this fixed?
+    confidence: high
+- code: P0174
+  status: pending
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: bc24aa492189c25e6f453d3f5d969fec601e385a561c65da8d30f8ec9cc839c3
+  explanation:
+    summary: The car's computer noticed that the engine might be getting too much air and not enough fuel.
+      This could lead to performance issues if it gets worse.
+    severity: service_soon
+    likely_causes:
+    - cause: vacuum or intake air leak
+      why: In hot climates, hoses can crack and let in extra air.
+    - cause: dirty MAF sensor
+      why: Dust can coat the air-flow sensor, causing it to read incorrectly.
+    - cause: weak fuel pump or clogged filter
+      why: If the fuel pump is weak or the filter is clogged, the engine may not get enough fuel.
+    what_to_do_now: Keep an eye on how the car is running. If you notice any strange sounds or performance
+      issues, have it checked soon.
+    questions_for_mechanic:
+    - What could be causing the lean mixture?
+    - How can I check for air leaks?
+    - Is the MAF sensor clean?
+    - Is the fuel pump working properly?
+    confidence: medium
+- code: P0175
+  status: stored
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: b6255dd2f71f2766e6ab8fe18e1826db68f36fed18515c0f4eb5cf43cb916400
+  explanation:
+    summary: The car's computer noticed that the engine is getting too much fuel. This can waste fuel
+      and may harm the car's parts if not fixed soon.
+    severity: service_soon
+    likely_causes:
+    - cause: leaking injector
+      why: This is a common reason for too much fuel entering the engine.
+    - cause: high fuel pressure
+      why: If the fuel pressure is too high, it can push more fuel than needed into the engine.
+    - cause: faulty MAF
+      why: A bad air-flow sensor can misread the air entering the engine, causing it to add too much fuel.
+    what_to_do_now: It's important to have this checked soon. A mechanic can find the exact cause and
+      fix it.
+    questions_for_mechanic:
+    - What is causing the engine to run rich?
+    - How can I prevent damage to the catalytic converter?
+    - Will this affect my fuel efficiency?
+    - What repairs are needed?
+    confidence: high
+- code: P0175
+  status: pending
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 368afafa29bdc1ac1187ac179b6ce532a74395659c1a0699d6532f6e8ee511a1
+  explanation:
+    summary: The car's computer noticed that the engine might be using too much fuel, but it hasn't confirmed
+      this yet. The warning light is still off, so keep an eye on how the car runs.
+    severity: service_soon
+    likely_causes:
+    - cause: leaking injector
+      why: This is a common reason for too much fuel entering the engine.
+    - cause: high fuel pressure
+      why: If the fuel pressure is too high, it can cause the engine to run rich.
+    - cause: faulty MAF
+      why: A dirty or broken air-flow sensor can misread the air entering the engine, leading to too much
+        fuel being added.
+    what_to_do_now: Watch for any changes in how the car drives. If it starts to run poorly or the fuel
+      efficiency drops, get it checked soon.
+    questions_for_mechanic:
+    - What could be causing the engine to run rich?
+    - How can I check for a leaking injector?
+    - Is the air-flow sensor clean and working properly?
+    confidence: medium
+- code: P0217
+  status: stored
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: ed631b946d5502ed15b6a59e1714db1a12cc21fa3f84abc025bbc1f7c1fae3ed
+  explanation:
+    summary: The car's computer noticed that the engine is overheating. This means something is wrong
+      with the cooling system, and it needs immediate attention to avoid serious damage.
+    severity: stop_safely
+    likely_causes:
+    - cause: low coolant or a leak
+      why: Low coolant can cause overheating, especially in Lagos traffic.
+    - cause: failed cooling fan
+      why: If the fan doesn't work, the engine won't cool down properly.
+    - cause: thermostat stuck closed
+      why: A stuck thermostat can prevent coolant from flowing, causing overheating.
+    - cause: failed water pump
+      why: The water pump circulates coolant; if it fails, the engine can overheat.
+    - cause: blocked radiator
+      why: A blocked radiator can't cool the engine effectively.
+    what_to_do_now: Stop driving the car safely and turn off the engine. Check the coolant level and look
+      for leaks. It's important to fix this issue before driving again.
+    questions_for_mechanic:
+    - What is causing the engine to overheat?
+    - Is there a coolant leak?
+    - Is the cooling fan working properly?
+    - Do I need to replace the thermostat?
+    confidence: high
+- code: P0217
+  status: pending
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 99cbf8cf799469f7b6ab2266328afdf17049b3aa8e91495cc97d1e5a071879d1
+  explanation:
+    summary: The car's computer noticed that the engine might be overheating, but it hasn't confirmed
+      this yet. The warning light is still off, so keep an eye on the temperature gauge while driving.
+    severity: stop_safely
+    likely_causes:
+    - cause: low coolant or a leak
+      why: This is a common issue that can cause overheating, especially in Lagos traffic.
+    - cause: failed cooling fan
+      why: If the fan doesn't work, the engine can overheat, particularly in heavy traffic.
+    - cause: thermostat stuck closed
+      why: This can prevent coolant from flowing, leading to overheating.
+    - cause: failed water pump
+      why: If the pump fails, coolant won't circulate, causing the engine to overheat.
+    - cause: blocked radiator
+      why: A blocked radiator can stop proper cooling, especially in hot conditions.
+    what_to_do_now: Watch the temperature gauge closely. If it rises too high, stop the car safely and
+      turn off the engine immediately.
+    questions_for_mechanic:
+    - What could be causing the engine to overheat?
+    - Is the cooling fan working properly?
+    - Do I have enough coolant in the system?
+    - Should I check the thermostat?
+    confidence: medium
+- code: P0300
+  status: stored
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 1528a3e3aed19b9db4c0fa3926896a683ca363a6af3f6025d82f4c70864aae87
+  explanation:
+    summary: The car's computer noticed that the engine is misfiring in more than one cylinder. This means
+      the engine isn't running smoothly, which can lead to more serious problems if not checked soon.
+    severity: service_soon
+    likely_causes:
+    - cause: worn spark plugs
+      why: These are the most common reason for misfires, as they help ignite the fuel in the engine.
+    - cause: failing ignition coil
+      why: This part sends electricity to the spark plugs. If it fails, the spark plugs won't work properly.
+    - cause: vacuum leak
+      why: If there's a crack in the hoses, too much air can enter the engine, causing a misfire.
+    - cause: low fuel pressure
+      why: If the fuel isn't reaching the engine properly, it can cause misfires.
+    - cause: bad fuel
+      why: Poor-quality fuel can lead to improper combustion in the engine.
+    what_to_do_now: It's important to have this checked soon. Watch for any changes in how the car runs,
+      especially if the check-engine light starts flashing.
+    questions_for_mechanic:
+    - What could be causing the misfire?
+    - How can we check the spark plugs and ignition coil?
+    - Is there a vacuum leak that needs fixing?
+    - What type of fuel should I use?
+    confidence: high
+- code: P0300
+  status: pending
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 0887044649991c337915f3b0e2e8c695d940d16d3bc7c65035ab1003f3102fc4
+  explanation:
+    summary: The car's computer noticed a possible misfire in the engine, but it hasn't confirmed it yet.
+      This means one or more cylinders may not be burning fuel properly, which can affect performance.
+    severity: service_soon
+    likely_causes:
+    - cause: worn spark plugs
+      why: These are the most common reason for misfires as they help ignite the fuel.
+    - cause: failing ignition coil
+      why: This part sends electricity to the spark plugs; if it's weak, the spark plugs won't work well.
+    - cause: vacuum leak
+      why: If there's too much air getting in, it can cause a misfire.
+    - cause: low fuel pressure
+      why: If the engine isn't getting enough fuel, it can't run smoothly.
+    - cause: bad fuel
+      why: Poor quality fuel can lead to misfires as it may not burn properly.
+    what_to_do_now: Keep an eye on how the car runs. If the check-engine light starts flashing, stop driving
+      immediately and get it checked.
+    questions_for_mechanic:
+    - What could be causing the misfire?
+    - Should I replace the spark plugs or ignition coil?
+    - Can you check for vacuum leaks?
+    - Is my fuel quality okay?
+    confidence: medium
+- code: P0301
+  status: stored
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: ade7d95ad84ce9c7ee93a4e70c793d8ef7e1d9e775dddbbd83a3276797df26eb
+  explanation:
+    summary: The car's computer noticed that Cylinder 1 is misfiring. This means that the fuel in that
+      cylinder isn't burning properly, which can lead to engine problems.
+    severity: service_soon
+    likely_causes:
+    - cause: worn spark plug
+      why: This is the most common reason for a misfire.
+    - cause: failing ignition coil
+      why: This is also a common cause and can be checked easily.
+    - cause: leaking or clogged injector
+      why: This can prevent the right amount of fuel from getting into the cylinder.
+    - cause: low compression
+      why: This is less common but can be serious if it happens.
+    what_to_do_now: You should have the car checked soon. Ignoring this could lead to more serious issues.
+    questions_for_mechanic:
+    - What is causing the misfire?
+    - How soon should I fix this?
+    - Will it damage my engine if I wait?
+    - What are the repair options?
+    confidence: high
+- code: P0301
+  status: pending
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 9989e61a53b483b42c2f10c2f36415f876b022a26dc4a0520f2933d41e1cb1af
+  explanation:
+    summary: The car's computer noticed that Cylinder 1 might not be burning fuel properly. This could
+      lead to engine problems if not checked soon.
+    severity: service_soon
+    likely_causes:
+    - cause: worn spark plug
+      why: This is a common reason for misfires and can cause the cylinder to not burn fuel properly.
+    - cause: failing ignition coil
+      why: This part helps ignite the fuel in the cylinder, and if it's not working well, it can cause
+        a misfire.
+    - cause: leaking or clogged injector
+      why: If the injector isn't delivering fuel correctly, it can lead to a misfire.
+    - cause: low compression
+      why: This is less common but can be serious if the cylinder isn't sealing properly.
+    what_to_do_now: Keep an eye on the engine light. If it starts flashing, stop driving the car immediately.
+      It’s best to have a mechanic check it soon.
+    questions_for_mechanic:
+    - What is causing the misfire?
+    - Do I need to replace the spark plugs or ignition coil?
+    - Is there any risk of damage to the engine?
+    - How soon should I get this fixed?
+    confidence: high
+- code: P0302
+  status: stored
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 63ba3161f2448f44fd9a86bd89d40cf68d09e7a5cf9ca16da5984e8b54019157
+  explanation:
+    summary: The car's computer noticed that cylinder 2 is misfiring. This means it's not burning fuel
+      properly, which can lead to performance issues.
+    severity: service_soon
+    likely_causes:
+    - cause: worn spark plug
+      why: This is the most common reason for a misfire.
+    - cause: failing ignition coil
+      why: This is also a frequent cause and can be tested by swapping coils.
+    - cause: leaking or clogged injector
+      why: These can prevent the right amount of fuel from reaching the cylinder.
+    - cause: low compression
+      why: This is less common but can be serious if it occurs.
+    what_to_do_now: You should have the car checked soon to avoid further issues. Pay attention to any
+      changes in how the car drives.
+    questions_for_mechanic:
+    - What is causing the misfire?
+    - How can I prevent this from happening again?
+    - Is it safe to drive the car right now?
+    confidence: high
+- code: P0302
+  status: pending
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 3cb10cffc1f1d3d024f577c2c232b8d47ae92e712edb6c77729775c316170bc0
+  explanation:
+    summary: The car's computer noticed that cylinder 2 might not be burning fuel properly. This could
+      lead to engine problems if not checked soon.
+    severity: service_soon
+    likely_causes:
+    - cause: worn spark plug
+      why: This is the most common reason for a misfire.
+    - cause: failing ignition coil
+      why: This is also a common cause and can be tested easily.
+    - cause: leaking or clogged injector
+      why: This can prevent fuel from reaching the cylinder properly.
+    - cause: low compression
+      why: This is less common but can be serious if it happens.
+    what_to_do_now: Keep an eye on the engine light. If it starts flashing, stop driving the car immediately.
+      Otherwise, have it checked soon.
+    questions_for_mechanic:
+    - What could be causing the misfire?
+    - How can we test the spark plugs and ignition coil?
+    - Is there a risk of damaging the engine?
+    - What should I do if the engine light starts flashing?
+    confidence: high
+- code: P0303
+  status: stored
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 8726d5e14400501909fd776e0cd598e80f4cdd3b89e5b90bf05f2ae24975016a
+  explanation:
+    summary: The car's computer noticed that cylinder 3 is misfiring. This means that the fuel in that
+      cylinder is not burning properly, which can affect performance.
+    severity: service_soon
+    likely_causes:
+    - cause: worn spark plug
+      why: This is the most common reason for a misfire.
+    - cause: failing ignition coil
+      why: This can also cause the spark needed for combustion to fail.
+    - cause: leaking or clogged injector
+      why: If the injector can't deliver fuel properly, it can lead to a misfire.
+    - cause: low compression
+      why: This is less common but can be serious if it happens.
+    what_to_do_now: You should have the car checked soon. Ignoring this could lead to more serious problems.
+    questions_for_mechanic:
+    - What is causing the misfire?
+    - Do I need to replace the spark plugs?
+    - Is the ignition coil working properly?
+    - Could there be an issue with the fuel injector?
+    confidence: high
+- code: P0303
+  status: pending
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: c592cbecd35ab91f64b5d46c4ffeff40f550e04371a6bed461edb272b71fc036
+  explanation:
+    summary: The car's computer noticed that cylinder 3 might not be burning fuel properly. This could
+      lead to engine problems if not checked soon.
+    severity: service_soon
+    likely_causes:
+    - cause: worn spark plug
+      why: This is the most common reason for a misfire.
+    - cause: failing ignition coil
+      why: This can also cause a cylinder to misfire.
+    - cause: leaking or clogged injector
+      why: If the injector isn't working right, it can affect fuel delivery.
+    - cause: low compression
+      why: This is less common but can be serious if it happens.
+    what_to_do_now: Keep an eye on the engine light. If it starts flashing, stop driving the car and get
+      it checked right away.
+    questions_for_mechanic:
+    - What could be causing the misfire?
+    - How urgent is it to fix this?
+    - Can you check the spark plugs and ignition coil?
+    - Is there a risk of damaging other parts?
+    confidence: medium
+- code: P0304
+  status: stored
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: f926f2aaed2732c90bf99b3b8144e4147ec6fbf92d3d2542f722be8715c86980
+  explanation:
+    summary: The car's computer noticed that cylinder 4 is misfiring. This means that the fuel in that
+      cylinder isn't burning properly, which can affect the car's performance.
+    severity: service_soon
+    likely_causes:
+    - cause: worn spark plug
+      why: This is a common reason for misfires as spark plugs can wear out over time.
+    - cause: failing ignition coil
+      why: Another common cause; if the ignition coil isn't working well, it can't ignite the fuel properly.
+    - cause: leaking or clogged injector
+      why: If the fuel injector is blocked or leaking, it can't deliver fuel correctly.
+    - cause: low compression
+      why: This is less common but can be serious; it means the cylinder isn't sealing properly.
+    what_to_do_now: You should have the car checked soon. Ignoring this could lead to more serious problems.
+    questions_for_mechanic:
+    - What is causing the misfire?
+    - Do I need to replace the spark plugs or ignition coil?
+    - Is the fuel injector working properly?
+    - Could low compression be an issue?
+    confidence: high
+- code: P0304
+  status: pending
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: aea1ba31cfffd11d2b3656c343f5fd66b9826bfd253a5e1945adf5d4464cbd25
+  explanation:
+    summary: The car's computer noticed that cylinder 4 might not be burning fuel properly. This could
+      lead to engine problems if not checked soon.
+    severity: service_soon
+    likely_causes:
+    - cause: worn spark plug
+      why: This is a common reason for misfires and can cause the cylinder to not burn fuel correctly.
+    - cause: failing ignition coil
+      why: This is also a frequent cause of misfires and affects how the spark plug works.
+    - cause: leaking or clogged injector
+      why: If the injector is not delivering fuel properly, it can cause a misfire.
+    - cause: low compression
+      why: This is less common but can lead to serious engine issues.
+    what_to_do_now: Keep an eye on the engine light. If it starts flashing, stop driving the car and get
+      it checked immediately.
+    questions_for_mechanic:
+    - What could be causing the misfire?
+    - How urgent is this issue?
+    - Will it damage my engine if I keep driving?
+    - What repairs will be needed?
+    confidence: high
+- code: P0305
+  status: stored
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 9dd05be294a9f6c200c9676afbcc341432d88530f0c371fc282341bb6ccede47
+  explanation:
+    summary: The car's computer noticed that cylinder 5 is misfiring. This means that the fuel in that
+      cylinder isn't burning properly, which can affect performance.
+    severity: service_soon
+    likely_causes:
+    - cause: worn spark plug
+      why: This is the most common reason for a misfire.
+    - cause: failing ignition coil
+      why: This is also a frequent cause and can be tested easily.
+    - cause: leaking or clogged injector
+      why: This can prevent fuel from entering the cylinder properly.
+    - cause: low compression
+      why: This is less common but can be serious if it happens.
+    what_to_do_now: You should have this checked soon to avoid more serious problems. Pay attention to
+      how the car drives, especially if it feels rough or loses power.
+    questions_for_mechanic:
+    - What is causing the misfire?
+    - How can I prevent this from happening again?
+    - Is it safe to drive the car right now?
+    - Will this affect my fuel efficiency?
+    confidence: high
+- code: P0305
+  status: pending
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 6ba7b3f66e81792559782dc174b59f3ef0857525404f923b6677ff23fbd6482b
+  explanation:
+    summary: The car's computer noticed a problem with cylinder 5 not burning fuel properly. This could
+      lead to engine issues if not checked soon.
+    severity: service_soon
+    likely_causes:
+    - cause: worn spark plug
+      why: This is a common reason for misfires and can prevent proper fuel burning.
+    - cause: failing ignition coil
+      why: Another frequent cause that affects how the spark plug works.
+    - cause: leaking or clogged injector
+      why: This can stop fuel from getting to the cylinder correctly.
+    - cause: low compression
+      why: This is less common but can be serious if it happens.
+    what_to_do_now: Keep an eye on the engine light. If it starts flashing, stop driving the car and get
+      it checked immediately.
+    questions_for_mechanic:
+    - What could be causing the misfire?
+    - How urgent is it to fix this issue?
+    - Can you check the spark plugs and ignition coil?
+    - Is there a risk of damaging other parts?
+    confidence: high
+- code: P0306
+  status: stored
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 3fbe284402dbf7d8c06a16ca2ed38d151dbd3ea36107460cc8506fe6356611c7
+  explanation:
+    summary: The car's computer noticed that cylinder 6 is misfiring. This means that the fuel in that
+      cylinder isn't burning properly, which can lead to performance issues.
+    severity: service_soon
+    likely_causes:
+    - cause: worn spark plug
+      why: This is a common reason for misfires, as old spark plugs can fail to ignite the fuel.
+    - cause: failing ignition coil
+      why: This is also common; if the ignition coil isn't working, it won't send the right spark to the
+        cylinder.
+    - cause: leaking or clogged injector
+      why: If the injector can't deliver fuel properly, it can cause a misfire.
+    - cause: low compression
+      why: This is less common but can be serious; it means the cylinder isn't sealing well.
+    what_to_do_now: You should have the car checked soon. Ignoring this could lead to more serious problems.
+    questions_for_mechanic:
+    - What is causing the misfire?
+    - Do I need to replace the spark plugs?
+    - Is the ignition coil working properly?
+    - Could there be an issue with the fuel injectors?
+    confidence: high
+- code: P0306
+  status: pending
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 120f747e2ec34eb96fada7f930fcd18eac50e820ffc27e4d6d743a0dacb2d25b
+  explanation:
+    summary: The car's computer noticed a problem with cylinder 6 not firing correctly. This means the
+      engine isn't running smoothly, but it hasn't confirmed the issue yet, and the warning light is still
+      off.
+    severity: service_soon
+    likely_causes:
+    - cause: worn spark plug
+      why: This is a common cause of misfires, and it can prevent the cylinder from burning fuel properly.
+    - cause: failing ignition coil
+      why: This can also lead to a misfire by not providing enough spark to ignite the fuel.
+    - cause: leaking or clogged injector
+      why: If the injector isn't working right, it can stop the cylinder from getting the right amount
+        of fuel.
+    - cause: low compression
+      why: This is less common but can cause serious issues if the cylinder isn't sealing properly.
+    what_to_do_now: Keep an eye on the engine's performance. If the check-engine light starts flashing,
+      stop driving the car immediately and get it checked.
+    questions_for_mechanic:
+    - What could be causing the misfire?
+    - How can we test the spark plugs and ignition coil?
+    - Is there a risk of damaging other parts if I keep driving?
+    - What maintenance can prevent this issue?
+    confidence: high
+- code: P0335
+  status: stored
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 8396e00302d0d20d6f6ab335fda75c1f7bcf02b0f23f1318d7df1f42bbdf70b6
+  explanation:
+    summary: The car's computer noticed a problem with the crankshaft position sensor circuit. This sensor
+      helps the engine know when to fire the spark plugs, and if it fails, the engine may stall or not
+      restart.
+    severity: service_soon
+    likely_causes:
+    - cause: failed crank sensor
+      why: This is the most direct issue affecting the sensor circuit.
+    - cause: wiring fault
+      why: Problems with the wiring can interrupt the sensor's signal.
+    - cause: damaged reluctor ring
+      why: If this ring is damaged, it can affect the sensor's ability to read the crankshaft position.
+    what_to_do_now: You should have the crankshaft position sensor checked soon. Ignoring this could lead
+      to engine stalling.
+    questions_for_mechanic:
+    - What is the condition of the crankshaft position sensor?
+    - Are there any wiring issues?
+    - Is the reluctor ring damaged?
+    confidence: high
+- code: P0335
+  status: pending
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 2c9849971870fd3d60b91ee64bc38d403a120381e8895c11c1c290a395f93dbd
+  explanation:
+    summary: The car's computer noticed a possible issue with the crankshaft position sensor. This sensor
+      helps the engine know when to fire the spark plugs. Right now, the warning light is off, but you
+      should watch for any stalling or starting problems.
+    severity: service_soon
+    likely_causes:
+    - cause: failed crank sensor
+      why: This is the most common reason for this code, and it can cause the engine to stall.
+    - cause: wiring fault
+      why: If the wires connected to the crank sensor are damaged, it can also cause this issue.
+    - cause: damaged reluctor ring
+      why: This part works with the crank sensor, and if it's damaged, it can lead to sensor problems.
+    what_to_do_now: Keep an eye on how the car runs. If it stalls or has trouble starting, get it checked
+      soon.
+    questions_for_mechanic:
+    - What could be causing the crank sensor issue?
+    - Do I need an oil change?
+    - Is there any damage to the wiring?
+    - How urgent is this problem?
+    confidence: medium
+- code: P0340
+  status: stored
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 88d182e64f8d83e610dc75c3a41305d87bfcd3dc0e26821e107448f2272c4451
+  explanation:
+    summary: The car's computer noticed a problem with the camshaft position sensor. This sensor helps
+      the engine know when to open and close the valves, which is important for performance.
+    severity: service_soon
+    likely_causes:
+    - cause: failed cam sensor
+      why: This is the most direct issue since the sensor itself may not be working.
+    - cause: wiring fault
+      why: If the wires connected to the sensor are damaged, it can cause the sensor to fail.
+    - cause: timing problem
+      why: If the timing of the engine is off, it can affect how the sensor operates.
+    what_to_do_now: You should have the car checked soon. Ignoring this could lead to more serious engine
+      problems.
+    questions_for_mechanic:
+    - What is the condition of the camshaft position sensor?
+    - Are there any wiring issues?
+    - Is the engine oil the right type and level?
+    confidence: high
+- code: P0340
+  status: pending
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: f06ff13b4c78753e5b894313ac644d9eb264dcc1d914b4cdc5ac0f38def49a50
+  explanation:
+    summary: The car's computer noticed a possible issue with the camshaft position sensor, which helps
+      control the engine's timing. This could affect how well the engine runs, but it hasn't confirmed
+      the problem yet.
+    severity: service_soon
+    likely_causes:
+    - cause: failed cam sensor
+      why: This is the most common reason for the code, as the sensor is crucial for engine timing.
+    - cause: wiring fault
+      why: Wiring issues can prevent the sensor from working properly.
+    - cause: timing problem
+      why: If the timing is off, it can lead to engine performance issues.
+    what_to_do_now: Keep an eye on how the engine runs. If you notice any stalling or starting issues,
+      it’s best to get it checked soon.
+    questions_for_mechanic:
+    - What could be causing the cam sensor issue?
+    - Should I change the engine oil?
+    - Are there any other related problems I should be aware of?
+    confidence: medium
+- code: P0351
+  status: stored
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 49d9cf1085644d260d2c0dba658806ea2ec9c73c7dae14792a8f18471fcaa3ab
+  explanation:
+    summary: The car's computer found a problem with the ignition coil for cylinder 1. This means that
+      the engine might not be burning fuel properly, which can lead to misfires.
+    severity: service_soon
+    likely_causes:
+    - cause: failed ignition coil
+      why: This is the most common reason for the fault, as it directly affects how the engine ignites
+        fuel.
+    - cause: wiring or connector fault
+      why: If the wiring or connectors are damaged, it can prevent the ignition coil from working properly.
+    what_to_do_now: You should have the ignition coil checked soon. Ignoring this could lead to more serious
+      engine problems.
+    questions_for_mechanic:
+    - What is the condition of the ignition coil?
+    - Are there any wiring issues?
+    - Could this lead to more damage if not fixed?
+    confidence: high
+- code: P0351
+  status: pending
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: ab584279cc06252274290823274185685ccccc19644258a756c0579b37df3ae0
+  explanation:
+    summary: The car's computer noticed a possible problem with the ignition coil circuit for cylinder
+      1. This means the engine might not be burning fuel properly, which can lead to misfires.
+    severity: service_soon
+    likely_causes:
+    - cause: failed ignition coil
+      why: This is the most common reason for the issue.
+    - cause: wiring or connector fault
+      why: If the wiring or connectors are damaged, it can also cause problems with the ignition coil.
+    what_to_do_now: Keep an eye on how the car runs. If you notice rough idling or a check-engine light
+      flashing, it’s important to get it checked soon.
+    questions_for_mechanic:
+    - What is causing the ignition coil issue?
+    - Can you check the wiring and connectors?
+    - Are there any signs of misfiring?
+    - How urgent is this repair?
+    confidence: medium
+- code: P0401
+  status: stored
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: ab329d614fde7de0842a7266841956404acd6c3d3a2524d431dfddf82915121a
+  explanation:
+    summary: The car's computer noticed that not enough exhaust gas is being recirculated. This can affect
+      how well the car cleans its emissions.
+    severity: watch
+    likely_causes:
+    - cause: carbon-clogged EGR passages
+      why: This is a common issue that can block the flow of exhaust gas.
+    - cause: sticking EGR valve
+      why: If the valve doesn't open or close properly, it can also limit exhaust gas flow.
+    what_to_do_now: Keep an eye on your car's performance. If you notice any changes, it may be time to
+      see a mechanic.
+    questions_for_mechanic:
+    - What can be done to clean the EGR passages?
+    - Is the EGR valve functioning properly?
+    confidence: high
+- code: P0401
+  status: pending
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 1f01e5de7cbfb1279f1a1f9420e2f189ee51ec196f839920eff5575bce570b7e
+  explanation:
+    summary: The car's computer noticed that not enough exhaust gas is being recirculated, which can affect
+      emissions. However, it hasn't confirmed this issue yet, and the warning light is still off. Keep
+      an eye on how the car drives and any changes in performance.
+    severity: watch
+    likely_causes:
+    - cause: carbon-clogged EGR passages
+      why: This is a common reason for low exhaust gas recirculation.
+    - cause: sticking EGR valve
+      why: A sticking valve can prevent proper flow of exhaust gases.
+    what_to_do_now: Monitor the car's performance for any changes. If you notice anything unusual, consider
+      having it checked.
+    questions_for_mechanic:
+    - What could be causing the low EGR flow?
+    - Should I check the EGR valve or passages?
+    - Are there any other related issues I should be aware of?
+    confidence: medium
+- code: P0420
+  status: stored
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 9b048239acea73ea3220a689bb56916090dd4f512ee6075719900cbf67654093
+  explanation:
+    summary: The car's computer noticed that the catalytic converter isn't cleaning the exhaust properly.
+      This could mean the car is not running as cleanly as it should.
+    severity: watch
+    likely_causes:
+    - cause: ageing or damaged catalytic converter
+      why: This is the main part that cleans the exhaust, and it can wear out over time.
+    - cause: failing downstream oxygen sensor
+      why: This sensor checks how well the catalytic converter is working, and if it's not working right,
+        it can cause this code.
+    - cause: exhaust leak
+      why: An exhaust leak near the sensors can give false readings, affecting how the catalytic converter
+        is judged.
+    - cause: past misfires or oil burning
+      why: These issues can damage the catalytic converter over time, leading to this code.
+    what_to_do_now: Keep an eye on how the car drives. If you notice any changes, like poor performance
+      or strange noises, consider visiting a mechanic soon.
+    questions_for_mechanic:
+    - What could be causing the catalytic converter to not work properly?
+    - Should I check the oxygen sensor or look for exhaust leaks?
+    - Are there any other issues that might have led to this code?
+    confidence: high
+- code: P0420
+  status: pending
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 14060b7435adac642acf6380188b3478eedac962c2d5299b96898cea7ac95391
+  explanation:
+    summary: The car's computer noticed that the catalytic converter isn't cleaning the exhaust as well
+      as it should. This could mean there are issues with the exhaust system, but it hasn't confirmed
+      the problem yet.
+    severity: watch
+    likely_causes:
+    - cause: failing downstream oxygen sensor
+      why: This is a common issue that can affect how well the catalytic converter works.
+    - cause: exhaust leak
+      why: An exhaust leak near the sensors can also cause the converter to not clean the exhaust properly.
+    - cause: ageing or damaged catalytic converter
+      why: While this is a possibility, it is often a result of other issues, so it's less likely to be
+        the immediate cause.
+    - cause: past misfires or oil burning
+      why: These can lead to damage over time, but they are not currently active issues.
+    what_to_do_now: Keep an eye on the car's performance. If you notice any unusual sounds or smells,
+      or if the warning light comes on, have it checked out.
+    questions_for_mechanic:
+    - What could be causing the catalytic converter to not work properly?
+    - Should I check the oxygen sensor or look for exhaust leaks?
+    - Is there anything I should monitor while driving?
+    - What steps should I take if the warning light comes on?
+    confidence: medium
+- code: P0430
+  status: stored
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: ca650c569506fd0677c5ceb818a755b02cf79deadda2eb08d4e61259a9ff5cd1
+  explanation:
+    summary: The car's computer noticed that the catalytic converter isn't cleaning the exhaust as well
+      as it should. This could mean that the car might not be as clean for the environment, but it usually
+      drives normally.
+    severity: watch
+    likely_causes:
+    - cause: ageing or damaged catalytic converter
+      why: This is the main part that cleans the exhaust, and it can wear out over time.
+    - cause: failing downstream oxygen sensor
+      why: This sensor checks how well the catalytic converter is working and can fail, leading to incorrect
+        readings.
+    - cause: exhaust leak
+      why: An exhaust leak near the sensors can affect their readings and make it seem like the converter
+        isn't working well.
+    what_to_do_now: Keep an eye on how the car drives. If you notice any changes, like poor performance
+      or strange noises, consider having it checked soon.
+    questions_for_mechanic:
+    - What is the condition of the catalytic converter?
+    - Could the oxygen sensor be causing this issue?
+    - Is there any exhaust leak that needs fixing?
+    confidence: high
+- code: P0430
+  status: pending
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: c9854f1d66acb2365194a53517d51962da6573d9fe4b2193daea94473242f371
+  explanation:
+    summary: The car's computer noticed that the catalytic converter isn't cleaning the exhaust as well
+      as it should. This could mean there's a problem with the exhaust system, but it hasn't confirmed
+      it yet.
+    severity: watch
+    likely_causes:
+    - cause: failing downstream oxygen sensor
+      why: This is a common issue that can affect how well the catalytic converter works.
+    - cause: exhaust leak
+      why: An exhaust leak can also cause the catalytic converter to not function properly.
+    - cause: ageing or damaged catalytic converter
+      why: While this is a possibility, it is less likely to be the immediate cause without checking the
+        other factors first.
+    what_to_do_now: Keep an eye on how your car is running. If you notice any changes, like strange noises
+      or poor performance, it’s best to get it checked soon.
+    questions_for_mechanic:
+    - What could be causing the catalytic converter issue?
+    - Should I check the oxygen sensor or look for exhaust leaks?
+    - Is there anything else I should monitor while driving?
+    confidence: medium
+- code: P0440
+  status: stored
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 6c27243c1e2099c65c38061dbf658a5319fbb96e2005c1050bc8926373286e5b
+  explanation:
+    summary: The car's computer noticed a problem with the fuel vapour system. This means there might
+      be a leak that allows petrol vapour to escape.
+    severity: info
+    likely_causes:
+    - cause: loose or faulty fuel cap
+      why: This is the most common reason for this issue. If the cap isn't tight, vapour can escape.
+    - cause: cracked EVAP hose
+      why: If the fuel cap is fine, a cracked hose could be letting vapour out.
+    - cause: faulty purge or vent valve
+      why: This is less common, but if the other two are okay, it could be the valve causing the problem.
+    what_to_do_now: Check if the fuel cap is tight and clicks when closed. If it is, you may want to monitor
+      the situation, but it shouldn't affect how the car drives.
+    questions_for_mechanic:
+    - How can I check the fuel cap seal?
+    - What should I do if the warning light comes back?
+    - Can you inspect the EVAP hoses for cracks?
+    - What does the purge or vent valve do?
+    confidence: high
+- code: P0440
+  status: pending
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: d2ef19256b93d554ce9faa99d6634e987f4fd16a484440d7382fa3187ed9081e
+  explanation:
+    summary: The car's computer noticed a possible issue with the fuel vapour system, but it hasn't confirmed
+      it yet. This means the warning light is still off, but you should keep an eye on it.
+    severity: info
+    likely_causes:
+    - cause: loose or faulty fuel cap
+      why: This is the most common reason for this code. If the cap isn't tight, it can cause vapour leaks.
+    - cause: cracked EVAP hose
+      why: If the fuel cap isn't the issue, a cracked hose could be the next likely cause.
+    - cause: faulty purge or vent valve
+      why: This is less common but could still be a reason if the first two are not the problem.
+    what_to_do_now: Check if the fuel cap is tight and clicks when closed. If it is, watch for any changes
+      in the warning light.
+    questions_for_mechanic:
+    - What should I do if the warning light comes on?
+    - Can you check the fuel cap and hoses for leaks?
+    - How do I know if the purge or vent valve is faulty?
+    confidence: medium
+- code: P0442
+  status: stored
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: eee5661d0dc18c41186c8ed4f0e82e8e3495f66fe14189a82966fd9b403723f6
+  explanation:
+    summary: The car's computer noticed a small leak in the fuel vapour system. This means petrol vapour
+      could escape from the tank, which is not good for the environment.
+    severity: info
+    likely_causes:
+    - cause: loose or worn fuel cap seal
+      why: This is the most common cause. If the cap isn't tight, vapour can escape.
+    - cause: small crack in an EVAP hose
+      why: If the fuel cap is fine, a crack in the hose could also let vapour out.
+    - cause: faulty purge or vent valve
+      why: This is less likely but could cause issues if the other causes are ruled out.
+    what_to_do_now: Check if the fuel cap is tight and clicks when closed. If it is, keep an eye on it,
+      but it doesn't affect how the car drives.
+    questions_for_mechanic:
+    - Can you check the fuel cap seal?
+    - Are there any cracks in the EVAP hoses?
+    - Is the purge or vent valve working properly?
+    confidence: high
+- code: P0442
+  status: pending
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: f86f014e8acd1ef3459efa8bafbd29b2928602fee38baa271ddb84d7bfa5be17
+  explanation:
+    summary: The car's computer noticed a small leak in the fuel vapour system but hasn't confirmed it
+      yet. The warning light is still off, so keep an eye on it.
+    severity: info
+    likely_causes:
+    - cause: loose or worn fuel cap seal
+      why: This is the most common reason for this issue. If the cap isn't tight, vapour can escape.
+    - cause: small crack in an EVAP hose
+      why: If the fuel cap is fine, a crack in the hose could also cause a leak.
+    - cause: faulty purge or vent valve
+      why: This is less likely but could be a problem if the other causes are ruled out.
+    what_to_do_now: Check if the fuel cap is tight and clicks when closed. If it is, watch for any changes
+      in performance or warning lights.
+    questions_for_mechanic:
+    - What should I do if the warning light comes on?
+    - How can I check the fuel cap seal?
+    - Can you inspect the EVAP hoses for cracks?
+    confidence: medium
+- code: P0455
+  status: stored
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: f72c76aad8986637aa158b6a3ef78d67bcedcdf1b6c1791789a14276361ecef8
+  explanation:
+    summary: The car's computer noticed a large leak in the fuel vapour system. This usually means there
+      might be an issue with the fuel cap or hoses.
+    severity: info
+    likely_causes:
+    - cause: fuel cap missing or loose
+      why: This is the most common reason for this code. If the cap isn't tight, vapour can escape.
+    - cause: disconnected or cracked EVAP hose
+      why: If the hoses are damaged, they can also cause leaks in the system.
+    - cause: failed purge valve
+      why: This part helps control vapour flow; if it fails, it can lead to leaks.
+    what_to_do_now: Check if the fuel cap is tight and properly sealed. If it is, keep an eye on the warning
+      light and see if it comes back.
+    questions_for_mechanic:
+    - Is the fuel cap the problem?
+    - Are there any cracks in the EVAP hoses?
+    - Is the purge valve working properly?
+    confidence: high
+- code: P0455
+  status: pending
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 5e2641d7057eab7c00e6dc07311378e0ed2142d9380840c70290456f84dc153e
+  explanation:
+    summary: The car's computer noticed a possible large leak in the fuel vapour system. This usually
+      means the fuel cap might be loose or missing.
+    severity: info
+    likely_causes:
+    - cause: fuel cap missing or loose
+      why: This is the most common reason for this code.
+    - cause: disconnected or cracked EVAP hose
+      why: If the fuel cap is fine, this could be the next issue.
+    - cause: failed purge valve
+      why: This is less likely but still a possibility if the other causes are ruled out.
+    what_to_do_now: Check if the fuel cap is tight and clicked shut. If it is, watch for any warning lights
+      coming back on.
+    questions_for_mechanic:
+    - What should I do if the warning light comes back?
+    - Can you check the EVAP system for leaks?
+    confidence: high
+- code: P0456
+  status: stored
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: e02684862830e3c2695b0e96b9ed8c1894ad668ea04a6f50fd4a9b090fffd96f
+  explanation:
+    summary: The car's computer noticed a very small leak in the fuel vapour system. This usually happens
+      because of a worn fuel cap seal or a tiny crack in a hose.
+    severity: info
+    likely_causes:
+    - cause: worn fuel cap seal
+      why: This is the most common reason for this code, often due to not closing the cap properly.
+    - cause: tiny crack in an EVAP hose
+      why: If the fuel cap is fine, a small crack in the hose could be the next likely cause.
+    what_to_do_now: Check if the fuel cap is tightly closed. If it is, you may want to have the hoses
+      checked if the issue comes back.
+    questions_for_mechanic:
+    - Can you check the fuel cap seal?
+    - Are there any cracks in the EVAP hoses?
+    confidence: high
+- code: P0456
+  status: pending
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 0da645351df4d8d79772cf51be9314cd4865a2a767358beae19f5e3c377b8c15
+  explanation:
+    summary: The car's computer noticed a small leak in the fuel vapour system but hasn't confirmed it
+      yet. This means the warning light is still off, but you should keep an eye on it.
+    severity: info
+    likely_causes:
+    - cause: worn fuel cap seal
+      why: This is the most common reason for this code, and it can happen if the cap isn't closed properly.
+    - cause: tiny crack in an EVAP hose
+      why: If the fuel cap isn't the issue, a small crack in the hoses could be the next likely cause.
+    what_to_do_now: Make sure the fuel cap is tight and clicked shut. If the warning light comes on later,
+      you may need to check for hose cracks.
+    questions_for_mechanic:
+    - How can I check the fuel cap seal?
+    - What should I do if the warning light comes on?
+    - Can you inspect the EVAP hoses for cracks?
+    confidence: high
+- code: P0457
+  status: stored
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 9d8663cec7fc9f2b69318fd9ce14fdd6dc9be575e1c9d3a706fc205c61b2f2ef
+  explanation:
+    summary: The car's computer noticed a possible leak in the fuel vapour system. This usually means
+      the fuel cap is loose or missing, but it doesn't affect how the car drives.
+    severity: info
+    likely_causes:
+    - cause: fuel cap loose or not clicked shut
+      why: This is the most common reason for this code.
+    - cause: fuel cap missing
+      why: If the cap is not there, it will definitely cause a leak.
+    - cause: worn cap seal
+      why: A worn seal can also allow vapours to escape.
+    what_to_do_now: Check if the fuel cap is tight and clicked shut. If it is loose, tighten it and drive
+      a few times to see if the warning goes away.
+    questions_for_mechanic:
+    - What should I do if the warning light stays on?
+    - Could there be other issues with the fuel system?
+    - How can I check if the cap seal is worn?
+    confidence: high
+- code: P0457
+  status: pending
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 99ba694870634ad7ed41d191c7c754483040124838eea9e03074663b6ba112c7
+  explanation:
+    summary: The car's computer noticed a possible leak in the fuel vapour system, likely due to the fuel
+      cap. This means the cap might be loose or missing, but the warning light is still off for now.
+    severity: info
+    likely_causes:
+    - cause: fuel cap loose or not clicked shut
+      why: This is the most common reason for this code.
+    - cause: fuel cap missing
+      why: If the cap is not there, it will definitely cause a leak.
+    - cause: worn cap seal
+      why: A worn seal can also allow vapour to escape.
+    what_to_do_now: Check if the fuel cap is tight and clicked shut. If it is loose, tighten it and drive
+      the car a few times to see if the light goes off.
+    questions_for_mechanic:
+    - What should I do if the warning light comes back?
+    - Could there be other issues with the fuel vapour system?
+    confidence: high
+- code: P0480
+  status: stored
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 2a37d2b3f13387d87db634e5bbc54f17efa133a0cdbfd77be17370d62695e6c4
+  explanation:
+    summary: The car's computer noticed a problem with the cooling fan control. This means the fan may
+      not turn on, which can lead to the engine overheating.
+    severity: service_soon
+    likely_causes:
+    - cause: failed fan relay
+      why: This is the most common reason the fan won't turn on.
+    - cause: blown fuse
+      why: A blown fuse can stop the fan from working.
+    - cause: failed fan motor
+      why: If the motor is broken, the fan can't operate.
+    - cause: wiring fault
+      why: Damaged wires can prevent the fan from receiving power.
+    what_to_do_now: You should have the cooling system checked soon. If the engine starts to overheat,
+      stop safely and turn off the engine immediately.
+    questions_for_mechanic:
+    - What is causing the cooling fan not to work?
+    - Is the fan relay or fuse damaged?
+    - Could there be a wiring issue?
+    - How can I prevent overheating in traffic?
+    confidence: high
+- code: P0480
+  status: pending
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 88becf1c8b78d926bc5e9942055359168e651cc91b3313ca27d9fec96a726250
+  explanation:
+    summary: The car's computer noticed a possible problem with the cooling fan control circuit. This
+      means the fan may not turn on when needed, which can lead to overheating.
+    severity: service_soon
+    likely_causes:
+    - cause: failed fan relay
+      why: This is the most common reason the fan won't turn on.
+    - cause: blown fuse
+      why: A blown fuse can stop the fan from working.
+    - cause: failed fan motor
+      why: If the motor is broken, the fan won't operate.
+    - cause: wiring fault
+      why: Damaged wiring can interrupt the signal to the fan.
+    what_to_do_now: Keep an eye on the engine temperature. If it starts to rise, stop safely and turn
+      off the engine to prevent damage.
+    questions_for_mechanic:
+    - What could be causing the fan not to work?
+    - How can I prevent overheating?
+    - Should I check the coolant level?
+    - Is the thermostat functioning properly?
+    confidence: medium
+- code: P0505
+  status: stored
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 35032bbcf6bf4bd2582829925e912b0684e302d4cf4233f159558066f7c2fcf1
+  explanation:
+    summary: The car's computer noticed a problem with the idle speed control system. This means the engine
+      might not be idling smoothly like it should.
+    severity: watch
+    likely_causes:
+    - cause: dirty throttle body or idle control valve
+      why: Carbon can build up in the throttle body, especially with a lot of idling, causing the engine
+        to idle poorly.
+    - cause: failed idle control valve
+      why: If the idle control valve is not working, it can't help keep the engine idle steady.
+    - cause: vacuum leak
+      why: A vacuum leak can disrupt the air flow, making it hard for the engine to maintain the right
+        idle speed.
+    what_to_do_now: Keep an eye on how the engine idles. If it starts to feel rough or low, it’s time
+      to get it checked.
+    questions_for_mechanic:
+    - What can be done to clean the throttle body?
+    - Is the idle control valve working properly?
+    - Could there be a vacuum leak affecting the idle?
+    confidence: high
+- code: P0505
+  status: pending
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 0c5f03762eacb806055fb8b2318b2bd8c26808ef6499bb09a2d546a18504ca17
+  explanation:
+    summary: The car's computer noticed a possible issue with the idle speed control system. This means
+      the engine might not be idling smoothly, but it hasn't confirmed the problem yet.
+    severity: watch
+    likely_causes:
+    - cause: dirty throttle body or idle control valve
+      why: This is the most common reason, especially if the car has been idling a lot.
+    - cause: vacuum leak
+      why: A vacuum leak can also affect the idle speed, but it's less likely than a dirty throttle.
+    - cause: failed idle control valve
+      why: This is possible, but it usually happens after the other issues.
+    what_to_do_now: Keep an eye on how the engine idles. If it starts to feel rough or low, get it checked
+      soon.
+    questions_for_mechanic:
+    - What can I do to clean the throttle body?
+    - How can I tell if there's a vacuum leak?
+    - Is the idle control valve working properly?
+    confidence: medium
+- code: P0507
+  status: stored
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: c16d3edc60ef658c34ed59cd0a11c803338b510e9452c397bef170dfc0220124
+  explanation:
+    summary: The car's computer noticed that the engine is idling faster than it should. This could mean
+      there is a problem with how the engine is controlling its speed when not accelerating.
+    severity: watch
+    likely_causes:
+    - cause: vacuum leak
+      why: A vacuum leak can cause extra air to enter the engine, making it idle faster.
+    - cause: dirty or sticking idle control valve
+      why: If the idle control valve is dirty or stuck, it may not regulate the engine speed properly.
+    - cause: throttle not closing fully
+      why: If the throttle doesn't close completely, it can allow too much air into the engine, leading
+        to a high idle.
+    what_to_do_now: Keep an eye on how the engine is idling. If it starts to act strangely or the warning
+      light comes on, have it checked soon.
+    questions_for_mechanic:
+    - What could be causing the high idle?
+    - Do I need to clean the throttle body?
+    - Is there a vacuum leak I should worry about?
+    confidence: high
+- code: P0507
+  status: pending
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 9165f9bc192c96dc9523b979addf94d2c60547cf588b5e52f1b1ea825ca52d67
+  explanation:
+    summary: The car's computer noticed that the engine might be idling faster than it should. This happened
+      once, but it hasn't confirmed the issue yet, so the warning light is still off.
+    severity: watch
+    likely_causes:
+    - cause: vacuum leak
+      why: This is a common reason for high idle speeds.
+    - cause: dirty or sticking idle control valve
+      why: This can prevent the engine from idling correctly.
+    - cause: throttle not closing fully
+      why: If the throttle doesn't close, it can cause the engine to rev higher.
+    what_to_do_now: Keep an eye on how the engine is idling. If it starts to idle too high or behaves
+      strangely, have it checked soon.
+    questions_for_mechanic:
+    - What could be causing the high idle?
+    - Is the throttle body clean?
+    - Should I be concerned about driving it?
+    confidence: medium
+- code: P0524
+  status: stored
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 870cb40e6c9f0d8c613e190389feb606664b9e988c96fa53a04855ece5e18601
+  explanation:
+    summary: The car's computer noticed that the engine oil pressure is too low. This can be very serious
+      and may damage the engine quickly.
+    severity: stop_safely
+    likely_causes:
+    - cause: low oil level
+      why: This is the most common reason for low oil pressure.
+    - cause: oil leak
+      why: An oil leak can cause the oil level to drop, leading to low pressure.
+    - cause: failing oil pump
+      why: If the oil pump is not working well, it can't keep the oil pressure up.
+    - cause: clogged oil pickup
+      why: A clogged pickup can prevent oil from flowing properly, causing low pressure.
+    what_to_do_now: You should stop the car safely and check the oil level. If it's low, add oil. If the
+      problem continues, see a mechanic right away.
+    questions_for_mechanic:
+    - What is the current oil level?
+    - Is there an oil leak?
+    - Is the oil pump working properly?
+    - Is the oil pickup clogged?
+    confidence: high
+- code: P0524
+  status: pending
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: fac4a27d65224e7cd1b9898302aa1e86bee8c484a2659ec3dc0628f96c68dd51
+  explanation:
+    summary: The car's computer noticed low oil pressure once, but it hasn't confirmed it yet. This could
+      mean there is a problem with the oil system, so it's important to keep an eye on the oil level and
+      any warning lights.
+    severity: stop_safely
+    likely_causes:
+    - cause: low oil level
+      why: This is the most common reason for low oil pressure.
+    - cause: oil leak
+      why: An oil leak can cause the oil level to drop, leading to low pressure.
+    - cause: failing oil pump
+      why: If the oil pump isn't working well, it won't maintain proper pressure.
+    - cause: clogged oil pickup
+      why: A clogged pickup can prevent oil from circulating properly.
+    what_to_do_now: Check the oil level as soon as possible. If it's low, add oil. If the oil pressure
+      light comes on, stop the car safely and turn it off.
+    questions_for_mechanic:
+    - Can you check the oil level and pressure?
+    - Is there an oil leak?
+    - Is the oil pump working properly?
+    - Is the oil pickup clogged?
+    confidence: high
+- code: P0562
+  status: stored
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 5fdf980e38d5314dc44e4fd9b66cf02aeb63ef09ac00893ba8367c879935c571
+  explanation:
+    summary: The car's computer noticed that the battery isn't being charged properly. This means the
+      system voltage is too low, which can lead to problems starting the car or even stalling while driving.
+    severity: service_soon
+    likely_causes:
+    - cause: failing alternator
+      why: The alternator is responsible for charging the battery, and if it's not working well, the battery
+        won't get enough charge.
+    - cause: slipping or worn drive belt
+      why: The drive belt helps the alternator work. If it's worn or slipping, the alternator can't charge
+        the battery properly.
+    - cause: weak battery
+      why: If the battery can't hold a charge, it won't provide enough power to the car.
+    - cause: corroded battery terminals or ground strap
+      why: Corrosion can prevent the battery from connecting properly, leading to low voltage.
+    what_to_do_now: Have the charging system checked soon. If the voltage keeps dropping, it could lead
+      to stalling while driving.
+    questions_for_mechanic:
+    - What is the condition of the alternator?
+    - Is the drive belt worn or slipping?
+    - How strong is the battery?
+    - Are the battery terminals corroded?
+    confidence: high
+- code: P0562
+  status: pending
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 1af85d2198788a06ccef823ef3fcb093afb713a87da7c1a80ded12efc47ba967
+  explanation:
+    summary: The car's computer noticed that the battery isn't being charged properly, but it hasn't confirmed
+      this yet. The warning light is still off, so keep an eye on the battery's performance.
+    severity: service_soon
+    likely_causes:
+    - cause: failing alternator
+      why: The alternator charges the battery. If it's failing, the battery won't get enough power.
+    - cause: slipping or worn drive belt
+      why: The drive belt connects the alternator to the engine. If it's worn, the alternator can't work
+        properly.
+    - cause: weak battery
+      why: If the battery is weak, it can't hold a charge, leading to low voltage.
+    - cause: corroded battery terminals or ground strap
+      why: Corrosion can prevent the battery from charging correctly.
+    what_to_do_now: Watch for any signs of battery trouble, like dim lights or trouble starting. If these
+      happen, get it checked soon.
+    questions_for_mechanic:
+    - What is the condition of the alternator?
+    - Are the battery terminals clean?
+    - Is the drive belt in good shape?
+    - How old is the battery?
+    confidence: medium
+- code: P0563
+  status: stored
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 1b1270b450516fa09cd46499b34bd9e9fbb4624433d00bb00fcc7951a032a464
+  explanation:
+    summary: The car's computer noticed that the battery is being over-charged. This can cause problems
+      with the charging system and may lead to battery issues.
+    severity: service_soon
+    likely_causes:
+    - cause: faulty alternator voltage regulator
+      why: This part controls the voltage from the alternator, and if it's not working right, it can over-charge
+        the battery.
+    - cause: poor ground connection
+      why: A bad ground can disrupt the electrical flow, leading to over-charging and other issues.
+    what_to_do_now: You should have this checked soon to avoid battery damage. Keep an eye on your battery's
+      performance and any warning lights.
+    questions_for_mechanic:
+    - What is causing the over-charging?
+    - Is the alternator voltage regulator faulty?
+    - Are there any poor ground connections?
+    - How can I prevent battery issues?
+    confidence: high
+- code: P0563
+  status: pending
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 565b21498ffff998ef52b399f21e9ea76cb475620425b94afc79518a3074af70
+  explanation:
+    summary: The car's computer noticed that the battery might be getting too much charge, but it hasn't
+      confirmed this yet. The warning light is still off, so keep an eye on the battery's performance.
+    severity: service_soon
+    likely_causes:
+    - cause: faulty alternator voltage regulator
+      why: This part controls the amount of charge going to the battery. If it's not working right, it
+        can overcharge the battery.
+    - cause: poor ground connection
+      why: A bad ground connection can cause electrical issues, including problems with how the battery
+        charges.
+    what_to_do_now: Watch for any signs of battery problems, like dim lights or trouble starting the car.
+      It's best to get this checked soon.
+    questions_for_mechanic:
+    - What could be causing the overcharging?
+    - How can I check the battery's health?
+    - Is the alternator working properly?
+    - Are there any corroded connections?
+    confidence: medium
+- code: P0700
+  status: stored
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 8a5d88da1f4916eb1c21606219f160d38d82080652e45968c339ee0ebed67e82
+  explanation:
+    summary: The car's transmission computer found a problem and asked for a warning light. This means
+      there might be an issue with the transmission that needs checking soon.
+    severity: service_soon
+    likely_causes:
+    - cause: low or old transmission fluid
+      why: This is the most common cause, especially if the car has been in stop-and-go traffic.
+    - cause: any stored transmission fault
+      why: The transmission computer has detected a fault, but we need a scan tool to find the specific
+        issue.
+    what_to_do_now: You should get the transmission checked soon. Look out for slipping gears or harsh
+      shifts while driving.
+    questions_for_mechanic:
+    - What specific fault codes are stored in the transmission module?
+    - Is the transmission fluid low or old?
+    - Are there any signs of slipping gears?
+    confidence: high
+- code: P0700
+  status: pending
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: b39a63447459d1536e84756a6251e228a2f91083c46d305e6e92175b87053b38
+  explanation:
+    summary: The car's computer noticed a possible problem with the transmission but hasn't confirmed
+      it yet. The warning light is still off, but you should watch for any slipping gears or harsh shifts.
+    severity: service_soon
+    likely_causes:
+    - cause: low or old transmission fluid
+      why: This is the most common cause, especially in stop-and-go traffic.
+    - cause: any stored transmission fault
+      why: The computer is asking for a check, but we need to read the transmission module for more details.
+    what_to_do_now: Keep an eye on how the car shifts gears. If you notice any issues, get it checked
+      soon to avoid bigger problems.
+    questions_for_mechanic:
+    - What are the specific transmission codes?
+    - Is the transmission fluid low or old?
+    - Are there any signs of slipping gears?
+    confidence: medium
+- code: P0741
+  status: stored
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 2b6da15ced1f59988c65bc1758720273ddbc7e98df45547138d9697d721e70ec
+  explanation:
+    summary: The car's computer noticed a problem with the torque converter clutch not locking up properly.
+      This can affect how the car shifts gears and may lead to bigger issues if not checked soon.
+    severity: service_soon
+    likely_causes:
+    - cause: old or low transmission fluid
+      why: This is the most common cause, especially in stop-and-go traffic.
+    - cause: faulty lock-up solenoid
+      why: If the solenoid is not working, it can prevent the clutch from locking.
+    - cause: worn torque converter
+      why: A worn converter can also lead to the clutch not functioning correctly.
+    what_to_do_now: It's important to have the transmission checked soon. Look for signs like slipping
+      gears or harsh shifts. Addressing it early can save you money later.
+    questions_for_mechanic:
+    - What is the condition of the transmission fluid?
+    - Is the lock-up solenoid working properly?
+    - Does the torque converter need replacement?
+    confidence: high
+- code: P0741
+  status: pending
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: a2b06c746b01e815a2ddae1c1f2ab96b7e6c24e9c8b4766c6a01feff3f0aef8c
+  explanation:
+    summary: The car's computer noticed a possible issue with the torque converter clutch not locking
+      up properly. This means the car might not shift gears smoothly, but it hasn't confirmed the problem
+      yet.
+    severity: service_soon
+    likely_causes:
+    - cause: old or low transmission fluid
+      why: This is the most common cause, especially in stop-and-go traffic.
+    - cause: faulty lock-up solenoid
+      why: If the solenoid is not working, it can prevent the clutch from locking.
+    - cause: worn torque converter
+      why: If the torque converter is worn, it may not function properly.
+    what_to_do_now: Keep an eye on how the car shifts gears. If you notice slipping or harsh shifts, get
+      it checked soon.
+    questions_for_mechanic:
+    - What is the condition of the transmission fluid?
+    - Is the lock-up solenoid working properly?
+    - Could the torque converter be worn?
+    confidence: medium
+- code: P2135
+  status: stored
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 6ed6705c81e100cf2f50e0426bf272dfa4fb7d512a973c98b50301607b3167b3
+  explanation:
+    summary: The car's computer noticed a problem with the throttle position sensor signals not matching.
+      This could affect how the car accelerates and may lead to reduced power.
+    severity: service_soon
+    likely_causes:
+    - cause: failing throttle body sensor
+      why: This is the most likely cause since the signals are not agreeing.
+    - cause: wiring or connector fault
+      why: This could also cause the signals to disagree, but it's less likely than the sensor itself.
+    what_to_do_now: You should have the throttle body checked soon. It's important for safe driving and
+      performance.
+    questions_for_mechanic:
+    - What is causing the throttle position sensor signals to disagree?
+    - Is the throttle body sensor failing?
+    - Do I need to clean the throttle body?
+    - Will this affect my car's performance?
+    confidence: high
+- code: P2135
+  status: pending
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 93e1392e25560ee3047234f14f449470114b0b9a106442be8f8f7e87faa5dae3
+  explanation:
+    summary: The car's computer noticed a disagreement between two throttle position sensors. This means
+      the throttle body, which controls air flow to the engine, might have a problem.
+    severity: service_soon
+    likely_causes:
+    - cause: failing throttle body sensor
+      why: This is the most likely cause since the sensors are not agreeing.
+    - cause: wiring or connector fault
+      why: If the wiring or connectors are damaged, it can cause the sensors to send incorrect signals.
+    what_to_do_now: Keep an eye on how the car is running. If you notice any power loss or strange behavior,
+      get it checked soon.
+    questions_for_mechanic:
+    - What is the condition of the throttle body sensor?
+    - Are there any wiring issues?
+    - Can you clean the throttle body to improve performance?
+    confidence: medium
+- code: P2187
+  status: stored
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 3a7a9afa0c2a6e3d8094628be61b8b9251ec855ff4ea73a5d23c0535a30f2b4a
+  explanation:
+    summary: The car's computer noticed that the engine is getting too much air and not enough fuel at
+      idle. This can cause performance issues and may lead to more serious problems if not fixed soon.
+    severity: service_soon
+    likely_causes:
+    - cause: vacuum leak (most noticeable at idle)
+      why: This is a common issue in hot climates where hoses can crack.
+    - cause: leaking intake gasket
+      why: It can also allow extra air into the engine, affecting the fuel mixture.
+    - cause: PCV hose crack
+      why: Similar to vacuum leaks, cracks can lead to too much air entering.
+    - cause: dirty MAF
+      why: A dirty air-flow sensor can misread the air entering the engine, causing a lean condition.
+    what_to_do_now: Listen for any hissing sounds at idle and check the hoses for cracks. It’s a good
+      idea to look at the air filter too. If you notice any issues, get it checked soon.
+    questions_for_mechanic:
+    - What could be causing the vacuum leak?
+    - How can I clean the air-flow sensor?
+    - Should I replace any hoses or the air filter?
+    - Is there a risk of damage if I wait to fix this?
+    confidence: high
+- code: P2187
+  status: pending
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: a51bdc276fe2deee3d83df56d4c95763405aa31f0a9307130fa6c7c8442adb81
+  explanation:
+    summary: The car's computer noticed that the engine might be running lean, meaning there could be
+      more air than fuel getting to it. This has not been confirmed yet, so the warning light is still
+      off. Keep an eye on how the car runs, especially at idle.
+    severity: service_soon
+    likely_causes:
+    - cause: vacuum leak (most noticeable at idle)
+      why: This is a common issue that can cause a lean mixture, especially in older cars.
+    - cause: leaking intake gasket
+      why: An intake gasket leak can also let in extra air, leading to a lean condition.
+    - cause: PCV hose crack
+      why: A cracked PCV hose can create a vacuum leak, affecting the air-fuel mixture.
+    - cause: dirty MAF
+      why: If the mass air flow sensor is dirty, it may not read the air correctly, causing the engine
+        to run lean.
+    what_to_do_now: Listen for any hissing sounds at idle and check the hoses for cracks. Look at the
+      air filter to see if it's dirty. If you notice any issues, it's best to see a mechanic soon.
+    questions_for_mechanic:
+    - What could be causing the lean condition?
+    - Can you check the vacuum hoses and intake gasket?
+    - Is the mass air flow sensor clean?
+    - How urgent is this issue?
+    confidence: medium
+- code: P2195
+  status: stored
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: dce0626fef7242e9cdcd3570d94aea0770f74563c2bf68beffe00a23d8316441
+  explanation:
+    summary: The car's computer noticed that the upstream oxygen sensor signal is stuck lean. This means
+      the sensor is not reading the right amount of oxygen in the exhaust, which can affect fuel efficiency.
+    severity: watch
+    likely_causes:
+    - cause: ageing sensor
+      why: Oxygen sensors can slow down over time, especially with certain fuel additives.
+    - cause: exhaust leak
+      why: An exhaust leak can cause incorrect readings from the sensor.
+    - cause: real lean condition
+      why: This means there is actually too much air and not enough fuel in the mixture.
+    what_to_do_now: Keep an eye on your fuel efficiency and any changes in engine performance. If you
+      notice any issues, consider having it checked.
+    questions_for_mechanic:
+    - What could be causing the oxygen sensor to read lean?
+    - Should I replace the oxygen sensor?
+    - Is there an exhaust leak that needs fixing?
+    confidence: high
+- code: P2195
+  status: pending
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: 7bc263a6eb07d0c3db8da5e28e0103a50c32fe9651ca9097baf2ad7e7de3cac7
+  explanation:
+    summary: The car's computer noticed that the upstream oxygen sensor signal is stuck lean, but it hasn't
+      confirmed this yet. This means the sensor might not be working properly, affecting how the engine
+      uses fuel.
+    severity: watch
+    likely_causes:
+    - cause: ageing sensor
+      why: Oxygen sensors can slow down over time, especially with certain conditions.
+    - cause: exhaust leak
+      why: An exhaust leak can confuse the sensor, making it think there's too much oxygen.
+    - cause: real lean condition
+      why: This means the engine is getting too much air compared to fuel, which the sensor might detect.
+    what_to_do_now: Keep an eye on the car's performance. If you notice any changes, like poor fuel efficiency
+      or strange sounds, it may need attention.
+    questions_for_mechanic:
+    - What could be causing the oxygen sensor issue?
+    - Should I check for any exhaust leaks?
+    - Is the sensor old and needs replacement?
+    confidence: medium
+- code: U0100
+  status: stored
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: c02cfd93e929f45882a2ea2ae0c0d5bd50c18adfddc90faa07bcab3f4dc01735
+  explanation:
+    summary: The car's computer noticed that other parts lost contact with the engine computer. This can
+      cause problems with how the car runs, but the warning light is not on yet.
+    severity: service_soon
+    likely_causes:
+    - cause: wiring or connector fault
+      why: This is a common issue that can disrupt communication between the computers.
+    - cause: engine computer power or ground fault
+      why: If the engine computer isn't getting enough power, it can't communicate properly.
+    - cause: failing engine computer
+      why: If the engine computer itself is having problems, it may not send or receive signals.
+    what_to_do_now: It's important to have this checked soon. Watch for any signs of stalling or starting
+      issues.
+    questions_for_mechanic:
+    - What could be causing the communication loss?
+    - How can we check the wiring and connectors?
+    - Is the engine computer functioning properly?
+    confidence: high
+- code: U0100
+  status: pending
+  reviewed: false
+  model: openrouter/openai/gpt-4o-mini
+  prompt_version: dtc_explain.v1
+  input_hash: a83211fbac3ea405c7331f0ea3869f912bcf363bebe7e3b0af8f2c93daf01faf
+  explanation:
+    summary: The car's computer noticed a possible issue where it lost contact with the engine computer.
+      This could mean trouble for starting the engine or it might stall while driving.
+    severity: service_soon
+    likely_causes:
+    - cause: wiring or connector fault
+      why: This is a common issue that can cause communication problems.
+    - cause: engine computer power or ground fault
+      why: If the engine computer isn't getting enough power, it can lose contact.
+    - cause: failing engine computer
+      why: If the engine computer itself is failing, it may not communicate properly.
+    what_to_do_now: Keep an eye on how the car runs. If it stalls or won't start, you should stop driving
+      and get it checked soon.
+    questions_for_mechanic:
+    - What could be causing the lost contact?
+    - How can we check the wiring and connectors?
+    - Is the engine computer working properly?
+    confidence: medium

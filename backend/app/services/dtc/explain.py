@@ -5,7 +5,8 @@
 2. Otherwise up to **two** LLM attempts. An attempt counts only if its answer is valid
    JSON in the `DtcExplanation` shape **and** passes the grounding check (no invented
    codes, severity equal to the definition's).
-3. No key, over budget, or two failed attempts -> the template, which is always correct.
+3. No key, over budget, a fatal provider error (bad key or model), or two failed
+   attempts -> the template, which is always correct.
 
 Returns the explanation and where it came from: `personalised` (LLM, with this car's
 facts), `generic` (LLM, no car: the pre-generated top-50) or `template`.
@@ -34,7 +35,7 @@ class ExplainResult:
     input_hash: str
     attempts: int = 0
     problems: list[str] = field(default_factory=list)  # why LLM answers were rejected
-    skipped: str | None = None  # no_key / over_budget / no_definition
+    skipped: str | None = None  # no_key / over_budget / no_definition / provider_error
 
 
 async def explain(session, ctx: DtcContext, vehicle_id=None) -> ExplainResult:
@@ -54,6 +55,10 @@ async def explain(session, ctx: DtcContext, vehicle_id=None) -> ExplainResult:
             out.skipped = res.skipped
             return out
         out.attempts += 1
+        if res.fatal:  # a bad key or model: a retry would fail the same way
+            out.problems.append(res.error or "provider error")
+            out.skipped = "provider_error"
+            return out
         if not res.ok:
             out.problems.append(res.error or "call failed")
             continue

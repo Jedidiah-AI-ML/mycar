@@ -105,7 +105,7 @@ async def test_valid_answer_is_used_and_logged(session, llm):
     assert (row.ok, row.tokens_in, row.tokens_out) == (True, 1200, 350)
     assert row.cost_usd == Decimal("0.000400")
     assert row.prompt_version == PROMPT_VERSION and row.input_hash == r.input_hash
-    assert row.model == "openai/gpt-4o-mini" and row.purpose == "dtc_explain"
+    assert row.model == "openrouter/openai/gpt-4o-mini" and row.purpose == "dtc_explain"
     sent = fake.calls[0]
     assert sent["response_format"] == {"type": "json_object"} and sent["api_key"] == "test-key"
     assert "Use ONLY the facts" in sent["messages"][0]["content"]
@@ -279,3 +279,28 @@ async def test_real_litellm_response_objects_fit_the_client(session, monkeypatch
     (row,) = await calls(session)
     assert row.ok and row.tokens_in > 0 and row.tokens_out > 0
     assert row.cost_usd >= 0  # priced from LiteLLM's bundled table (no download)
+
+
+# ---------------------------------------------------------------- provider errors, price
+
+
+class AuthenticationError(Exception):
+    """Named like LiteLLM's: the client classifies errors by class name."""
+
+
+async def test_a_bad_key_is_fatal_not_retried_and_scrubbed(session, llm):
+    fake = llm(AuthenticationError("Incorrect API key provided: sk-or-v1-abc123def4561170"))
+    res = await explain(session, ctx())
+    assert res.source == "template" and res.skipped == "provider_error"
+    assert len(fake.calls) == 1  # no second attempt
+    [call] = await calls(session)
+    assert "sk-or" not in call.error and "abc123" not in call.error and "[key]" in call.error
+
+
+def test_cost_falls_back_to_the_base_model_price(monkeypatch):
+    monkeypatch.setattr(get_settings(), "llm_model", "openrouter/openai/gpt-4o-mini")
+    monkeypatch.setattr(client, "_price", lambda m: (0.15e-6, 0.60e-6))
+    resp = SimpleNamespace(
+        usage=SimpleNamespace(prompt_tokens=1_000_000, completion_tokens=1_000_000)
+    )
+    assert client._cost(resp) == pytest.approx(0.75)

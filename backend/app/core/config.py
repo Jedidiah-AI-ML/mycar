@@ -67,7 +67,8 @@ class Settings(BaseSettings):
     trip_gap_s: int = 10  # SEED - validate (P14): a hole in 1 Hz data longer than this is a gap
 
     # --- LLM (Phase 4, ADR-013). Empty key -> no LLM calls, templates only. ---
-    llm_model: str = "openai/gpt-4o-mini"
+    llm_model: str = "openrouter/openai/gpt-4o-mini"  # OpenRouter key (sk-or-...); plain
+    # "openai/gpt-4o-mini" needs an OpenAI key instead
     llm_api_key: SecretStr = SecretStr("")
     llm_monthly_budget_usd: float = 2.0  # SEED - validate (D5): past it, no live calls
     llm_timeout_s: float = 30.0

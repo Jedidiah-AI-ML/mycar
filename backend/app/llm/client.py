@@ -1,13 +1,15 @@
 """The one way AutoCare calls an LLM (ADR-013).
 
 `complete_json()` sends a system + user prompt through **LiteLLM** (provider-agnostic; the
-model is `LLM_MODEL`, currently openai/gpt-4o-mini) and asks for a JSON object back.
+model is `LLM_MODEL`, currently gpt-4o-mini through OpenRouter) and asks for a JSON object back.
 - **No key** (or a blank model) -> nothing is sent; callers fall back to templates.
 - **Budget cap:** if this month's recorded spend has reached `LLM_MONTHLY_BUDGET_USD`, no
   call is made.
 - **Every attempt is logged** in `llm_calls`: purpose, model, prompt version, input hash,
   tokens in/out, cost (LiteLLM's price table), ok/error, latency (PRD 5).
 - One call per invocation; the caller decides about retries (explain.py retries once).
+  A **fatal** error (bad key, unknown model, no credit) is flagged so nobody retries it.
+- Error text is scrubbed of anything that looks like an API key before it is stored.
 
 Tests set `acompletion` to a fake: no network, no cost.
 """
@@ -15,6 +17,7 @@ Tests set `acompletion` to a fake: no network, no cost.
 import json
 import logging
 import os
+import re
 import time
 from dataclasses import dataclass
 from datetime import UTC, datetime
@@ -50,6 +53,7 @@ class LlmResult:
     data: dict | None = None
     error: str | None = None
     skipped: str | None = None  # why no call was made: no_key / over_budget
+    fatal: bool = False  # retrying can't help (bad key, unknown model, no credit)
     tokens_in: int = 0
     tokens_out: int = 0
     cost_usd: float = 0.0
@@ -68,11 +72,33 @@ async def spent_this_month(session) -> float:
     return float(total)
 
 
+FATAL_ERRORS = ("AuthenticationError", "PermissionDeniedError", "NotFoundError")
+KEY_RE = re.compile(r"(sk|key)-[A-Za-z0-9*_\-]{6,}")
+
+
+def _price(model: str) -> tuple[float, float] | None:
+    """Per-token (input, output) price for `model`, or for the base model a router such as
+    OpenRouter passes through (openrouter/openai/gpt-4o-mini -> gpt-4o-mini)."""
+    table = _litellm().model_cost
+    for name in (model, model.split("/", 1)[-1], model.rsplit("/", 1)[-1]):
+        c = table.get(name) or {}
+        if c.get("input_cost_per_token") is not None:
+            return float(c["input_cost_per_token"]), float(c.get("output_cost_per_token") or 0)
+    return None
+
+
 def _cost(response) -> float:
     try:
         return float(_litellm().completion_cost(completion_response=response))
-    except Exception:  # noqa: BLE001 - an unknown model price must never break a call
+    except Exception as e:  # noqa: BLE001 - not in the price table: work it out from the tokens
+        log.debug("completion_cost failed (%s); using the token price", type(e).__name__)
+    model = get_settings().llm_model
+    price = _price(model)
+    usage = getattr(response, "usage", None)
+    if price is None or usage is None:
+        log.warning("no price for %s: this call is recorded at $0", model)
         return 0.0
+    return (usage.prompt_tokens or 0) * price[0] + (usage.completion_tokens or 0) * price[1]
 
 
 async def complete_json(
@@ -116,7 +142,8 @@ async def complete_json(
     except json.JSONDecodeError as e:
         result.error = f"not JSON: {e.msg}"
     except Exception as e:  # noqa: BLE001 - recorded on the call; the caller falls back
-        result.error = f"{type(e).__name__}: {e}"[:500]
+        result.error = KEY_RE.sub("[key]", f"{type(e).__name__}: {e}")[:500]
+        result.fatal = type(e).__name__ in FATAL_ERRORS
     session.add(
         LlmCall(
             purpose=purpose, model=s.llm_model, prompt_version=prompt_version,
