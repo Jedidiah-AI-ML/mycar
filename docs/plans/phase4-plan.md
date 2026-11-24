@@ -126,6 +126,13 @@ Not in Phase 4 (later phases, per PRD 13):
 
 **Gate:** pytest: the right notes are retrieved for sample codes; no personal data can reach the context (no VIN, user, email or position fields exist in it); the same inputs → the same context → the same hash.
 
+✅ **Done 2026-11-24:** 21 new tests (410 backend tests, all pass).
+- **Notes** (`app/knowledge/`, **SEED D4, for Wisdom's review**): 16 short notes (lean/rich mixture, misfire, catalyst, O2 sensors, EVAP, overheating, thermostat, charging, MAF/MAP, VVT, throttle/idle, transmission, network, oil pressure, brakes/ABS), each with a header listing its codes, systems and keywords.
+- **Retrieval** (`services/dtc/notes.py`): a note scores 10 for its exact code, 3 for the code's system, 1 per shared keyword. The best note is kept if it scores at all; a 2nd/3rd only at 3 or more, so one stray word doesn't pull in an unrelated note. Ties break on file name, so it's deterministic.
+- **Builder** (`services/dtc/build.py`): `build_context()` reads the definition, make/model/year/engine, the freeze frame, other **active** codes (cleared ones excluded), usage and notes. `generic_context()` is the car-less version for step 4.
+- **One change from the plan:** "the last trips' summaries" became **usage bands** (km/day, idle share, braking over 30 days). Trip figures would change the cache key after every drive and re-buy the same explanation; bands change only when the car's use really changes. A test proves another similar trip leaves the hash unchanged.
+- **Privacy test:** a car with a VIN, an owner's email, a nickname and trips gives a context with none of them, and no `vin`/`email`/`lat`/`lon`/`device`/`id` key at any depth.
+
 ### Step 4: Offline pre-generation and Wisdom's review (the PRD gate)
 | File | Purpose |
 |---|---|

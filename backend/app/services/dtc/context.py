@@ -7,7 +7,8 @@ nothing else. The context is a strict model:
 - It serialises to canonical JSON, so the same facts always give the same SHA-256
   `input_hash`: the cache key (the same inputs never cost a second call).
 
-`build_context()` (step 3) fills it from the database and the curated notes.
+`build_context()` (app/services/dtc/build.py) fills it from the database and the curated
+notes.
 """
 
 import hashlib
@@ -46,13 +47,17 @@ class OtherCode(_Strict):
     description: str | None = None
 
 
-class TripFacts(_Strict):
-    """A recent trip, in figures only (no places, no times of day)."""
+class UsageFacts(_Strict):
+    """How the car has been used over the last 30 days, in coarse bands.
 
-    distance_km: float | None
-    idle_share: float | None
-    max_speed_kmh: float | None
-    harsh_brake_n: int = 0
+    Bands, not trip figures: the context is the cache key, so it must not change with every
+    drive (a code active for weeks would otherwise be re-explained, and paid for, after each
+    trip). Bands change only when the car's use really changes. No places, no times.
+    """
+
+    km_per_day: Literal["under 20", "20 to 50", "over 50"]
+    idle_share: Literal["low (under 30 %)", "typical (30 to 50 %)", "high (over 50 %)"]
+    braking: Literal["gentle", "moderate", "hard"]
 
 
 class Note(_Strict):
@@ -67,7 +72,7 @@ class DtcContext(_Strict):
     vehicle: VehicleFacts | None = None  # None for the generic (pre-generated) explanations
     freeze_frame: dict[str, float] | None = None
     other_active_codes: tuple[OtherCode, ...] = ()
-    recent_trips: tuple[TripFacts, ...] = ()
+    usage: UsageFacts | None = None  # None: no trips yet, or a generic explanation
     indicators: tuple[dict, ...] = ()  # Phase 5 fills this slot
     notes: tuple[Note, ...] = ()
 
