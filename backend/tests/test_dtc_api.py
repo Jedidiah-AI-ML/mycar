@@ -31,6 +31,13 @@ from tests.test_vehicles import add_vehicle, scene  # noqa: F401 - fixture
 NOW = datetime.now(UTC)
 
 
+@pytest.fixture(autouse=True)
+def no_reviewed_generics(monkeypatch):
+    """Tests here don't depend on which codes Wisdom has reviewed in explanations.v1.yaml:
+    the fallback is the template unless a test installs a reviewed answer itself."""
+    monkeypatch.setattr(pregenerated, "served", lambda code, status: None)
+
+
 async def add_code(session, vid, code, status=DtcStatus.stored, *, cleared=False, frame=None):
     e = DtcEvent(vehicle_id=uuid.UUID(str(vid)), code=code, status=status,
                  first_seen=NOW - timedelta(days=2), last_seen=NOW,

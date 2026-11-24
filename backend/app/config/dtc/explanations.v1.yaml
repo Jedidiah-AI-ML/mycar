@@ -10,7 +10,7 @@ prompt_version: dtc_explain.v2
 entries:
 - code: P0011
   status: stored
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: aaf6788871fae72e86df4d76792c20d8b93328454ca84028697f537049b9255d
@@ -34,9 +34,10 @@ entries:
     - Is the VVT oil control valve working properly?
     - Does the timing chain need to be replaced?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0011
   status: pending
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 5dc08ab7ee83da1fbd2709b5bf2f1c854f0a5d7f996c1112ed1d87d1ebba05e9
@@ -58,9 +59,10 @@ entries:
     - Is the VVT oil control valve sticking?
     - Does the timing chain need to be replaced?
     confidence: medium
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0014
   status: stored
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 4971d95d2fb4de686830e973c4040edf414f975a4bfe8c4445dc26f84b556b2e
@@ -82,9 +84,10 @@ entries:
     - Is the exhaust variable valve timing valve working properly?
     - Does the timing chain need to be replaced?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0014
   status: pending
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: e8954b9f1bac9d346831b935e5ba95948f94e0c53c818d4d9d240a9e81e9084e
@@ -106,9 +109,10 @@ entries:
     - Is the exhaust VVT valve working properly?
     - Does the timing chain need to be replaced?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0016
   status: stored
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: de3c2ca35676dff93e0a0ff8a93524e3520caf132ab56a37fedfb8c52f51c271
@@ -131,9 +135,10 @@ entries:
     - Are the cam and crank sensors functioning properly?
     - Is there a problem with the variable valve timing system?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0016
   status: pending
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 11cd21c4fdaa572e76afc5be474421c0f0de089dc84de7f8c37e9cefb1ff29ef
@@ -156,9 +161,10 @@ entries:
     - Are the cam and crank sensors working properly?
     - Is the variable valve timing system functioning correctly?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0101
   status: stored
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 18e209f01241b7e0b747861a9543d95966bcc3c6688fbaf0f9859f7da572fab3
@@ -182,9 +188,10 @@ entries:
     - How does the air filter look?
     - Are there any other issues with the fuel system?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0101
   status: pending
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: d6d6913e2ee61833063c99d6539aa5c41927a883bb7ef30c954b2bba15d4aff0
@@ -208,9 +215,10 @@ entries:
     - Are there any air leaks in the hoses after the MAF sensor?
     - Is the air filter clogged and needs replacing?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0102
   status: stored
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: ed79ed6f303aa6085cc6cf150e20a96d392cb9b0da364cb06261753168af4223
@@ -231,9 +239,10 @@ entries:
     - Are there any leaks in the air intake system?
     - Is the wiring to the sensor intact?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0102
   status: pending
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 136c9c83d796469b3f3d5a5afe89ba3db828ba412b21d6ba5f1144ba86e34bbd
@@ -255,9 +264,10 @@ entries:
     - Are there any leaks in the air intake system?
     - Is the wiring to the MAF sensor intact?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0106
   status: stored
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: b9f9ada52449647bd2d55f96d47dc008c97f801d7d6ed82843c07b2689aafc35
@@ -279,9 +289,10 @@ entries:
     - Is the MAP hose in good condition?
     - Does the MAP sensor need replacing?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0106
   status: pending
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 8619b71899ef6455d4ab3cd41736512d1a273268a8751beee1a9d93bd2dd3cda
@@ -304,9 +315,10 @@ entries:
     - Is the MAP hose blocked or cracked?
     - Is the MAP sensor functioning properly?
     confidence: medium
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0117
   status: stored
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 54537d741fe2e3b70843a56b552c2297484eb8bd949821a1fd66122442269ea0
@@ -326,9 +338,10 @@ entries:
     - Could the thermostat be stuck open?
     - Is the cooling system functioning properly?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0117
   status: pending
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 732b0f82bdd4b415972680b1c0f78c4734d28c7a8d5d809cbc227e6001325333
@@ -348,9 +361,10 @@ entries:
     - Is the coolant temperature sensor faulty?
     - Could there be a wiring issue affecting the sensor?
     confidence: medium
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0118
   status: stored
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 287ab55681ede6f2919c6ec843dda28ccd56f7e898b0547fbac39a35dd01f9f8
@@ -368,9 +382,10 @@ entries:
     - Is the coolant temperature sensor working properly?
     - Are there any issues with the wiring connected to the sensor?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0118
   status: pending
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 5c485ea369ad2535e75c8348ecd239c3509d747772c27fef976f8460b9777d87
@@ -389,9 +404,10 @@ entries:
     - Is the coolant temperature sensor working properly?
     - Are there any issues with the wiring connected to the sensor?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0125
   status: stored
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: c24fd88c22774ca0d50d34d5eea237aa2f448e18060b8bbdb9eac9c6b731c330
@@ -413,9 +429,10 @@ entries:
     - Is the coolant temperature sensor working properly?
     - Is there enough coolant in the system?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0125
   status: pending
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 1c8fcf2d9b3b29a9339beee077a7a99ff24d2701fb8a97f07563dbc887894b16
@@ -439,9 +456,10 @@ entries:
     - Is the coolant temperature sensor working properly?
     - Is the coolant level okay?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0128
   status: stored
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 2e1abb386d82a6ccaf77da511904e74415c0a75aebaa350f7c3c31702a6b8089
@@ -463,9 +481,10 @@ entries:
     - Is the coolant temperature sensor working properly?
     - Is the coolant level okay?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0128
   status: pending
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 055fecaae943716f21729e4c85b096b12b15cb62a62acb6a5d9a5c3dcf6e9412
@@ -488,9 +507,10 @@ entries:
     - Is the coolant temperature sensor functioning?
     - Is the coolant level okay?
     confidence: medium
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0133
   status: stored
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: f177136a0ab39ce0b91dfd89322c2416d94a20a89ada5b1149fa619d8f2b516b
@@ -513,9 +533,10 @@ entries:
     - Could the sensor be contaminated?
     - Should we check the downstream oxygen sensor?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0133
   status: pending
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: e4567ba513ad53518952c3bbff6e756877ead997063d3af3167352bda82b84a2
@@ -540,9 +561,10 @@ entries:
     - Could the sensor be contaminated?
     - Are there any other codes present?
     confidence: medium
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0135
   status: stored
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: b662108b6f32cdf5f66a5dfb41678377ca68334adacc7899f2147f84d0a5ef3e
@@ -565,9 +587,10 @@ entries:
     - Could there be a blown fuse affecting the sensor?
     - Are there any wiring issues that need fixing?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0135
   status: pending
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 0ac6b8cf96e4863473ceadb42b614003eff5205bb296cbdb96994ee7d9ec4b4c
@@ -590,9 +613,10 @@ entries:
     - Could there be a blown fuse affecting the sensor?
     - Are there any wiring issues with the sensor?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0136
   status: stored
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 0aa2be4865cf440723f1067d42726bdfaa70c5a781a4e0c98e3b5349b9c56b5a
@@ -611,9 +635,10 @@ entries:
     - What is the condition of the downstream oxygen sensor?
     - Are there any wiring issues related to the sensor?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0136
   status: pending
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 7bacb6c02b3c55e46a37dc83e6c55d24ed548f0d661aa72190e572db7762e309
@@ -633,9 +658,10 @@ entries:
     - What is the condition of the downstream oxygen sensor?
     - Are there any wiring issues that could affect the sensor?
     confidence: medium
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0141
   status: stored
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 4be8d911f1a79834865873645f4de41b95c9909611f6de873c207f97f1060097
@@ -656,9 +682,10 @@ entries:
     - What is the condition of the downstream oxygen sensor?
     - Could there be any wiring issues related to the sensor?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0141
   status: pending
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 0dd71388e9ddeb1350304be6d5635d9a9d08e2fb8462d48a44a07c753128c954
@@ -678,9 +705,10 @@ entries:
     - Could there be a wiring issue or a blown fuse?
     - Is there any exhaust leak near the sensors?
     confidence: medium
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0155
   status: stored
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 037971d55eb67afb080354f7d2163f82430b3e42699daefdf6a781152f75001e
@@ -702,9 +730,10 @@ entries:
     - Could there be any wiring or fuse issues affecting the sensor?
     - Is there any exhaust leak that could affect sensor readings?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0155
   status: pending
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 78b84effbcc7cbc43753be9b727fc55320ed3bb3ce03d9ca58082abe9522e788
@@ -723,9 +752,10 @@ entries:
     - What is the condition of the upstream oxygen sensor?
     - Is there any damage to the wiring or fuses related to the sensor?
     confidence: medium
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0171
   status: stored
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: ea5b6b55afb2f061a35dad0acf8464e87837a3fd789bb0889f63191036022a73
@@ -751,9 +781,10 @@ entries:
     - How is the fuel pump and fuel filter condition?
     - Are the fuel injectors working properly?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0171
   status: pending
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 3efa16fe0f4f4e50198f175a5936338cf9b433793ded8b3952c58535ceb024ae
@@ -778,9 +809,10 @@ entries:
     - Is the fuel pump working well and is the fuel filter clean?
     - Are the fuel injectors clear and delivering fuel correctly?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0172
   status: stored
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 645fd476c148e5c106a060a9d643ee937bf3ee7c3c1f9b67d68c6e227bdf268d
@@ -805,9 +837,10 @@ entries:
     - Is the MAF sensor working properly?
     - Is the air filter clean or clogged?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0172
   status: pending
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 5f418790f01a01d4b0bac3a5cbe2d578a64a11c5c93efc59e50364ffe94325d4
@@ -832,9 +865,10 @@ entries:
     - Is the MAF sensor working correctly?
     - Is the air filter clean or clogged?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0174
   status: stored
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 3670c0bc97da414bebf277afaef27a8401fb59fafd7784798b3dfc04b34e33be
@@ -858,9 +892,10 @@ entries:
     - Is the fuel pump working properly?
     - Is the fuel filter clogged?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0174
   status: pending
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 052c16a7a898dd7faeb267ac454e5b5eecfae051f46869f20e4a86d32b75e506
@@ -885,9 +920,10 @@ entries:
     - How is the fuel pump's performance?
     - Is the fuel filter clogged?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0175
   status: stored
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: d3e8d33a8de0f62addde9eb9eee3030ecd44704e3ab37d80e79e7e6786555d86
@@ -911,9 +947,10 @@ entries:
     - Could the MAF sensor be dirty or faulty?
     - Is the fuel pressure within the normal range?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0175
   status: pending
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 87df79a970cf0f30d4d65b674852c7d030ac5d1b67797c0268feb5fb3018cdd6
@@ -937,9 +974,10 @@ entries:
     - Could the MAF sensor be dirty or faulty?
     - Is the fuel pressure within the normal range?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0217
   status: stored
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 25ba330c1fdacd29baaa70d3e7d96f6d5d025791c53f43715808a3a3f480be05
@@ -966,9 +1004,10 @@ entries:
     - Is the thermostat functioning correctly?
     - Is the radiator blocked?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0217
   status: pending
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: d2085880a511d963e199ac614d04b9dd13305c7db3bf741196bce985cf39f7a1
@@ -996,9 +1035,10 @@ entries:
     - Is the thermostat functioning correctly?
     - Is the radiator blocked?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0300
   status: stored
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 381303bb493b22b3170948b8887933c867d45b7ecae7d7741d562c301be8a87f
@@ -1024,9 +1064,10 @@ entries:
     - What is the fuel pressure like?
     - Is the fuel quality good?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0300
   status: pending
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 2256814cc579cab907a39eff250c42c1843d664f7ec283b32aec37240cc7a5a7
@@ -1055,9 +1096,10 @@ entries:
     - Are there any vacuum leaks?
     - Is the fuel pressure normal?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0301
   status: stored
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 6e77b2c2222d069f8b568867a26f06cdabdb40d735fc77fafb1add309ae6472c
@@ -1081,9 +1123,10 @@ entries:
     - Are the fuel injectors working properly?
     - Is there any issue with engine compression?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0301
   status: pending
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 58065bc8959385f42160c40480c159ef5b26d6b91ef1e5868b6d0ab36d52ba4b
@@ -1108,9 +1151,10 @@ entries:
     - Could there be a vacuum leak affecting the engine?
     - What is the compression level in Cylinder 1?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0302
   status: stored
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: fb50900928a3937b9bda8427f755f42ac5083461f04d9404cb0dd6e69b49316e
@@ -1135,9 +1179,10 @@ entries:
     - Is the ignition coil functioning properly?
     - Are the fuel injectors clean and working?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0302
   status: pending
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: ccf5e288d7180b6cf0ba18807fd1c6dbddeac5dcd4442a28fc3b96c4a15afd06
@@ -1163,9 +1208,10 @@ entries:
     - Are there any other issues that could cause a misfire?
     confidence: high
   edited_by: claude (pending rule 4)
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0303
   status: stored
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: df253c8334c0b506e6f4a77562350ef2da770e56c23f816e59cd44bdf2141f8d
@@ -1189,9 +1235,10 @@ entries:
     - Is there a problem with the fuel injector for that cylinder?
     - Could low compression be an issue in cylinder 3?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0303
   status: pending
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 0cf9e7cd5a7089443c1d30205777e2aea2ef33e04fefaa0a53e19054208d4637
@@ -1217,9 +1264,10 @@ entries:
     - Is there a problem with the fuel injector?
     - Do I need to worry about low compression?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0304
   status: stored
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 6280a5997fba475e12b074aa3f040c62462b4a2796dd17261c6d18f46ab0952f
@@ -1244,9 +1292,10 @@ entries:
     - Is the ignition coil functioning properly?
     - Is there an issue with the fuel injector?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0304
   status: pending
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: b7fd6f9b9db255c4a23407f294eb8014165d214a3991e3965f503fa39283a8c8
@@ -1273,9 +1322,10 @@ entries:
     - Could there be a problem with compression in Cylinder 4?
     - What should I do if the check-engine light starts flashing?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0305
   status: stored
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 924bb8ceef11fbf84df43159de3bd25d6bf9acdfbfd26050deceeae97681fdec
@@ -1299,9 +1349,10 @@ entries:
     - Is there an issue with the fuel injector?
     - Is there a problem with the engine's compression?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0305
   status: pending
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: bcb1b07f2151aab2605c3b9d3a307fa1d0aa14126f43afdd0526b637f9d43f00
@@ -1325,9 +1376,10 @@ entries:
     - Are the fuel injectors working properly?
     - Is there any issue with the engine's compression?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0306
   status: stored
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: d0c97c76ab05d960cb35d90c2f4c0b7644e4dd67e6418e7223845141189898e5
@@ -1354,9 +1406,10 @@ entries:
     - Could there be any vacuum leaks affecting the engine?
     - What is the compression level in cylinder 6?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0306
   status: pending
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: e3a7460c65eccb60979d1b0714bb7ec80263ca690a41c143158678753c1fe56a
@@ -1381,9 +1434,10 @@ entries:
     - Are the fuel injectors clogged or leaking?
     - Is there any issue with the engine's compression?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0335
   status: stored
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 9e6b1deb04bfb8fa8aa65bd91211e8f2a407d4450b549932f7d0ad43dd48405b
@@ -1407,9 +1461,10 @@ entries:
     - Is the reluctor ring damaged?
     - Could low oil levels be affecting the engine's performance?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0335
   status: pending
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 85e9c869b1f9e0bbea53eedd7d06d5d604965682c7387892e0fd9155916e9451
@@ -1430,9 +1485,10 @@ entries:
     - Are there any wiring issues?
     - Is the reluctor ring damaged?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0340
   status: stored
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 511aac4a20896c5399be6648e10a88a74fa6bf0c4e38a69f08f27a2dee78d8e4
@@ -1456,9 +1512,10 @@ entries:
     - Is there any damage to the wiring?
     - Could the engine oil be affecting the sensor's performance?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0340
   status: pending
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 603a0f14cdb065e1b5b1b7f80860bd8eb1a5b1502805c8921d236d201cc1a827
@@ -1482,9 +1539,10 @@ entries:
     - Is the engine oil in good condition and the right grade?
     - Could there be a timing problem affecting the engine?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0351
   status: stored
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 31dd12dc6e0c52d36eb615e462fdd43960a407d39dd01544093011af394624e7
@@ -1505,9 +1563,10 @@ entries:
     - Are the wiring and connectors in good condition?
     - Could worn spark plugs be causing this issue?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0351
   status: pending
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 33b4515ac728c3e2a70830c976b385ecd8a3f16f207c484a5cb356bfaa73ee3b
@@ -1529,9 +1588,10 @@ entries:
     - Are there any wiring issues with the ignition system?
     - Have the spark plugs been checked recently?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0401
   status: stored
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: dbdb534c94738fcc7db0f3baaeba8a2e1c8a052b674b702b4d5fe8da354a78b3
@@ -1550,9 +1610,10 @@ entries:
     - Are there any clogs in the EGR passages?
     - Should we check the oxygen sensors for issues?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0401
   status: pending
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: f8a3c1efbdc82450de505de2492aa5b3871bcf919fe59a3d682fb6ba550d56aa
@@ -1572,9 +1633,10 @@ entries:
     - Is the EGR valve functioning properly?
     - Could there be any exhaust leaks affecting the sensors?
     confidence: medium
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0420
   status: stored
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: d35154549ce0f6b1c5100ba5c9c7bc0f17d45d1d7c4a8bffefb4c4d704152dc9
@@ -1601,9 +1663,10 @@ entries:
     - Have there been any past misfires or signs of oil burning in the engine?
     - How is the condition of the catalytic converter?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0420
   status: pending
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 5654842ad82406a816921a54978ebcdb4763fede8b66f954aad33ec4f8c8aa5b
@@ -1628,9 +1691,10 @@ entries:
     - Have there been any past misfires or signs of oil burning?
     - How is the catalytic converter performing?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0430
   status: stored
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: d71dd69017f4a99a3170807a92d20456ddce27ccae9c50db73023dbdc318c884
@@ -1654,9 +1718,10 @@ entries:
     - Is the downstream oxygen sensor working properly?
     - Are there any exhaust leaks near the sensors?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0430
   status: pending
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: c49d3b172ec23c48659089696c78d9f6b2949efbd97894f5a74656e0157aa0a5
@@ -1681,9 +1746,10 @@ entries:
     - Is there an exhaust leak that could be affecting the readings?
     - What is the condition of the catalytic converter?
     confidence: medium
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0440
   status: stored
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 60f10c2dfc1fac4aacbeee67cee1943e7b81f4d8786b0266d028c0ea0595d2a3
@@ -1705,9 +1771,10 @@ entries:
     - Are there any cracks in the EVAP hoses?
     - Is the purge or vent valve working properly?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0440
   status: pending
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: aee298f4da3b0775e6ebfd357dd1024215302cca90db1498a001ad2003addadd
@@ -1729,9 +1796,10 @@ entries:
     - Are there any cracks in the EVAP hoses?
     - Is the purge or vent valve working properly?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0442
   status: stored
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: d62d702e0ad0bf396bcb3856e3853311d8c7d34c5f4220294689164fbc0a3638
@@ -1752,9 +1820,10 @@ entries:
     - Are there any cracks in the EVAP hoses?
     - Is the purge or vent valve working properly?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0442
   status: pending
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 8b6efbc9419d130acc6eca012342321aa78d21237a4f1d044485a24bb1f80c40
@@ -1775,9 +1844,10 @@ entries:
     - Are there any cracks in the EVAP hoses?
     - Is the purge or vent valve working properly?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0455
   status: stored
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: be57bd3c50d265d93a5265d92aee5435289d28394525f599888aa65e66962f6c
@@ -1800,9 +1870,10 @@ entries:
     - Are there any cracks in the EVAP hoses?
     - Is the purge valve working properly?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0455
   status: pending
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 42e7f0c29d6a3ab1af7d64fe4d448d7dc02a5ee701b053ded515143f7ba16e1a
@@ -1825,9 +1896,10 @@ entries:
     - Are there any cracks in the EVAP hoses?
     - Is the purge valve working properly?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0456
   status: stored
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 7eafcfdd794a7d912f812e6c5b1e8695ad5f71fecf859d16f7fb97a944979dde
@@ -1849,9 +1921,10 @@ entries:
     - Is the fuel cap properly tightened?
     - Do I need to worry about this leak?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0456
   status: pending
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 7729f44cd166bf41321a8fd6d3f852b5df1af36b62873dd7edb4bce04fdd5814
@@ -1873,9 +1946,10 @@ entries:
     - Is the fuel cap properly tightened?
     - Is there any other issue with the EVAP system?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0457
   status: stored
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 54541ac3bd9121755751968f3e02cc8b701de3317bd036b88cb56023e63e187f
@@ -1896,9 +1970,10 @@ entries:
     - Is the fuel cap seal worn or damaged?
     - Are there any other leaks in the EVAP system?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0457
   status: pending
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 1ee958095122d4441eb6c2ccce9f245bf9784d05bc4e05c91335a0b84ef8d407
@@ -1919,9 +1994,10 @@ entries:
     - Is the fuel cap missing or damaged?
     - Are there any cracks in the vapour hoses?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0480
   status: stored
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: b9a14ed62ad389cabbc26a1be8dbae2840373d0daa2bce0a988b2eea4da1bd13
@@ -1946,9 +2022,10 @@ entries:
     - Are there any blown fuses?
     - Is the fan motor in good condition?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0480
   status: pending
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 0f3aea977b6b303470ca1b0e592842defe747964a7e720a0be8c9879d3b2180b
@@ -1975,9 +2052,10 @@ entries:
     - Are there any wiring issues?
     confidence: high
   edited_by: claude (pending rule 4)
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0505
   status: stored
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 3af6f874667ae91507cbf23852132b674cc8925281c43d675b2c1b282d1bb018
@@ -1999,9 +2077,10 @@ entries:
     - Is there any vacuum leak in the engine?
     - Does the idle control valve need to be replaced?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0505
   status: pending
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 18f4bdc90d43b2ebd6e6c46ddaf793c75dd9e8be783f7799a3c6d0c39c1e583c
@@ -2023,9 +2102,10 @@ entries:
     - Is there any vacuum leak present?
     - Is the idle control valve working properly?
     confidence: medium
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0507
   status: stored
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: ca3f5ba2f98e25e441838013025c691649c2c8dffafd7be285b786b13b258c86
@@ -2049,9 +2129,10 @@ entries:
     - Could a vacuum leak be affecting the engine?
     - Is the throttle closing fully?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0507
   status: pending
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 1e3f94ca5b31231c01a75ba5a9126261d8410f825758cef97d3edb48977b00c4
@@ -2077,9 +2158,10 @@ entries:
     - Does the idle control valve need cleaning or replacing?
     - Is the throttle working properly?
     confidence: medium
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0524
   status: stored
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 83c0ab37e3e7bf318e84ace1bdb58c04d5b84c390cc7f7933c0ce8ad1439a6ba
@@ -2104,9 +2186,10 @@ entries:
     - Is the oil pump working properly?
     - Is the oil pickup clogged?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0524
   status: pending
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: a53a09559b98bbc4ccfd7eb0b2f9a22b4f14ce8d0b7e3419de3450918f132e7d
@@ -2131,9 +2214,10 @@ entries:
     - Is the oil pump working properly?
     - Is the oil pickup clogged?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0562
   status: stored
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: b807fe8621ecdc7e5253f4d74b01c2a0fd5c80f616b7ff6903dbee930db5003a
@@ -2160,9 +2244,10 @@ entries:
     - How old is the battery?
     - Are the battery terminals clean and secure?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0562
   status: pending
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 27d49d74e0e8b1964f4b120350b62540012f6a438fb94a55cc80af54dcd8962f
@@ -2188,9 +2273,10 @@ entries:
     - How old is the battery, and is it still good?
     - Are the battery terminals clean and free of corrosion?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0563
   status: stored
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 228ece5b4890e31ecd14e7d8481dfcc178af732e3983f3c8dc7f3682e4ec2c1e
@@ -2211,9 +2297,10 @@ entries:
     - Are there any poor ground connections?
     - Is the battery in good condition?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0563
   status: pending
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: a4e9aefe51e6000fe2fdf763217620fb7cd3c3657d86bfd7367e18985ed424dc
@@ -2235,9 +2322,10 @@ entries:
     - Is the battery in good shape?
     - Could there be corroded battery terminals?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0700
   status: stored
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: d720d72441470cb7da039b6152876e952b791fbcf307fc013b6f0df49540a54e
@@ -2258,9 +2346,10 @@ entries:
     - Is the transmission fluid low or old?
     - Are there any signs of slipping gears or harsh shifts?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0700
   status: pending
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 36aa5531c6252bd7068d2d6b0f1fe065c871ac18dc995dbdc12d08d8d35af9dc
@@ -2282,9 +2371,10 @@ entries:
     - Is the transmission fluid low or old?
     - Are there any signs of slipping gears or harsh shifts?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0741
   status: stored
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 76d229b5b702a17629f374276c1fcb6c84427edc8efc089ee98db9c6eb7fb42e
@@ -2306,9 +2396,10 @@ entries:
     - Is the lock-up solenoid working properly?
     - Is the torque converter worn?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P0741
   status: pending
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 9c63e5d9e76ad25781e111fb5994989553b423aabf339890112bbd8cfd2b9951
@@ -2330,9 +2421,10 @@ entries:
     - Is the lock-up solenoid functioning properly?
     - Could the torque converter be worn?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P2135
   status: stored
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 4882a91e8d14c13e7f5bc5558d7f246355f50f8838d6f92c66538df46605ce2b
@@ -2352,9 +2444,10 @@ entries:
     - Is there any carbon build-up in the throttle body?
     - Are the wiring and connectors in good condition?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P2135
   status: pending
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 52d97a670f7f4183cc6321b7d7db833ae7993f8ecd8da884fb931b2d6f359ede
@@ -2374,9 +2467,10 @@ entries:
     - Is there any carbon buildup in the throttle body?
     - Are there any wiring issues that need fixing?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P2187
   status: stored
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: a676fb7ede50d87a2c9db334dd184cad07849933f229dd699b5c0c45969a3310
@@ -2401,9 +2495,10 @@ entries:
     - Is the MAF sensor clean and functioning properly?
     - Are there any cracks in the PCV hose?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P2187
   status: pending
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 5275a1bf574b67da0e58b0ab2cc306d7c6f225de41405ac5039125a4c1e56e1e
@@ -2428,9 +2523,10 @@ entries:
     - Is the PCV hose in good condition?
     - How clean is the MAF sensor?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P2195
   status: stored
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 30a75f3eba29d34cb4aaa7a04d6b1f604b5e0cbaae6a2564984913353f460282
@@ -2455,9 +2551,10 @@ entries:
     - Is the fuel mixture actually too lean?
     - Are there any other codes or issues present?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: P2195
   status: pending
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 13eed751dbfebca729efc9b9416ad515d4ca02f86341a28dd68f60948a0d0a86
@@ -2481,9 +2578,10 @@ entries:
     - Is the fuel mixture too lean?
     - How old is the oxygen sensor?
     confidence: medium
+  reviewed_by: Wisdom (2026-11-24)
 - code: U0100
   status: stored
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 713c9da6d27ba77363e21796092399987e222c6cd02812fba92b81a7c82fedff
@@ -2505,9 +2603,10 @@ entries:
     - Is the engine computer getting enough power?
     - Could there be any corrosion affecting the connections?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)
 - code: U0100
   status: pending
-  reviewed: false
+  reviewed: true
   model: openrouter/openai/gpt-4o-mini
   prompt_version: dtc_explain.v2
   input_hash: 8c02c9534700ddbffbb2dc4a4429fd893b7b3f0285c0d88847f0dcacf2fdb61d
@@ -2530,3 +2629,4 @@ entries:
     - Is the battery voltage stable?
     - Could there be a problem with the engine computer itself?
     confidence: high
+  reviewed_by: Wisdom (2026-11-24)

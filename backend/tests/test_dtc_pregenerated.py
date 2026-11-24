@@ -176,3 +176,11 @@ async def test_a_fatal_provider_error_stops_the_run_after_one_call(session, fake
     client.acompletion = bad_key  # the fixture's monkeypatch restores it
     report = await pg.pregenerate(session, CODES, path=tmp_path / "x.yaml")
     assert report.stopped == "provider_error" and n == 1 and not report.generated
+
+
+def test_every_reviewed_entry_in_the_committed_file_is_served():
+    if not pg.FILE.exists():
+        pytest.skip("not generated yet")
+    pg._served.cache_clear()
+    reviewed = [(e["code"], e["status"]) for e in pg.read() if e.get("reviewed") is True]
+    assert all(pg.served(c, s) is not None for c, s in reviewed), "a reviewed entry isn't served"

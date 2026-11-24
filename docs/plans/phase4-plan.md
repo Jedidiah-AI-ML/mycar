@@ -1,6 +1,6 @@
 # Phase 4 plan: Layer 2 fault codes (APPROVED 2026-11-23)
 
-**Status 2026-11-24:** steps 1–3, 5 and 6 are done, and live on Railway with personalised explanations. **One gate is still open:** step 4 needs Wisdom's review of `docs/review/dtc_explanations_v1.md`. Until entries are marked `reviewed: true`, owners get personalised answers or templates, never unreviewed text. Total LLM spend so far is about $0.06.
+**Status 2026-11-24: Phase 4 done.** All six steps passed their gates and are live on Railway. Wisdom reviewed and approved all 100 pre-generated explanations. Total LLM spend about $0.06; capped at $2/month.
 
 **Decisions (Wisdom, 2026-11-23):** all five open questions approved as recommended:
 - **Q1:** our own plain-language definitions (~150 generic codes), reviewed by Wisdom
@@ -146,7 +146,7 @@ Not in Phase 4 (later phases, per PRD 13):
 
 **Gate (PRD):** 100 % of the generated explanations are schema-valid and grounding-clean, and **Wisdom reviews the sheet**: corrections are applied, and each code is marked reviewed.
 
-🟡 **Generated 2026-11-24; waiting for Wisdom's review.** 100 of 100 schema-valid and grounded at the first attempt (no retries). 100 calls, 74k tokens in / 24k out, **$0.026**. 26 new tests (420 backend tests, all pass); one checks that the committed file is complete, valid and grounded.
+✅ **Reviewed 2026-11-24: Wisdom approved all 100** (`reviewed: true`, `reviewed_by` recorded); all 100 are served as the generic explanations. Generated the same day: 100 of 100 schema-valid and grounded at the first attempt (no retries). 100 calls, 74k tokens in / 24k out, **$0.026**. 26 new tests (420 backend tests, all pass); one checks that the committed file is complete, valid and grounded.
 - **Files:** `app/services/dtc/pregenerated.py` (generate, check, serve), `review_sheet.py`, `scripts/pregenerate_dtc.py` (`--codes` for a trial, `--force`, `--sheet`). The output is `app/config/dtc/explanations.v1.yaml` and `docs/review/dtc_explanations_v1.md`.
 - **Serving rule:** only `reviewed: true` entries that still validate, ground, and match today's context hash are served. Changing a definition or note makes an entry stale.
 - **Provider change:** the key in `.env` is an **OpenRouter** key, so the model is now `openrouter/openai/gpt-4o-mini`. It's the same model at the same per-token price, still pay-as-you-go with no monthly fee. **Railway's `LLM_MODEL` must be set to this in step 6.**

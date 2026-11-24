@@ -11,13 +11,13 @@ petrol car (no vehicle data). Source of truth: `backend/app/config/dtc/explanati
 Then either tell Claude the corrections (e.g. "P0171 stored: drop cause 3"), or edit the
 YAML yourself and set `reviewed: true`. Only reviewed entries are shown to owners.
 
-Status: **0 of 100 reviewed**.
+Status: **100 of 100 reviewed**.
 
 ## P0300: The engine is misfiring in more than one cylinder, or the computer can't tell which.
 
 Severity (our rule): **Service soon** | system: ignition
 
-#### Stored (**not reviewed**, confidence high)
+#### Stored (reviewed, confidence high)
 
 The car's computer has noticed that the engine is misfiring in more than one cylinder. This means the engine isn't burning fuel properly, which can lead to performance issues.
 
@@ -36,7 +36,7 @@ Ask the mechanic:
 - What is the fuel pressure like?
 - Is the fuel quality good?
 
-#### Pending (**not reviewed**, confidence high)
+#### Pending (reviewed, confidence high)
 
 The car's computer has noticed a misfire in more than one cylinder, but it hasn't confirmed it yet. This means the engine might not be burning fuel properly. Keep an eye on the check-engine light; if it starts flashing, stop driving immediately.
 
@@ -59,7 +59,7 @@ Ask the mechanic:
 
 Severity (our rule): **Service soon** | system: ignition
 
-#### Stored (**not reviewed**, confidence high)
+#### Stored (reviewed, confidence high)
 
 The car's computer noticed that Cylinder 1 is misfiring, which means it didn't burn its fuel properly. This can lead to engine problems if not checked soon.
 
@@ -77,7 +77,7 @@ Ask the mechanic:
 - Are the fuel injectors working properly?
 - Is there any issue with engine compression?
 
-#### Pending (**not reviewed**, confidence high)
+#### Pending (reviewed, confidence high)
 
 The car's computer has noticed a problem with Cylinder 1 not burning fuel properly, but it hasn't confirmed it yet. The warning light is not on, but you should watch for any signs of trouble.
 
@@ -99,7 +99,7 @@ Ask the mechanic:
 
 Severity (our rule): **Service soon** | system: ignition
 
-#### Stored (**not reviewed**, confidence high)
+#### Stored (reviewed, confidence high)
 
 The car's computer noticed that Cylinder 2 is misfiring, which means it didn't burn its fuel properly. This can lead to engine problems if not checked soon.
 
@@ -117,7 +117,7 @@ Ask the mechanic:
 - Is the ignition coil functioning properly?
 - Are the fuel injectors clean and working?
 
-#### Pending (**not reviewed**, confidence high)
+#### Pending (reviewed, confidence high)
 
 The car's computer noticed once that cylinder 2 did not burn its fuel properly, but it hasn't confirmed it yet, and the warning light is not on. If it happens again, the engine may shake or lose power.
 
@@ -139,7 +139,7 @@ Ask the mechanic:
 
 Severity (our rule): **Service soon** | system: ignition
 
-#### Stored (**not reviewed**, confidence high)
+#### Stored (reviewed, confidence high)
 
 The car's computer has noticed that cylinder 3 is misfiring, which means it didn't burn its fuel properly. This can lead to performance issues and should be checked soon.
 
@@ -156,7 +156,7 @@ Ask the mechanic:
 - Is there a problem with the fuel injector for that cylinder?
 - Could low compression be an issue in cylinder 3?
 
-#### Pending (**not reviewed**, confidence high)
+#### Pending (reviewed, confidence high)
 
 The car's computer has noticed a problem with Cylinder 3 not burning fuel properly, but it hasn't confirmed it yet. The warning light is not on, but you should watch for any changes.
 
@@ -178,7 +178,7 @@ Ask the mechanic:
 
 Severity (our rule): **Service soon** | system: ignition
 
-#### Stored (**not reviewed**, confidence high)
+#### Stored (reviewed, confidence high)
 
 The car's computer noticed that cylinder 4 is misfiring, which means it's not burning fuel properly. This can lead to engine problems if not checked soon.
 
@@ -196,7 +196,7 @@ Ask the mechanic:
 - Is the ignition coil functioning properly?
 - Is there an issue with the fuel injector?
 
-#### Pending (**not reviewed**, confidence high)
+#### Pending (reviewed, confidence high)
 
 The car's computer has noticed a problem with Cylinder 4 not burning fuel properly. This issue has only been detected once and the warning light is not on yet, but you should watch for any signs of trouble.
 
@@ -218,7 +218,7 @@ Ask the mechanic:
 
 Severity (our rule): **Service soon** | system: ignition
 
-#### Stored (**not reviewed**, confidence high)
+#### Stored (reviewed, confidence high)
 
 The car's computer noticed that cylinder 5 is misfiring. This means that the fuel in that cylinder is not burning properly, which can lead to engine problems if not addressed.
 
@@ -236,7 +236,7 @@ Ask the mechanic:
 - Is there an issue with the fuel injector?
 - Is there a problem with the engine's compression?
 
-#### Pending (**not reviewed**, confidence high)
+#### Pending (reviewed, confidence high)
 
 The car's computer has noticed a problem with Cylinder 5 not burning fuel properly, but it hasn't confirmed it yet. The warning light is not on, but you should watch for any signs of trouble.
 
@@ -258,7 +258,7 @@ Ask the mechanic:
 
 Severity (our rule): **Service soon** | system: ignition
 
-#### Stored (**not reviewed**, confidence high)
+#### Stored (reviewed, confidence high)
 
 The car's computer noticed that cylinder 6 is misfiring, which means it's not burning fuel properly. This can lead to engine problems if not checked soon.
 
@@ -276,7 +276,7 @@ Ask the mechanic:
 - Could there be any vacuum leaks affecting the engine?
 - What is the compression level in cylinder 6?
 
-#### Pending (**not reviewed**, confidence high)
+#### Pending (reviewed, confidence high)
 
 The car's computer has noticed a problem with cylinder 6 not burning fuel properly, but it hasn't confirmed it yet. The warning light is not on, but you should watch for any signs of trouble.
 
@@ -298,7 +298,7 @@ Ask the mechanic:
 
 Severity (our rule): **Service soon** | system: fuel_air
 
-#### Stored (**not reviewed**, confidence high)
+#### Stored (reviewed, confidence high)
 
 The car's computer has noticed that the engine is running lean, which means there is too much air or not enough fuel getting to the engine. This can lead to performance issues if not addressed soon.
 
@@ -316,7 +316,7 @@ Ask the mechanic:
 - How is the fuel pump and fuel filter condition?
 - Are the fuel injectors working properly?
 
-#### Pending (**not reviewed**, confidence high)
+#### Pending (reviewed, confidence high)
 
 The car's computer has noticed a possible issue with the engine running lean, meaning there might be too much air or too little fuel. This has only happened once, and the warning light is not on yet, but you should watch for any signs of trouble.
 
@@ -338,7 +338,7 @@ Ask the mechanic:
 
 Severity (our rule): **Service soon** | system: fuel_air
 
-#### Stored (**not reviewed**, confidence high)
+#### Stored (reviewed, confidence high)
 
 The car's computer has noticed that the engine is running rich, which means there is too much fuel for the air. This can waste fuel and may damage the catalytic converter if not fixed soon.
 
@@ -356,7 +356,7 @@ Ask the mechanic:
 - Is the MAF sensor working properly?
 - Is the air filter clean or clogged?
 
-#### Pending (**not reviewed**, confidence high)
+#### Pending (reviewed, confidence high)
 
 The car's computer has noticed a problem with too much fuel in the engine, but it has only seen this once and hasn't confirmed it yet. The warning light is not on yet, but you should watch for any changes in performance or if the light comes on.
 
@@ -378,7 +378,7 @@ Ask the mechanic:
 
 Severity (our rule): **Service soon** | system: fuel_air
 
-#### Stored (**not reviewed**, confidence high)
+#### Stored (reviewed, confidence high)
 
 The car's computer has noticed that the engine is running lean, which means there is too much air or not enough fuel getting to the engine. This can lead to performance issues if not addressed soon.
 
@@ -395,7 +395,7 @@ Ask the mechanic:
 - Is the fuel pump working properly?
 - Is the fuel filter clogged?
 
-#### Pending (**not reviewed**, confidence high)
+#### Pending (reviewed, confidence high)
 
 The car's computer has noticed a potential issue where the engine might be getting too much air or not enough fuel. This has only happened once, and the warning light is not on yet, but you should watch for any signs of trouble.
 
@@ -416,7 +416,7 @@ Ask the mechanic:
 
 Severity (our rule): **Service soon** | system: fuel_air
 
-#### Stored (**not reviewed**, confidence high)
+#### Stored (reviewed, confidence high)
 
 The car's computer has noticed that the engine is running too rich, meaning there is too much fuel for the air. This can waste fuel and may damage parts over time if not checked.
 
@@ -433,7 +433,7 @@ Ask the mechanic:
 - Could the MAF sensor be dirty or faulty?
 - Is the fuel pressure within the normal range?
 
-#### Pending (**not reviewed**, confidence high)
+#### Pending (reviewed, confidence high)
 
 The car's computer has noticed a problem with the engine running too rich, meaning there is too much fuel for the air. This has only happened once and the warning light is not on yet, but you should watch for any changes.
 
@@ -454,7 +454,7 @@ Ask the mechanic:
 
 Severity (our rule): **Service soon** | system: fuel_air
 
-#### Stored (**not reviewed**, confidence high)
+#### Stored (reviewed, confidence high)
 
 The car's computer has noticed that the engine is getting too much air and not enough fuel while idling. This could lead to performance issues if not checked soon.
 
@@ -472,7 +472,7 @@ Ask the mechanic:
 - Is the MAF sensor clean and functioning properly?
 - Are there any cracks in the PCV hose?
 
-#### Pending (**not reviewed**, confidence high)
+#### Pending (reviewed, confidence high)
 
 The car's computer has noticed that the engine might be running lean, which means there is more air than fuel getting to it. This has only happened once and the warning light is not on yet, but you should watch for any signs of trouble.
 
@@ -494,7 +494,7 @@ Ask the mechanic:
 
 Severity (our rule): **Watch** | system: emissions
 
-#### Stored (**not reviewed**, confidence high)
+#### Stored (reviewed, confidence high)
 
 The car's computer noticed that the catalytic converter isn't cleaning the exhaust properly. This could be due to several reasons, but it doesn't mean the car is unsafe to drive right now.
 
@@ -512,7 +512,7 @@ Ask the mechanic:
 - Have there been any past misfires or signs of oil burning in the engine?
 - How is the condition of the catalytic converter?
 
-#### Pending (**not reviewed**, confidence high)
+#### Pending (reviewed, confidence high)
 
 The car's computer has noticed a problem with the catalytic converter, which cleans the exhaust. This issue has only been seen once and the warning light is not on yet. Watch for any changes in how the car drives.
 
@@ -534,7 +534,7 @@ Ask the mechanic:
 
 Severity (our rule): **Watch** | system: emissions
 
-#### Stored (**not reviewed**, confidence high)
+#### Stored (reviewed, confidence high)
 
 The car's computer has noticed that the catalytic converter isn't cleaning the exhaust as well as it should. This means it may not be working efficiently, but the car usually drives normally with this code.
 
@@ -550,7 +550,7 @@ Ask the mechanic:
 - Is the downstream oxygen sensor working properly?
 - Are there any exhaust leaks near the sensors?
 
-#### Pending (**not reviewed**, confidence medium)
+#### Pending (reviewed, confidence medium)
 
 The car's computer has noticed a problem with the catalytic converter, which cleans the exhaust. This issue has only been detected once and hasn't been confirmed yet, so the warning light is not on. Keep an eye on it for any changes.
 
@@ -570,7 +570,7 @@ Ask the mechanic:
 
 Severity (our rule): **Watch** | system: emissions
 
-#### Stored (**not reviewed**, confidence high)
+#### Stored (reviewed, confidence high)
 
 The car's computer has noticed that the upstream oxygen sensor is reacting too slowly. This sensor helps the engine manage fuel use, and while it may not cause immediate problems, it could affect fuel efficiency over time.
 
@@ -587,7 +587,7 @@ Ask the mechanic:
 - Could the sensor be contaminated?
 - Should we check the downstream oxygen sensor?
 
-#### Pending (**not reviewed**, confidence medium)
+#### Pending (reviewed, confidence medium)
 
 The car's computer has noticed that the upstream oxygen sensor (the part that measures leftover oxygen in the exhaust) is reacting too slowly. This has only happened once, and the warning light is not on yet, but you should watch for any changes.
 
@@ -608,7 +608,7 @@ Ask the mechanic:
 
 Severity (our rule): **Watch** | system: emissions
 
-#### Stored (**not reviewed**, confidence high)
+#### Stored (reviewed, confidence high)
 
 The car's computer has noticed a problem with the oxygen sensor heater, but it hasn't confirmed it yet. This means the heater that helps the sensor work quickly after starting is not functioning properly. You should keep an eye on it.
 
@@ -624,7 +624,7 @@ Ask the mechanic:
 - Could there be a blown fuse affecting the sensor?
 - Are there any wiring issues that need fixing?
 
-#### Pending (**not reviewed**, confidence high)
+#### Pending (reviewed, confidence high)
 
 The car's computer has noticed a problem with the heater in the upstream oxygen sensor, but it hasn't confirmed it yet. The warning light is not on, but you should watch for any changes in performance or warning lights.
 
@@ -644,7 +644,7 @@ Ask the mechanic:
 
 Severity (our rule): **Watch** | system: emissions
 
-#### Stored (**not reviewed**, confidence high)
+#### Stored (reviewed, confidence high)
 
 The car's computer has noticed a problem with the downstream oxygen sensor's heater, but it hasn't confirmed it yet. This means the heater that helps the sensor work quickly after starting is not functioning properly. You should keep an eye on it.
 
@@ -658,7 +658,7 @@ Ask the mechanic:
 - What is the condition of the downstream oxygen sensor?
 - Could there be any wiring issues related to the sensor?
 
-#### Pending (**not reviewed**, confidence medium)
+#### Pending (reviewed, confidence medium)
 
 The car's computer has noticed a problem with the heater in the downstream oxygen sensor (the sensor that checks leftover oxygen in the exhaust) only once, and it hasn't confirmed it yet. The warning light is not on, but you should watch for any changes in how the car drives.
 
@@ -677,7 +677,7 @@ Ask the mechanic:
 
 Severity (our rule): **Watch** | system: emissions
 
-#### Stored (**not reviewed**, confidence high)
+#### Stored (reviewed, confidence high)
 
 The car's computer has noticed a problem with the downstream oxygen sensor, which measures leftover oxygen in the exhaust. This helps the engine run efficiently. Right now, there's no warning light, but it's good to keep an eye on it.
 
@@ -691,7 +691,7 @@ Ask the mechanic:
 - What is the condition of the downstream oxygen sensor?
 - Are there any wiring issues related to the sensor?
 
-#### Pending (**not reviewed**, confidence medium)
+#### Pending (reviewed, confidence medium)
 
 The car's computer has noticed a possible issue with the downstream oxygen sensor, which helps manage fuel use. This has only happened once, and the warning light is not on yet, but you should watch for any changes.
 
@@ -709,7 +709,7 @@ Ask the mechanic:
 
 Severity (our rule): **Watch** | system: emissions
 
-#### Stored (**not reviewed**, confidence high)
+#### Stored (reviewed, confidence high)
 
 The car's computer has noticed a problem with the heater in the upstream oxygen sensor (bank 2). This sensor helps manage fuel use by measuring leftover oxygen in the exhaust, and while it won't stop the car, it may waste fuel over time.
 
@@ -724,7 +724,7 @@ Ask the mechanic:
 - Could there be any wiring or fuse issues affecting the sensor?
 - Is there any exhaust leak that could affect sensor readings?
 
-#### Pending (**not reviewed**, confidence medium)
+#### Pending (reviewed, confidence medium)
 
 The car's computer has noticed a problem with the heater in the upstream oxygen sensor (bank 2). This means the sensor isn't working properly yet, and the warning light is not on. Keep an eye on it for any changes.
 
@@ -742,7 +742,7 @@ Ask the mechanic:
 
 Severity (our rule): **Watch** | system: emissions
 
-#### Stored (**not reviewed**, confidence high)
+#### Stored (reviewed, confidence high)
 
 The car's computer has noticed that the upstream oxygen sensor (which measures leftover oxygen in the exhaust) is stuck showing a lean condition. This means it thinks there is too little fuel in the mixture, but it hasn't confirmed this yet, and there is no warning light on.
 
@@ -759,7 +759,7 @@ Ask the mechanic:
 - Is the fuel mixture actually too lean?
 - Are there any other codes or issues present?
 
-#### Pending (**not reviewed**, confidence medium)
+#### Pending (reviewed, confidence medium)
 
 The car's computer has noticed a possible issue with the upstream oxygen sensor, which measures leftover oxygen in the exhaust. It thinks the sensor's signal is stuck showing too much air, but this has only happened once and the warning light is not on yet.
 
@@ -780,7 +780,7 @@ Ask the mechanic:
 
 Severity (our rule): **Info** | system: evap
 
-#### Stored (**not reviewed**, confidence high)
+#### Stored (reviewed, confidence high)
 
 The car's computer has noticed a problem with the fuel vapour system, but it hasn't confirmed it yet. This means there is no warning light on, and you can keep driving for now.
 
@@ -796,7 +796,7 @@ Ask the mechanic:
 - Are there any cracks in the EVAP hoses?
 - Is the purge or vent valve working properly?
 
-#### Pending (**not reviewed**, confidence high)
+#### Pending (reviewed, confidence high)
 
 The car's computer has noticed a possible issue with the fuel vapour system, but it hasn't confirmed it yet. The warning light is not on, so you should keep an eye on it for any changes.
 
@@ -816,7 +816,7 @@ Ask the mechanic:
 
 Severity (our rule): **Info** | system: evap
 
-#### Stored (**not reviewed**, confidence high)
+#### Stored (reviewed, confidence high)
 
 The car's computer has noticed a small leak in the fuel vapour system. This usually means there could be an issue with the fuel cap or hoses, but it doesn't affect how the car drives.
 
@@ -832,7 +832,7 @@ Ask the mechanic:
 - Are there any cracks in the EVAP hoses?
 - Is the purge or vent valve working properly?
 
-#### Pending (**not reviewed**, confidence high)
+#### Pending (reviewed, confidence high)
 
 The car's computer has noticed a small leak in the fuel vapor system, but it hasn't confirmed it yet. The warning light is not on, but you should watch for any signs of trouble.
 
@@ -852,7 +852,7 @@ Ask the mechanic:
 
 Severity (our rule): **Info** | system: evap
 
-#### Stored (**not reviewed**, confidence high)
+#### Stored (reviewed, confidence high)
 
 The car's computer has noticed a large leak in the fuel vapour system, but this is not currently affecting how the car drives. This issue is stored in the system and does not require immediate action.
 
@@ -868,7 +868,7 @@ Ask the mechanic:
 - Are there any cracks in the EVAP hoses?
 - Is the purge valve working properly?
 
-#### Pending (**not reviewed**, confidence high)
+#### Pending (reviewed, confidence high)
 
 The car's computer has noticed a possible large leak in the fuel vapour system, but it hasn't confirmed it yet. The warning light is not on, so you should watch for any signs of trouble.
 
@@ -888,7 +888,7 @@ Ask the mechanic:
 
 Severity (our rule): **Info** | system: evap
 
-#### Stored (**not reviewed**, confidence high)
+#### Stored (reviewed, confidence high)
 
 The car's computer has noticed a very small leak in the fuel vapour system. This usually means there might be an issue with the fuel cap or a hose, but it doesn't affect how the car drives.
 
@@ -904,7 +904,7 @@ Ask the mechanic:
 - Is the fuel cap properly tightened?
 - Do I need to worry about this leak?
 
-#### Pending (**not reviewed**, confidence high)
+#### Pending (reviewed, confidence high)
 
 The car's computer has noticed a very small leak in the fuel vapor system, but it hasn't confirmed it yet. The warning light is not on, so there's no immediate danger, but you should keep an eye on it.
 
@@ -924,7 +924,7 @@ Ask the mechanic:
 
 Severity (our rule): **Info** | system: evap
 
-#### Stored (**not reviewed**, confidence high)
+#### Stored (reviewed, confidence high)
 
 The car's computer has noticed a possible leak in the fuel vapour system, likely due to a loose or missing fuel cap. This doesn't affect how the car drives right now.
 
@@ -940,7 +940,7 @@ Ask the mechanic:
 - Is the fuel cap seal worn or damaged?
 - Are there any other leaks in the EVAP system?
 
-#### Pending (**not reviewed**, confidence high)
+#### Pending (reviewed, confidence high)
 
 The car's computer noticed a possible leak in the fuel vapour system, likely due to the fuel cap being loose or missing. The warning light is not on yet, but keep an eye on it.
 
@@ -960,7 +960,7 @@ Ask the mechanic:
 
 Severity (our rule): **Service soon** | system: fuel_air
 
-#### Stored (**not reviewed**, confidence high)
+#### Stored (reviewed, confidence high)
 
 The car's computer noticed a problem with the mass air flow sensor. This sensor measures how much air is going into the engine, and it might not be reading correctly.
 
@@ -978,7 +978,7 @@ Ask the mechanic:
 - How does the air filter look?
 - Are there any other issues with the fuel system?
 
-#### Pending (**not reviewed**, confidence high)
+#### Pending (reviewed, confidence high)
 
 The car's computer has noticed a possible issue with the mass air flow sensor, which measures how much air enters the engine. This has only happened once and the warning light is not on yet, but you should watch for any signs of trouble.
 
@@ -999,7 +999,7 @@ Ask the mechanic:
 
 Severity (our rule): **Service soon** | system: fuel_air
 
-#### Stored (**not reviewed**, confidence high)
+#### Stored (reviewed, confidence high)
 
 The car's computer has noticed a problem with the mass air flow sensor. This sensor measures how much air is entering the engine, and it seems to be giving a low signal.
 
@@ -1015,7 +1015,7 @@ Ask the mechanic:
 - Are there any leaks in the air intake system?
 - Is the wiring to the sensor intact?
 
-#### Pending (**not reviewed**, confidence high)
+#### Pending (reviewed, confidence high)
 
 The car's computer has noticed a low signal from the mass air flow (MAF) sensor, which measures how much air enters the engine. This has only happened once and the warning light is not on yet, but you should watch for any signs of trouble.
 
@@ -1035,7 +1035,7 @@ Ask the mechanic:
 
 Severity (our rule): **Service soon** | system: fuel_air
 
-#### Stored (**not reviewed**, confidence high)
+#### Stored (reviewed, confidence high)
 
 The car's computer has noticed a problem with the manifold pressure sensor, which measures how much air is in the engine. This could mean there's a vacuum leak or an issue with the sensor itself, and it needs attention soon.
 
@@ -1051,7 +1051,7 @@ Ask the mechanic:
 - Is the MAP hose in good condition?
 - Does the MAP sensor need replacing?
 
-#### Pending (**not reviewed**, confidence medium)
+#### Pending (reviewed, confidence medium)
 
 The car's computer has noticed a possible issue with the manifold pressure sensor, but it hasn't confirmed it yet. This means the sensor reading doesn't match how the engine is running, and the warning light is not on yet. Watch for any changes in engine performance.
 
@@ -1071,7 +1071,7 @@ Ask the mechanic:
 
 Severity (our rule): **Watch** | system: cooling
 
-#### Stored (**not reviewed**, confidence high)
+#### Stored (reviewed, confidence high)
 
 The car's computer noticed that the engine coolant is staying too cool after warming up. This can lead to using more fuel and a weak heater.
 
@@ -1087,7 +1087,7 @@ Ask the mechanic:
 - Is the coolant temperature sensor working properly?
 - Is the coolant level okay?
 
-#### Pending (**not reviewed**, confidence medium)
+#### Pending (reviewed, confidence medium)
 
 The car's computer has noticed a potential issue with the coolant temperature. It means the engine might not be warming up properly, but the warning light is not on yet.
 
@@ -1107,7 +1107,7 @@ Ask the mechanic:
 
 Severity (our rule): **Watch** | system: cooling
 
-#### Stored (**not reviewed**, confidence high)
+#### Stored (reviewed, confidence high)
 
 The car's computer noticed that the engine takes too long to warm up for normal fuel control. This can lead to using more fuel and a weak heater.
 
@@ -1123,7 +1123,7 @@ Ask the mechanic:
 - Is the coolant temperature sensor working properly?
 - Is there enough coolant in the system?
 
-#### Pending (**not reviewed**, confidence high)
+#### Pending (reviewed, confidence high)
 
 The car's computer has noticed a potential issue with the engine taking too long to warm up. This has only happened once and the warning light is not on yet, but you should watch for any signs of the engine running cooler than normal.
 
@@ -1143,7 +1143,7 @@ Ask the mechanic:
 
 Severity (our rule): **Service soon** | system: cooling
 
-#### Stored (**not reviewed**, confidence high)
+#### Stored (reviewed, confidence high)
 
 The car's computer has noticed a problem with the coolant temperature sensor, which reads an impossibly hot signal. This means the sensor might be shorted or there could be a wiring issue.
 
@@ -1159,7 +1159,7 @@ Ask the mechanic:
 - Could the thermostat be stuck open?
 - Is the cooling system functioning properly?
 
-#### Pending (**not reviewed**, confidence medium)
+#### Pending (reviewed, confidence medium)
 
 The car's computer has noticed a problem with the coolant temperature sensor, which reads too low. This hasn't been confirmed yet, and the warning light is not on. Keep an eye on the temperature gauge and watch for any signs of overheating.
 
@@ -1177,7 +1177,7 @@ Ask the mechanic:
 
 Severity (our rule): **Service soon** | system: cooling
 
-#### Stored (**not reviewed**, confidence high)
+#### Stored (reviewed, confidence high)
 
 The car's computer noticed a problem with the coolant temperature sensor. It thinks the engine is too cold, which could mean the sensor is broken or there's an issue with the wiring.
 
@@ -1191,7 +1191,7 @@ Ask the mechanic:
 - Is the coolant temperature sensor working properly?
 - Are there any issues with the wiring connected to the sensor?
 
-#### Pending (**not reviewed**, confidence high)
+#### Pending (reviewed, confidence high)
 
 The car's computer has noticed a problem with the coolant temperature sensor, which reads too cold. This has only happened once, and the warning light is not on yet, but you should watch for any signs of overheating.
 
@@ -1209,7 +1209,7 @@ Ask the mechanic:
 
 Severity (our rule): **STOP SAFELY** | system: cooling
 
-#### Stored (**not reviewed**, confidence high)
+#### Stored (reviewed, confidence high)
 
 The car's computer has noticed that the engine is overheating. This means there could be a problem with the cooling system that needs immediate attention.
 
@@ -1228,7 +1228,7 @@ Ask the mechanic:
 - Is the thermostat functioning correctly?
 - Is the radiator blocked?
 
-#### Pending (**not reviewed**, confidence high)
+#### Pending (reviewed, confidence high)
 
 The car's computer has noticed a possible overheating issue, but it hasn't confirmed it yet. The warning light is not on, so keep an eye on the temperature gauge and watch for any signs of overheating.
 
@@ -1251,7 +1251,7 @@ Ask the mechanic:
 
 Severity (our rule): **Service soon** | system: cooling
 
-#### Stored (**not reviewed**, confidence high)
+#### Stored (reviewed, confidence high)
 
 The car's computer noticed a problem with the cooling fan control circuit. This means the cooling fan may not turn on, which can lead to the engine overheating.
 
@@ -1269,7 +1269,7 @@ Ask the mechanic:
 - Are there any blown fuses?
 - Is the fan motor in good condition?
 
-#### Pending (**not reviewed**, confidence high)
+#### Pending (reviewed, confidence high)
 
 The car's computer noticed once a possible problem with the circuit that switches on the cooling fan, but it hasn't confirmed it yet, and the warning light is not on. If the fan doesn't turn on when needed, the engine can overheat.
 
@@ -1291,7 +1291,7 @@ Ask the mechanic:
 
 Severity (our rule): **Service soon** | system: cam_crank
 
-#### Stored (**not reviewed**, confidence high)
+#### Stored (reviewed, confidence high)
 
 The car's computer noticed that the intake camshaft timing is more advanced than it should be. This can affect engine performance and may lead to more serious issues if not addressed soon.
 
@@ -1307,7 +1307,7 @@ Ask the mechanic:
 - Is the VVT oil control valve working properly?
 - Does the timing chain need to be replaced?
 
-#### Pending (**not reviewed**, confidence medium)
+#### Pending (reviewed, confidence medium)
 
 The car's computer has noticed a possible issue with the intake camshaft timing. This means the timing is more advanced than what the computer wants, but it hasn't confirmed it yet, and the warning light is not on.
 
@@ -1327,7 +1327,7 @@ Ask the mechanic:
 
 Severity (our rule): **Service soon** | system: cam_crank
 
-#### Stored (**not reviewed**, confidence high)
+#### Stored (reviewed, confidence high)
 
 The car's computer has noticed that the exhaust camshaft timing is more advanced than it should be. This can affect engine performance and may lead to more serious issues if not checked soon.
 
@@ -1343,7 +1343,7 @@ Ask the mechanic:
 - Is the exhaust variable valve timing valve working properly?
 - Does the timing chain need to be replaced?
 
-#### Pending (**not reviewed**, confidence high)
+#### Pending (reviewed, confidence high)
 
 The car's computer has noticed a possible issue with the exhaust camshaft timing. It means the timing is more advanced than what the computer wants, but this has only happened once and the warning light is not on yet.
 
@@ -1363,7 +1363,7 @@ Ask the mechanic:
 
 Severity (our rule): **Service soon** | system: cam_crank
 
-#### Stored (**not reviewed**, confidence high)
+#### Stored (reviewed, confidence high)
 
 The car's computer has noticed a problem with the timing of the crankshaft and intake camshaft signals. This means they are not lining up correctly, which can affect engine performance.
 
@@ -1380,7 +1380,7 @@ Ask the mechanic:
 - Are the cam and crank sensors functioning properly?
 - Is there a problem with the variable valve timing system?
 
-#### Pending (**not reviewed**, confidence high)
+#### Pending (reviewed, confidence high)
 
 The car's computer has noticed a possible issue with the timing of the crankshaft and intake camshaft signals. This hasn't been confirmed yet, and the warning light is not on, but you should watch for any changes.
 
@@ -1401,7 +1401,7 @@ Ask the mechanic:
 
 Severity (our rule): **Service soon** | system: cam_crank
 
-#### Stored (**not reviewed**, confidence high)
+#### Stored (reviewed, confidence high)
 
 The car's computer has noticed a problem with the crankshaft position sensor circuit. This means the sensor that helps the engine know its position isn't working properly, which could lead to stalling or not starting.
 
@@ -1418,7 +1418,7 @@ Ask the mechanic:
 - Is the reluctor ring damaged?
 - Could low oil levels be affecting the engine's performance?
 
-#### Pending (**not reviewed**, confidence high)
+#### Pending (reviewed, confidence high)
 
 The car's computer has noticed a problem with the crankshaft position sensor circuit. This means the engine may stall or not restart in the future, but the warning light is not on yet.
 
@@ -1438,7 +1438,7 @@ Ask the mechanic:
 
 Severity (our rule): **Service soon** | system: cam_crank
 
-#### Stored (**not reviewed**, confidence high)
+#### Stored (reviewed, confidence high)
 
 The car's computer has noticed a problem with the camshaft position sensor, which helps control the engine's timing. This means the sensor circuit isn't working properly, and it needs attention soon.
 
@@ -1454,7 +1454,7 @@ Ask the mechanic:
 - Is there any damage to the wiring?
 - Could the engine oil be affecting the sensor's performance?
 
-#### Pending (**not reviewed**, confidence high)
+#### Pending (reviewed, confidence high)
 
 The car's computer has noticed a problem with the camshaft position sensor circuit, but it hasn't confirmed it yet. The warning light is not on, but you should watch for any signs of engine trouble.
 
@@ -1475,7 +1475,7 @@ Ask the mechanic:
 
 Severity (our rule): **Watch** | system: idle_speed
 
-#### Stored (**not reviewed**, confidence high)
+#### Stored (reviewed, confidence high)
 
 The car's computer noticed a problem with the idle speed control system. This means the engine may not be idling smoothly, which can happen if parts are dirty or there are leaks.
 
@@ -1491,7 +1491,7 @@ Ask the mechanic:
 - Is there any vacuum leak in the engine?
 - Does the idle control valve need to be replaced?
 
-#### Pending (**not reviewed**, confidence medium)
+#### Pending (reviewed, confidence medium)
 
 The car's computer has noticed a possible issue with the idle speed control system, but it hasn't confirmed it yet. This means the car might not hold its idle speed properly, and the warning light is not on yet. Watch for any signs of an unsteady or low idle.
 
@@ -1511,7 +1511,7 @@ Ask the mechanic:
 
 Severity (our rule): **Watch** | system: idle_speed
 
-#### Stored (**not reviewed**, confidence high)
+#### Stored (reviewed, confidence high)
 
 The car's computer noticed that the engine is idling faster than it should. This could mean there is a problem with the idle control system, but it is not urgent right now.
 
@@ -1528,7 +1528,7 @@ Ask the mechanic:
 - Could a vacuum leak be affecting the engine?
 - Is the throttle closing fully?
 
-#### Pending (**not reviewed**, confidence medium)
+#### Pending (reviewed, confidence medium)
 
 The car's computer has noticed that the engine might be idling faster than it should. This has only happened once and the warning light is not on yet, but you should watch for any changes in how the engine runs.
 
@@ -1549,7 +1549,7 @@ Ask the mechanic:
 
 Severity (our rule): **Service soon** | system: throttle
 
-#### Stored (**not reviewed**, confidence high)
+#### Stored (reviewed, confidence high)
 
 The car's computer noticed a problem with the throttle position sensors, which help control how much air goes into the engine. This means the sensors are not agreeing, and it could affect the car's power.
 
@@ -1564,7 +1564,7 @@ Ask the mechanic:
 - Is there any carbon build-up in the throttle body?
 - Are the wiring and connectors in good condition?
 
-#### Pending (**not reviewed**, confidence high)
+#### Pending (reviewed, confidence high)
 
 The car's computer has noticed a problem with the throttle position sensors, which help control how much air goes into the engine. This issue has only been detected once and hasn't confirmed it yet, so the warning light is not on. Watch for any changes in power or performance.
 
@@ -1583,7 +1583,7 @@ Ask the mechanic:
 
 Severity (our rule): **Service soon** | system: charging
 
-#### Stored (**not reviewed**, confidence high)
+#### Stored (reviewed, confidence high)
 
 The car's computer has noticed that the battery isn't being charged properly. This could lead to problems if it gets worse, so it's important to check it soon.
 
@@ -1601,7 +1601,7 @@ Ask the mechanic:
 - How old is the battery?
 - Are the battery terminals clean and secure?
 
-#### Pending (**not reviewed**, confidence high)
+#### Pending (reviewed, confidence high)
 
 The car's computer has noticed a low battery voltage issue, but it hasn't confirmed it yet. The warning light is not on, but you should watch for any signs of the voltage dropping while driving.
 
@@ -1623,7 +1623,7 @@ Ask the mechanic:
 
 Severity (our rule): **Service soon** | system: charging
 
-#### Stored (**not reviewed**, confidence high)
+#### Stored (reviewed, confidence high)
 
 The car's computer has noticed that the battery is being over-charged, which means the system voltage is too high. This can lead to problems with the battery and the charging system.
 
@@ -1639,7 +1639,7 @@ Ask the mechanic:
 - Are there any poor ground connections?
 - Is the battery in good condition?
 
-#### Pending (**not reviewed**, confidence high)
+#### Pending (reviewed, confidence high)
 
 The car's computer has noticed a possible issue with the system voltage being too high, which means the battery might be over-charged. This has only happened once, and the warning light is not on yet, but you should watch for any signs of battery problems.
 
@@ -1659,7 +1659,7 @@ Ask the mechanic:
 
 Severity (our rule): **STOP SAFELY** | system: oil
 
-#### Stored (**not reviewed**, confidence high)
+#### Stored (reviewed, confidence high)
 
 The car's computer has noticed that the engine oil pressure is too low. This can be very serious and may damage the engine quickly.
 
@@ -1677,7 +1677,7 @@ Ask the mechanic:
 - Is the oil pump working properly?
 - Is the oil pickup clogged?
 
-#### Pending (**not reviewed**, confidence high)
+#### Pending (reviewed, confidence high)
 
 The car's computer has noticed a possible low oil pressure issue, but it hasn't confirmed it yet. The warning light is not on, but you should watch for any signs of trouble.
 
@@ -1699,7 +1699,7 @@ Ask the mechanic:
 
 Severity (our rule): **Service soon** | system: ignition
 
-#### Stored (**not reviewed**, confidence high)
+#### Stored (reviewed, confidence high)
 
 The car's computer has noticed a problem with the ignition coil for cylinder 1. This means the engine may not be burning fuel properly, which can lead to misfires.
 
@@ -1714,7 +1714,7 @@ Ask the mechanic:
 - Are the wiring and connectors in good condition?
 - Could worn spark plugs be causing this issue?
 
-#### Pending (**not reviewed**, confidence high)
+#### Pending (reviewed, confidence high)
 
 The car's computer has noticed a possible issue with the ignition coil circuit for cylinder 1, but it hasn't confirmed it yet. The warning light is not on, but you should watch for any signs of a misfire, like rough running or a flashing check-engine light.
 
@@ -1733,7 +1733,7 @@ Ask the mechanic:
 
 Severity (our rule): **Watch** | system: emissions
 
-#### Stored (**not reviewed**, confidence high)
+#### Stored (reviewed, confidence high)
 
 The car's computer has noticed that not enough exhaust gas is being recirculated. This means the system that helps reduce emissions might not be working as well as it should.
 
@@ -1748,7 +1748,7 @@ Ask the mechanic:
 - Are there any clogs in the EGR passages?
 - Should we check the oxygen sensors for issues?
 
-#### Pending (**not reviewed**, confidence medium)
+#### Pending (reviewed, confidence medium)
 
 The car's computer has noticed a problem with the exhaust gas recirculation (EGR) system. It means not enough exhaust gas is being recirculated, which can affect emissions. The warning light is not on yet, but watch for any changes.
 
@@ -1767,7 +1767,7 @@ Ask the mechanic:
 
 Severity (our rule): **Service soon** | system: transmission
 
-#### Stored (**not reviewed**, confidence high)
+#### Stored (reviewed, confidence high)
 
 The car's transmission computer has found a fault and stored it. This means there may be a problem with the transmission that needs checking soon.
 
@@ -1782,7 +1782,7 @@ Ask the mechanic:
 - Is the transmission fluid low or old?
 - Are there any signs of slipping gears or harsh shifts?
 
-#### Pending (**not reviewed**, confidence high)
+#### Pending (reviewed, confidence high)
 
 The car's computer has noticed a possible issue with the transmission, but it hasn't confirmed it yet. The warning light is not on, but you should watch for any signs like slipping gears or harsh shifts.
 
@@ -1801,7 +1801,7 @@ Ask the mechanic:
 
 Severity (our rule): **Service soon** | system: transmission
 
-#### Stored (**not reviewed**, confidence high)
+#### Stored (reviewed, confidence high)
 
 The car's computer has noticed a problem with the torque converter clutch not locking up properly. This can affect how the car shifts gears and may lead to bigger issues if not checked soon.
 
@@ -1817,7 +1817,7 @@ Ask the mechanic:
 - Is the lock-up solenoid working properly?
 - Is the torque converter worn?
 
-#### Pending (**not reviewed**, confidence high)
+#### Pending (reviewed, confidence high)
 
 The car's computer has noticed a problem with the torque converter clutch, which helps the engine and transmission work together. This issue has only been detected once, and the warning light is not on yet, but you should watch for any slipping gears or harsh shifts.
 
@@ -1837,7 +1837,7 @@ Ask the mechanic:
 
 Severity (our rule): **Service soon** | system: network
 
-#### Stored (**not reviewed**, confidence high)
+#### Stored (reviewed, confidence high)
 
 The car's computer has noticed a problem where other parts are not communicating with the engine computer. This could lead to issues like the engine stalling or not starting.
 
@@ -1853,7 +1853,7 @@ Ask the mechanic:
 - Is the engine computer getting enough power?
 - Could there be any corrosion affecting the connections?
 
-#### Pending (**not reviewed**, confidence high)
+#### Pending (reviewed, confidence high)
 
 The car's computer noticed a problem with communication between the engine computer and other modules. This has only happened once, and the warning light is not on yet, but you should watch for any signs of the engine stalling or not starting.
 
