@@ -1,0 +1,15 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "api-local",
+      "runtimeExecutable": "powershell",
+      "runtimeArgs": [
+        "-NoProfile",
+        "-Command",
+        "Set-Location C:\\Users\\Godswisdom\\mycar\\backend; $env:DATABASE_URL='postgresql+asyncpg://autocare:autocare@localhost:5433/autocare'; uv run uvicorn app.main:app --port 8014"
+      ],
+      "port": 8014
+    }
+  ]
+}

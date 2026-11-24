@@ -183,6 +183,21 @@ Not in Phase 4 (later phases, per PRD 13):
 - an unknown code (not in the table) still gets a template answer that says so
 - the Restfox list passes locally
 
+✅ **Done 2026-11-24:** 27 new tests (447 backend tests, all pass); Restfox list **19/19** locally.
+- **Stage** `dtc.interpret` runs after `trip.summarise` (`app/jobs/handlers/dtc_interpret.py`, logic in `services/dtc/interpret.py`). For each active code (subject `P0171:stored`):
+  - **Cached:** an insight for the same context hash exists, so no call.
+  - **New context:** `explain()` runs, and a personalised answer is stored under its hash.
+  - **Rejected twice:** the fallback is stored **under the hash**, so the same failure isn't re-bought each trip.
+  - **Skipped** (no key, over budget, provider down): the fallback is stored **without** a hash (one row per code, replaced), so it's retried when the budget allows. If the car already has a personalised answer for that code, it stays on show.
+  - **The fallback** is the reviewed generic answer if one is approved, else the template.
+- **Commits after each code**, so money spent on LLM calls is never lost to a rollback if a later code fails (each step is idempotent).
+- **API** (`app/api/codes.py`), read-only and never calls the LLM:
+  - `GET /vehicles/{id}/codes`: stored / pending / permanent, most severe first, a top-level `stop_safely` flag, and codes cleared in the last 30 days. A code that hasn't been interpreted yet gets the reviewed generic answer or the template on the spot.
+  - `GET /vehicles/{id}/codes/{code}`: one code in full, with its history; 404 if never reported, 422 if badly formatted.
+  - `GET /admin/llm/usage`: this month's calls, ok/failed, tokens, $ vs cap, by purpose, and explanations by source.
+- **Unknown codes** get `known: false`, severity "watch", and a template that says the code isn't in our list.
+- **Restfox:** `backend/restfox/phase4_requests.py` (+ the exported collection) checks the contract without a device; real codes are covered end to end by step 6.
+
 ### Step 6: End to end + live
 `scripts/phase4_gate.py`: a simulated car develops a vacuum leak and a misfire (Phase 2 faults). Their codes (P0171, P0302) are ingested over HTTP, interpreted in the pipeline, and `GET /codes` shows a validated, correctly tiered explanation for each, with a fake LLM locally (no cost). Then deploy, and run the Restfox list on Railway with the real model (a few cents).
 

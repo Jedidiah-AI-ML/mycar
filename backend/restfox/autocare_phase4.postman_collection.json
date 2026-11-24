@@ -1,0 +1,328 @@
+{
+  "info": {
+    "name": "AutoCare Phase 4 (fault codes)",
+    "_postman_id": "65526cc3-ce62-53d2-b975-0d5d00a68119",
+    "description": "Run in order. Change `run` before each full run.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "01 Liveness -> 200",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{base}}/health",
+        "description": "Expect HTTP 200."
+      }
+    },
+    {
+      "name": "02 Readiness (DB + migrations) -> 200",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{base}}/health/ready",
+        "description": "Expect HTTP 200. Check: checks.migrations = \"head\"."
+      }
+    },
+    {
+      "name": "03 Register owner -> 201",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base}}/auth/register",
+        "description": "Expect HTTP 201.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{email_owner}}\",\n  \"password\": \"restfox-pass-123\",\n  \"display_name\": \"email_owner\",\n  \"consents\": [\n    \"service_processing\"\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "04 Log in owner -> 200",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base}}/auth/login",
+        "description": "Expect HTTP 200. Then save: token = response.access_token.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{email_owner}}\",\n  \"password\": \"restfox-pass-123\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "05 Add a car -> 201",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{base}}/vehicles",
+        "description": "Expect HTTP 201. Then save: vid = response.id.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"make\": \"Toyota\",\n  \"model\": \"Corolla\",\n  \"year\": 2010,\n  \"engine\": \"2ZR-FE 1.8L I4\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "06 Codes: none on a new car -> 200",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{base}}/vehicles/{{vid}}/codes",
+        "description": "Expect HTTP 200. Check: stop_safely = false, stored = [], pending = [], permanent = [], recently_cleared = []. With a device, codes arrive by status with their explanations."
+      }
+    },
+    {
+      "name": "07 One code the car never reported -> 404",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{base}}/vehicles/{{vid}}/codes/P0171",
+        "description": "Expect HTTP 404."
+      }
+    },
+    {
+      "name": "08 A code in the wrong format -> 422",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{base}}/vehicles/{{vid}}/codes/p0171",
+        "description": "Expect HTTP 422."
+      }
+    },
+    {
+      "name": "09 Not a code at all -> 422",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{base}}/vehicles/{{vid}}/codes/OIL",
+        "description": "Expect HTTP 422."
+      }
+    },
+    {
+      "name": "10 Codes without logging in -> 401",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{base}}/vehicles/{{vid}}/codes",
+        "description": "Expect HTTP 401."
+      }
+    },
+    {
+      "name": "11 LLM usage as a non-admin (hidden) -> 404",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{base}}/admin/llm/usage",
+        "description": "Expect HTTP 404."
+      }
+    },
+    {
+      "name": "12 Register a stranger -> 201",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base}}/auth/register",
+        "description": "Expect HTTP 201.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{email_stranger}}\",\n  \"password\": \"restfox-pass-123\",\n  \"display_name\": \"email_stranger\",\n  \"consents\": [\n    \"service_processing\"\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "13 Log in stranger -> 200",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base}}/auth/login",
+        "description": "Expect HTTP 200. Then save: token_s = response.access_token.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{email_stranger}}\",\n  \"password\": \"restfox-pass-123\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "14 Stranger lists the codes (hidden) -> 404",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_s}}"
+          }
+        ],
+        "url": "{{base}}/vehicles/{{vid}}/codes",
+        "description": "Expect HTTP 404."
+      }
+    },
+    {
+      "name": "15 Stranger reads one code (hidden) -> 404",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_s}}"
+          }
+        ],
+        "url": "{{base}}/vehicles/{{vid}}/codes/P0171",
+        "description": "Expect HTTP 404."
+      }
+    },
+    {
+      "name": "16 Delete the car -> 204",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{base}}/vehicles/{{vid}}",
+        "description": "Expect HTTP 204."
+      }
+    },
+    {
+      "name": "17 Codes of a deleted car -> 404",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{base}}/vehicles/{{vid}}/codes",
+        "description": "Expect HTTP 404."
+      }
+    },
+    {
+      "name": "18 Delete the owner account -> 204",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{base}}/me",
+        "description": "Expect HTTP 204."
+      }
+    },
+    {
+      "name": "19 Delete the stranger account -> 204",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_s}}"
+          }
+        ],
+        "url": "{{base}}/me",
+        "description": "Expect HTTP 204."
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base",
+      "value": "http://localhost:8000"
+    },
+    {
+      "key": "run",
+      "value": "r1"
+    },
+    {
+      "key": "email_owner",
+      "value": "p4-owner-{{run}}@example.com"
+    },
+    {
+      "key": "email_stranger",
+      "value": "p4-stranger-{{run}}@example.com"
+    }
+  ]
+}

@@ -192,9 +192,10 @@ def test_find_gaps():
 
 
 def test_pipeline_stages_through_phase_3():
-    assert STAGES == ("trip.assemble", "trip.summarise")
+    assert STAGES == ("trip.assemble", "trip.summarise", "dtc.interpret")
     assert next_stage("trip.assemble") == "trip.summarise"
-    assert next_stage("trip.summarise") is None
+    assert next_stage("trip.summarise") == "dtc.interpret"
+    assert next_stage("dtc.interpret") is None
 
 
 # ---------------------------------------------------------------- concurrency

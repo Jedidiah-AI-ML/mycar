@@ -16,6 +16,7 @@ from app.api import (
     account,
     admin,
     auth,
+    codes,
     devices,
     health,
     ingest,
@@ -87,6 +88,8 @@ def create_app() -> FastAPI:
     app.include_router(devices.router)
     app.include_router(ingest.router)
     app.include_router(maintenance.router)
+    app.include_router(codes.router)
+    app.include_router(codes.admin_router)
     return app
 
 

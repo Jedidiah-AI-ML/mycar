@@ -1,3 +1,10 @@
 """Importing this package registers every job handler."""
 
-from app.jobs.handlers import account, alerts, system, trip_summary, trips  # noqa: F401
+from app.jobs.handlers import (  # noqa: F401
+    account,
+    alerts,
+    dtc_interpret,
+    system,
+    trip_summary,
+    trips,
+)
