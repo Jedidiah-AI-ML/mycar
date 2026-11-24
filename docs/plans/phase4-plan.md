@@ -1,5 +1,7 @@
 # Phase 4 plan: Layer 2 fault codes (APPROVED 2026-11-23)
 
+**Status 2026-11-24:** steps 1–3, 5 and 6 are done, and live on Railway with personalised explanations. **One gate is still open:** step 4 needs Wisdom's review of `docs/review/dtc_explanations_v1.md`. Until entries are marked `reviewed: true`, owners get personalised answers or templates, never unreviewed text. Total LLM spend so far is about $0.06.
+
 **Decisions (Wisdom, 2026-11-23):** all five open questions approved as recommended:
 - **Q1:** our own plain-language definitions (~150 generic codes), reviewed by Wisdom
 - **Q2:** `openai/gpt-4o-mini` via LiteLLM, with a $2/month cap
@@ -203,7 +205,7 @@ Not in Phase 4 (later phases, per PRD 13):
 
 **Gate:** the report shows the injected faults' codes explained, severities equal to the definitions, 0 schema failures; the list passes live.
 
-🟡 **2026-11-24: local gate passed; live gate waiting on two Railway settings.**
+✅ **Done 2026-11-24: local gate passed; live gate passed** (Wisdom set `LLM_MODEL` and `LLM_API_KEY` on Railway, then ran `phase2_smoke.py --faults --cleanup` against production: **SMOKE TEST PASSED**, as reported by Wisdom. That pass needs the fault's code listed and explained, its severity equal to the definition, the answer personalised by the live LLM, and 0 failed calls).
 - **Local gate:** `scripts/phase4_gate.py` passed, report in `ml/reports/phase4_gate.md`. A Corolla with a vacuum leak and a cylinder-2 misfire over 7 days: 17 trips, 583 batches over HTTP. Results:
   - P0171 and P0302 (stored and permanent) explained by the pipeline;
   - all **personalised**, severities equal to the definitions, grounded;
