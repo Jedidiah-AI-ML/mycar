@@ -203,6 +203,20 @@ Not in Phase 4 (later phases, per PRD 13):
 
 **Gate:** the report shows the injected faults' codes explained, severities equal to the definitions, 0 schema failures; the list passes live.
 
+🟡 **2026-11-24: local gate passed; live gate waiting on two Railway settings.**
+- **Local gate:** `scripts/phase4_gate.py` passed, report in `ml/reports/phase4_gate.md`. A Corolla with a vacuum leak and a cylinder-2 misfire over 7 days: 17 trips, 583 batches over HTTP. Results:
+  - P0171 and P0302 (stored and permanent) explained by the pipeline;
+  - all **personalised**, severities equal to the definitions, grounded;
+  - **8 LLM calls, 0 failed, $0.0025** for 21 interpretation runs (the cache held);
+  - 0 dead jobs.
+  - The free `--no-llm` run also passed 6/6 with templates (`ml/reports/phase4_gate_no_llm.md`).
+- **One change from the plan:** the local gate uses the **real model**, not a fake. A fake inside the API process would need a test-only hook in production code, and two codes cost a fraction of a cent. `--no-llm` gives the free version.
+- **Live:** step 5 auto-deployed and migration 0005 is at head on Neon. The Restfox list passed **19/19 on Railway**.
+- **ADR-013** and `docs/compliance/llm-processing.md` written.
+- **To finish live:**
+  1. Wisdom sets `LLM_MODEL=openrouter/openai/gpt-4o-mini` and `LLM_API_KEY` on Railway, on the service that runs the worker.
+  2. Run `phase2_smoke.py --faults --cleanup` against production. It checks that the codes are explained live by the LLM, with tiers equal to the definitions and 0 failed calls.
+
 ## Phase 4 schema (migration 0005)
 
 | Table | Key columns | Notes |

@@ -14,6 +14,11 @@ The admin telemetry endpoint must then show every reading once, 0 duplicates, an
 day's batch count. The production rate limit (60 requests/min) is respected, so a day
 takes a few minutes. About 70,000 readings (~7 MB) land in the database.
 
+`--faults` (Phase 4 live check): the car also develops a fast vacuum leak and a
+cylinder-2 misfire during the day. After upload, the codes must reach `GET /codes`,
+explained by the live pipeline, with severities equal to our definitions; the admin LLM
+usage is printed (a few calls, a fraction of a cent).
+
 Creates one owner (with location consent), one car and one device. `--cleanup` deletes
 the car and the account afterwards (readings go with the account purge, 30 days later).
 """
@@ -38,6 +43,7 @@ sys.path.insert(0, str(REPO / "scripts"))
 from phase2_gate import expected_readings  # noqa: E402
 
 from autocare_sim.device import Device  # noqa: E402
+from autocare_sim.faults import fault  # noqa: E402
 from autocare_sim.network import Network  # noqa: E402
 from autocare_sim.run import LAGOS, simulate  # noqa: E402
 
@@ -76,11 +82,51 @@ class Api:
                 raise RuntimeError(f"{method} {path}: {e.code} {e.read()[:300]!r}") from None
 
 
+DEFS = {d["code"]: d for d in __import__("yaml").safe_load(
+    (REPO / "backend/app/config/dtc/definitions.yaml").read_text("utf-8"))["codes"]}  # fmt: skip
+
+
+def codes_checks(api, vid, owner, admin, tl) -> list:
+    """Phase 4: the codes the car set are listed, explained and correctly tiered."""
+    sim = {c for row in tl.ground_truth()["faults"] for c, w in row["codes"].items()
+           if w["pending"]}  # fmt: skip
+    print("    waiting for dtc.interpret (up to ~3 min) ...", flush=True)
+    for _ in range(36):
+        body = api.call("GET", f"/vehicles/{vid}/codes", token=owner)
+        active = [c for s in ("stored", "pending", "permanent") for c in body[s]]
+        if active and all(c["explanation"]["generated_at"] for c in active):
+            break
+        time.sleep(5)
+    usage = api.call("GET", "/admin/llm/usage", token=admin)
+    for c in active:
+        x = c["explanation"]
+        print(f"    {c['code']} {c['status']:9s} {c['severity']:12s} {x['source']:12s} "
+              f"{x['summary'][:70]}...")  # fmt: skip
+    print(f"    LLM this month: {usage['calls']} calls ({usage['failed']} failed), "
+          f"${usage['spent_usd']:.4f} of ${usage['cap_usd']:.2f}, model {usage['model']}, "
+          f"{'on' if usage['enabled'] else 'OFF'}")  # fmt: skip
+    codes = {c["code"] for c in active}
+    tiers_ok = all(c["severity"] == c["explanation"]["severity"] == DEFS[c["code"]]["severity"]
+                   for c in active if c["code"] in DEFS)  # fmt: skip
+    sources = sorted({c["explanation"]["source"] for c in active})
+    return [
+        ("simulated codes listed as active", bool(sim) and sim <= codes,
+         f"API {sorted(codes)} vs simulated {sorted(sim)}"),
+        ("every code explained and stored", all(c["explanation"]["generated_at"] for c in active),
+         f"{len(active)} codes"),
+        ("severities equal the definitions", tiers_ok, "checked"),
+        ("explanations personalised by the live LLM", sources == ["personalised"],
+         f"sources {sources}"),
+        ("no failed LLM calls", usage["failed"] == 0, f"{usage['failed']} failed"),
+    ]  # fmt: skip
+
+
 def main() -> int:  # noqa: PLR0915 - a linear script reads best top to bottom
     ap = argparse.ArgumentParser()
     ap.add_argument("base", help="e.g. https://mycar-api-production.up.railway.app")
     ap.add_argument("--seed", type=int, default=11)
     ap.add_argument("--cleanup", action="store_true", help="delete the car and account after")
+    ap.add_argument("--faults", action="store_true", help="Phase 4: add faults, check /codes")
     args = ap.parse_args()
     admin_email = os.environ.get("AUTOCARE_ADMIN_EMAIL")
     admin_password = os.environ.get("AUTOCARE_ADMIN_PASSWORD")
@@ -109,7 +155,11 @@ def main() -> int:  # noqa: PLR0915 - a linear script reads best top to bottom
     now = datetime.now(UTC)
     start = (now - timedelta(days=1, hours=1)).astimezone(LAGOS).replace(
         hour=0, minute=0, second=0, microsecond=0)  # fmt: skip
-    tl = simulate(PID, days=1, seed=args.seed, start=start)
+    faults = None
+    if args.faults:  # fast versions, so codes set within the one simulated day
+        faults = [fault("vacuum_leak", onset=0, ramp=0.3),
+                  fault("misfire", onset=0, ramp=0.3, cylinder=2)]  # fmt: skip
+    tl = simulate(PID, days=1, seed=args.seed, start=start, faults=faults)
     tl.trips = [t for t in tl.trips if t.end < now - timedelta(minutes=5)]  # only the past
     net = Network.perfect()
     net.enabled = True
@@ -175,6 +225,8 @@ def main() -> int:  # noqa: PLR0915 - a linear script reads best top to bottom
          sum(stats["trips"].values()) == len(tl.trips) and "open" not in stats["trips"],
          f"{stats['trips']} for {len(tl.trips)} trips"),
     ]  # fmt: skip
+    if args.faults:
+        checks += codes_checks(api, vid, owner, admin, tl)
     for name, ok, detail in checks:
         print(f"  [{'PASS' if ok else 'FAIL'}] {name}: {detail}")
     print(f"  {api.requests} requests, {api.waited_s:.0f} s waiting on the rate limit, "
