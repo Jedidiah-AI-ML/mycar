@@ -22,7 +22,7 @@ from app.llm.schemas import DtcExplanation, grounding_problems
 from app.services.dtc.context import DtcContext
 from app.services.dtc.templates import template_explanation
 
-PROMPT_VERSION = "dtc_explain.v1"
+PROMPT_VERSION = "dtc_explain.v2"  # v1: 2026-11-23, replaced after the first review pass
 PURPOSE = "dtc_explain"
 MAX_ATTEMPTS = 2
 

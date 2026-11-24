@@ -159,6 +159,14 @@ Not in Phase 4 (later phases, per PRD 13):
   3. Some jargon (MAF, EVAP, VVT, EGR) is used without a plain-words explanation.
 
   Options: fix by hand in the YAML, or make a `dtc_explain.v2` prompt that addresses 1–3 and regenerate (~$0.03).
+- **Prompt v2, regenerated 2026-11-24 (Wisdom chose v2).** The new prompt:
+  - states what `what_to_do_now` must say for each severity tier, including pending stop-safely codes;
+  - requires every abbreviation to be explained;
+  - requires every pending summary to say "noticed once, not confirmed, warning light not on";
+  - adds a safety rule: never open the radiator, touch the engine or check fluids while hot, never work under the car, never drive it to "test".
+
+  `dtc_explain.v1.md` is kept for the record. The pending/light misses fell from 15 of 50 to 2; I fixed those 2 by hand (marked `edited_by`). P0217 and P0524 now say "stop as soon as it is safe" in both versions, and no answer tells the owner to open anything on a hot engine. A DNS drop on this PC failed 7 calls (connection errors, not validation); re-runs filled them. **All 100 valid and grounded. Spend: v1 $0.026 + v2 $0.029 = $0.055.**
+  - **Next:** Wisdom reviews `docs/review/dtc_explanations_v1.md` and marks entries `reviewed: true`. Step 5 can be built meanwhile; unreviewed codes fall back to the live LLM / template.
 
 ### Step 5: Interpretation stage + API
 | File | Purpose |

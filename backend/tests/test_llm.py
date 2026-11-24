@@ -235,7 +235,7 @@ def test_template_tells_you_to_stop_for_stop_safely_codes():
 
 def test_prompt_file_and_rendering():
     p = load_prompt(PROMPT_VERSION)
-    assert p.version == "dtc_explain.v1" and "## " not in p.system
+    assert p.version == "dtc_explain.v2" and "## " not in p.system
     out = p.render_user(context_json='{"a": 1}', code="P0171", status="stored")
     assert '{"a": 1}' in out and "P0171" in out
     with pytest.raises(KeyError):
