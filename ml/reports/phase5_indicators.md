@@ -10,7 +10,10 @@ run 2026-11-25. The indicator code is `ml/health/indicators.py` (14 unit tests i
 - **VED:** 4,502 trips of 11+ min from 219 petrol cars;
 - **KIT:** 80 trips of one Seat Leon.
 
-## Gate: FAILED (19 of 23 checks), with three documented gaps for Wisdom
+## Gate: 19 of 23 checks; the three gaps are accepted by Wisdom (2026-11-25)
+
+Wisdom accepted all three gaps as proposed below. He also accepted adding real-level per-trip
+noise to the simulated indicators in step 2.
 
 | Check | Result | Detail |
 |---|---|---|
