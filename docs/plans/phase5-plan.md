@@ -123,6 +123,13 @@ for O2 response and catalyst efficiency instead.
 - simulator vs VED distributions agree within tolerance for the shared indicators (fuel trims, MAF ratio, idle RPM spread);
 - VED's real values are physically plausible (e.g. total trim within ±10 % on most warm-idle trips).
 
+🔴 **2026-11-25: notebook run; gate FAILED 19/23, waiting for Wisdom's decision.** Report: `ml/reports/phase5_indicators.md`. All three failures are diagnosed and none is a code bug:
+1. **Cruise trims:** 42 % coverage, a limit of Lagos traffic. A value exists on 68–70 % of days.
+2. **VED idle trims:** within ±10 % on 86 % of trips, because 18 real cars run consistently lean or rich. Without them it's 92.5 %.
+3. **Idle airflow:** the simulator reads 1.32× VED, against a tolerance of 1.3.
+
+Separately, the simulator's trip-to-trip noise is 3–12× lower than real cars'. Proposed for step 2: add per-trip noise matching the real spreads.
+
 ### Step 2: Notebook 04, detection and the evaluation report (the PRD gate)
 | File | Purpose |
 |---|---|

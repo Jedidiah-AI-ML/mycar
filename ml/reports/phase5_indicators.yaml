@@ -1,0 +1,862 @@
+# Phase 5 step 1 (notebook 03). SEED - validate: every gate and prior here.
+version: 1
+gates:
+  warm_coolant_c: 80.0
+  idle_speed_kmh: 0.5
+  idle_rpm_max: 1100.0
+  min_window_s: 30
+  assume_warm_after_s: 600
+  cold_start_c: 40.0
+  warmup_target_c: 80.0
+  coolant_at_s: 600
+  overheat_c: 105.0
+  rest_parked_s: 3600
+  cruise_kmh:
+  - 50.0
+  - 110.0
+  cruise_max_accel_kmh_s: 1.5
+  cruise_rpm_max: 3500.0
+  high_rpm: 4000.0
+  hold_s: 15.0
+coverage_sim:
+  batt_rest_v:
+    trips: 607
+    coverage: 1.0
+    days_with_value: 1.0
+  batt_crank_min_v:
+    trips: 731
+    coverage: 1.0
+    days_with_value: 1.0
+  charging_v_idle:
+    trips: 731
+    coverage: 0.527
+    days_with_value: 0.787
+  warmup_s:
+    trips: 602
+    coverage: 0.626
+    days_with_value: 0.817
+  coolant_10min_c:
+    trips: 602
+    coverage: 0.699
+    days_with_value: 0.87
+  coolant_idle_peak_c:
+    trips: 731
+    coverage: 0.527
+    days_with_value: 0.787
+  overheat_s:
+    trips: 731
+    coverage: 1.0
+    days_with_value: 1.0
+  trim_idle_b1:
+    trips: 731
+    coverage: 0.527
+    days_with_value: 0.787
+  trim_idle_b2:
+    trips: 293
+    coverage: 0.539
+    days_with_value: 0.833
+  trim_cruise_b1:
+    trips: 731
+    coverage: 0.423
+    days_with_value: 0.683
+  trim_cruise_b2:
+    trips: 293
+    coverage: 0.42
+    days_with_value: 0.7
+  ltft_b1:
+    trips: 731
+    coverage: 0.639
+    days_with_value: 0.843
+  maf_idle_norm:
+    trips: 731
+    coverage: 0.527
+    days_with_value: 0.787
+  maf_vs_map:
+    trips: 586
+    coverage: 0.621
+    days_with_value: 0.842
+  idle_rpm_std:
+    trips: 731
+    coverage: 0.527
+    days_with_value: 0.787
+  km_since_clear:
+    trips: 731
+    coverage: 1.0
+    days_with_value: 1.0
+  high_rpm_share:
+    trips: 731
+    coverage: 1.0
+    days_with_value: 1.0
+fault_response:
+- fault: weak_battery
+  indicator: batt_rest_v
+  early: 12.658
+  late: 12.058
+  shift_sd: -32.376
+- fault: weak_battery
+  indicator: batt_crank_min_v
+  early: 9.325
+  late: 6.93
+  shift_sd: -64.616
+- fault: failing_alternator
+  indicator: charging_v_idle
+  early: 14.105
+  late: 12.28
+  shift_sd: -123.095
+- fault: stuck_open_thermostat
+  indicator: warmup_s
+  early: null
+  late: null
+  shift_sd: null
+- fault: stuck_open_thermostat
+  indicator: coolant_10min_c
+  early: 71.002
+  late: 47.0
+  shift_sd: -16.189
+- fault: low_coolant
+  indicator: coolant_idle_peak_c
+  early: 90.0
+  late: 115.5
+  shift_sd: 17.2
+- fault: low_coolant
+  indicator: overheat_s
+  early: 0.0
+  late: 536.0
+  shift_sd: null
+- fault: vacuum_leak
+  indicator: trim_idle_b1
+  early: -0.35
+  late: 63.1
+  shift_sd: 244.551
+- fault: vacuum_leak
+  indicator: trim_cruise_b1
+  early: -0.4
+  late: 20.05
+  shift_sd: 45.978
+- fault: vacuum_leak
+  indicator: maf_vs_map
+  early: 0.924
+  late: 0.954
+  shift_sd: 2.165
+- fault: dirty_maf
+  indicator: maf_vs_map
+  early: 0.969
+  late: 0.755
+  shift_sd: -15.56
+- fault: dirty_maf
+  indicator: maf_idle_norm
+  early: 2.53
+  late: 1.965
+  shift_sd: -74.632
+- fault: dirty_maf
+  indicator: trim_cruise_b1
+  early: -3.65
+  late: 25.35
+  shift_sd: 65.201
+- fault: misfire
+  indicator: idle_rpm_std
+  early: 15.559
+  late: 23.268
+  shift_sd: 16.554
+coverage_ved:
+  trim_idle_b1: 0.474
+  trim_idle_b2: 0.545
+  trim_cruise_b1: 0.577
+  trim_cruise_b2: 0.644
+  ltft_b1: 0.823
+  maf_idle_norm: 0.592
+  idle_rpm_std: 0.58
+  high_rpm_share: 0.998
+warmup_iat_slope:
+  kit_s_per_degc: -10.74
+  kit_r: -0.31
+  kit_n: 57
+priors:
+  4-cyl 1.7-2.0 L:
+    trim_idle_b1:
+      median: 0.1953
+      between_car: 4.9227
+      within_car: 1.7374
+      cars: 32
+      source: ved
+    trim_cruise_b1:
+      median: 0.7812
+      between_car: 2.3166
+      within_car: 1.1583
+      cars: 35
+      source: ved
+    ltft_b1:
+      median: 0.0
+      between_car: 2.8957
+      within_car: 1.1583
+      cars: 37
+      source: ved
+    maf_idle_norm:
+      median: 2.0042
+      between_car: 0.3257
+      within_car: 0.1104
+      cars: 34
+      source: ved
+    idle_rpm_std:
+      median: 16.7335
+      between_car: 9.4983
+      within_car: 8.4398
+      cars: 34
+      source: ved
+    high_rpm_share:
+      median: 0.0
+      between_car: 0.0
+      within_car: 0.0
+      cars: 37
+      source: ved
+    batt_rest_v:
+      median: 12.6525
+      between_car: 0.0037
+      within_car: 0.0185
+      cars: 2
+      source: simulator
+    batt_crank_min_v:
+      median: 9.34
+      between_car: 0.0
+      within_car: 0.0371
+      cars: 2
+      source: simulator
+    charging_v_idle:
+      median: 14.09
+      between_car: 0.0
+      within_car: 0.0148
+      cars: 2
+      source: simulator
+    warmup_s:
+      median: 856.002
+      between_car: 0.0326
+      within_car: 44.4721
+      cars: 2
+      source: simulator
+    coolant_10min_c:
+      median: 72.5
+      between_car: 0.7413
+      within_car: 1.4826
+      cars: 2
+      source: simulator
+    coolant_idle_peak_c:
+      median: 90.0
+      between_car: 0.0
+      within_car: 1.4826
+      cars: 2
+      source: simulator
+    overheat_s:
+      median: 0.0
+      between_car: 0.0
+      within_car: 0.0
+      cars: 2
+      source: simulator
+    maf_vs_map:
+      median: 0.9781
+      between_car: 0.0341
+      within_car: 0.0138
+      cars: 2
+      source: simulator
+    km_since_clear:
+      median: 366.5
+      between_car: 35.5824
+      within_car: 323.9481
+      cars: 2
+      source: simulator
+  4-cyl 2.1-2.5 L:
+    trim_idle_b1:
+      median: 1.5625
+      between_car: 4.6331
+      within_car: 2.3166
+      cars: 61
+      source: ved
+    trim_cruise_b1:
+      median: 1.5625
+      between_car: 4.6331
+      within_car: 1.1583
+      cars: 66
+      source: ved
+    ltft_b1:
+      median: 0.7812
+      between_car: 3.4748
+      within_car: 1.7374
+      cars: 73
+      source: ved
+    maf_idle_norm:
+      median: 1.9098
+      between_car: 0.2151
+      within_car: 0.1227
+      cars: 52
+      source: ved
+    idle_rpm_std:
+      median: 16.0779
+      between_car: 8.6307
+      within_car: 8.091
+      cars: 65
+      source: ved
+    high_rpm_share:
+      median: 0.0
+      between_car: 0.0
+      within_car: 0.0
+      cars: 74
+      source: ved
+    batt_rest_v:
+      median: 12.655
+      between_car: 0.0
+      within_car: 0.0185
+      cars: 4
+      source: simulator
+    batt_crank_min_v:
+      median: 9.34
+      between_car: 0.0074
+      within_car: 0.0297
+      cars: 4
+      source: simulator
+    charging_v_idle:
+      median: 14.09
+      between_car: 0.0
+      within_car: 0.0148
+      cars: 4
+      source: simulator
+    warmup_s:
+      median: 859.9725
+      between_car: 5.9456
+      within_car: 35.5994
+      cars: 4
+      source: simulator
+    coolant_10min_c:
+      median: 72.0034
+      between_car: 0.0046
+      within_car: 1.4786
+      cars: 4
+      source: simulator
+    coolant_idle_peak_c:
+      median: 90.0
+      between_car: 0.0
+      within_car: 1.4826
+      cars: 4
+      source: simulator
+    overheat_s:
+      median: 0.0
+      between_car: 0.0
+      within_car: 0.0
+      cars: 4
+      source: simulator
+    maf_vs_map:
+      median: 0.9782
+      between_car: 0.0002
+      within_car: 0.0138
+      cars: 2
+      source: simulator
+    km_since_clear:
+      median: 388.5
+      between_car: 90.4386
+      within_car: 296.8906
+      cars: 4
+      source: simulator
+  4-cyl <=1.6 L:
+    trim_idle_b1:
+      median: -1.5625
+      between_car: 11.0037
+      within_car: 3.4748
+      cars: 9
+      source: ved
+    trim_cruise_b1:
+      median: -1.0742
+      between_car: 3.3301
+      within_car: 3.1853
+      cars: 10
+      source: ved
+    ltft_b1:
+      median: -1.5625
+      between_car: 4.6331
+      within_car: 2.3166
+      cars: 11
+      source: ved
+    maf_idle_norm:
+      median: 2.567
+      between_car: 0.1109
+      within_car: 0.2357
+      cars: 7
+      source: ved
+    idle_rpm_std:
+      median: 22.2438
+      between_car: 12.0273
+      within_car: 12.2462
+      cars: 9
+      source: ved
+    high_rpm_share:
+      median: 0.0
+      between_car: 0.0
+      within_car: 0.0
+      cars: 11
+      source: ved
+  6-cyl 2.6-3.0 L:
+    trim_idle_b1:
+      median: 2.3438
+      between_car: 4.6331
+      within_car: 2.3166
+      cars: 11
+      source: ved
+    trim_idle_b2:
+      median: 2.3438
+      between_car: 3.4748
+      within_car: 2.3166
+      cars: 11
+      source: ved
+    trim_cruise_b1:
+      median: 3.3203
+      between_car: 6.3705
+      within_car: 1.1583
+      cars: 10
+      source: ved
+    trim_cruise_b2:
+      median: 3.7109
+      between_car: 4.6331
+      within_car: 1.4479
+      cars: 10
+      source: ved
+    ltft_b1:
+      median: 3.125
+      between_car: 4.6331
+      within_car: 1.1583
+      cars: 11
+      source: ved
+    maf_idle_norm:
+      median: 2.0234
+      between_car: 0.2099
+      within_car: 0.104
+      cars: 11
+      source: ved
+    idle_rpm_std:
+      median: 9.8997
+      between_car: 2.7952
+      within_car: 5.7725
+      cars: 11
+      source: ved
+    high_rpm_share:
+      median: 0.0
+      between_car: 0.0
+      within_car: 0.0
+      cars: 11
+      source: ved
+  6-cyl 3.1-3.6 L:
+    trim_idle_b1:
+      median: -0.5859
+      between_car: 4.3436
+      within_car: 2.3166
+      cars: 40
+      source: ved
+    trim_idle_b2:
+      median: -0.1953
+      between_car: 6.6601
+      within_car: 2.3166
+      cars: 37
+      source: ved
+    trim_cruise_b1:
+      median: 0.0
+      between_car: 3.4748
+      within_car: 2.3166
+      cars: 40
+      source: ved
+    trim_cruise_b2:
+      median: 0.0
+      between_car: 4.6331
+      within_car: 2.3166
+      cars: 37
+      source: ved
+    ltft_b1:
+      median: 0.0
+      between_car: 2.3166
+      within_car: 1.1583
+      cars: 41
+      source: ved
+    maf_idle_norm:
+      median: 1.8095
+      between_car: 0.2547
+      within_car: 0.1453
+      cars: 28
+      source: ved
+    idle_rpm_std:
+      median: 12.0561
+      between_car: 7.2397
+      within_car: 5.7281
+      cars: 40
+      source: ved
+    high_rpm_share:
+      median: 0.0
+      between_car: 0.0
+      within_car: 0.0
+      cars: 41
+      source: ved
+    batt_rest_v:
+      median: 12.6575
+      between_car: 0.0037
+      within_car: 0.0222
+      cars: 4
+      source: simulator
+    batt_crank_min_v:
+      median: 9.335
+      between_car: 0.0074
+      within_car: 0.0297
+      cars: 4
+      source: simulator
+    charging_v_idle:
+      median: 14.09
+      between_car: 0.0
+      within_car: 0.0148
+      cars: 4
+      source: simulator
+    warmup_s:
+      median: 859.9962
+      between_car: 2.9726
+      within_car: 44.4958
+      cars: 4
+      source: simulator
+    coolant_10min_c:
+      median: 72.0002
+      between_car: 0.0004
+      within_car: 1.4822
+      cars: 4
+      source: simulator
+    coolant_idle_peak_c:
+      median: 90.0
+      between_car: 0.0
+      within_car: 1.4826
+      cars: 4
+      source: simulator
+    overheat_s:
+      median: 0.0
+      between_car: 0.0
+      within_car: 0.0
+      cars: 4
+      source: simulator
+    maf_vs_map:
+      median: 0.9621
+      between_car: 0.0055
+      within_car: 0.0136
+      cars: 4
+      source: simulator
+    km_since_clear:
+      median: 373.75
+      between_car: 53.3736
+      within_car: 271.6864
+      cars: 4
+      source: simulator
+  6-cyl >3.6 L:
+    trim_idle_b1:
+      median: 3.5156
+      between_car: 7.2393
+      within_car: 2.3166
+      cars: 10
+      source: ved
+    trim_idle_b2:
+      median: 5.0781
+      between_car: 4.054
+      within_car: 2.3166
+      cars: 9
+      source: ved
+    trim_cruise_b1:
+      median: 0.5859
+      between_car: 2.8957
+      within_car: 2.3166
+      cars: 10
+      source: ved
+    trim_cruise_b2:
+      median: 3.9062
+      between_car: 4.054
+      within_car: 2.3166
+      cars: 9
+      source: ved
+    ltft_b1:
+      median: 0.7812
+      between_car: 3.1853
+      within_car: 1.1583
+      cars: 10
+      source: ved
+    idle_rpm_std:
+      median: 10.4612
+      between_car: 5.0444
+      within_car: 2.7733
+      cars: 12
+      source: ved
+    high_rpm_share:
+      median: 0.0
+      between_car: 0.0
+      within_car: 0.0
+      cars: 13
+      source: ved
+  8-cyl >3.6 L:
+    trim_idle_b1:
+      median: 0.0
+      between_car: 1.7374
+      within_car: 1.1583
+      cars: 9
+      source: ved
+    trim_idle_b2:
+      median: 1.9531
+      between_car: 11.0037
+      within_car: 0.0
+      cars: 9
+      source: ved
+    trim_cruise_b1:
+      median: 3.9062
+      between_car: 5.7914
+      within_car: 0.2896
+      cars: 10
+      source: ved
+    trim_cruise_b2:
+      median: 4.8828
+      between_car: 5.7914
+      within_car: 0.8687
+      cars: 10
+      source: ved
+    ltft_b1:
+      median: 0.0
+      between_car: 1.7374
+      within_car: 0.5791
+      cars: 12
+      source: ved
+    maf_idle_norm:
+      median: 1.896
+      between_car: 0.2457
+      within_car: 0.0
+      cars: 8
+      source: ved
+    idle_rpm_std:
+      median: 17.2971
+      between_car: 12.1583
+      within_car: 2.4813
+      cars: 10
+      source: ved
+    high_rpm_share:
+      median: 0.0
+      between_car: 0.0
+      within_car: 0.0
+      cars: 12
+      source: ved
+gate:
+  passed: false
+  checks:
+  - check: coverage batt_rest_v
+    pass: true
+    detail: 100% of 607 trips
+  - check: coverage batt_crank_min_v
+    pass: true
+    detail: 100% of 731 trips
+  - check: coverage charging_v_idle
+    pass: true
+    detail: 53% of 731 trips
+  - check: coverage warmup_s
+    pass: true
+    detail: 63% of 602 trips
+  - check: coverage coolant_10min_c
+    pass: true
+    detail: 70% of 602 trips
+  - check: coverage coolant_idle_peak_c
+    pass: true
+    detail: 53% of 731 trips
+  - check: coverage overheat_s
+    pass: true
+    detail: 100% of 731 trips
+  - check: coverage trim_idle_b1
+    pass: true
+    detail: 53% of 731 trips
+  - check: coverage trim_idle_b2
+    pass: true
+    detail: 54% of 293 trips
+  - check: coverage trim_cruise_b1
+    pass: false
+    detail: 42% of 731 trips
+  - check: coverage trim_cruise_b2
+    pass: false
+    detail: 42% of 293 trips
+  - check: coverage ltft_b1
+    pass: true
+    detail: 64% of 731 trips
+  - check: coverage maf_idle_norm
+    pass: true
+    detail: 53% of 731 trips
+  - check: coverage maf_vs_map
+    pass: true
+    detail: 62% of 586 trips
+  - check: coverage idle_rpm_std
+    pass: true
+    detail: 53% of 731 trips
+  - check: coverage km_since_clear
+    pass: true
+    detail: 100% of 731 trips
+  - check: coverage high_rpm_share
+    pass: true
+    detail: 100% of 731 trips
+  - check: sim vs VED trim_idle_b1
+    pass: true
+    detail: "sim 0.000 vs VED 0.781 (\u0394 -0.78)"
+  - check: sim vs VED trim_cruise_b1
+    pass: true
+    detail: "sim 0.100 vs VED 0.781 (\u0394 -0.68)"
+  - check: sim vs VED idle_rpm_std
+    pass: true
+    detail: "sim 15.159 vs VED 16.078 (\xD7 0.94)"
+  - check: sim vs VED maf_idle_norm
+    pass: false
+    detail: "sim 2.554 vs VED 1.932 (\xD7 1.32)"
+  - check: "VED warm-idle trim within \xB110 %"
+    pass: false
+    detail: 86.0% of 2084 trips
+  - check: VED idle airflow 1-5 g/s/L/krpm
+    pass: true
+    detail: 100.0% of 1953 trips
+spread_sim:
+  batt_rest_v:
+    cars: 10
+    median: 12.655
+    within_car: 0.022
+    between_car: 0.004
+    ratio: 0.167
+  batt_crank_min_v:
+    cars: 10
+    median: 9.34
+    within_car: 0.03
+    between_car: 0.0
+    ratio: 0.0
+  charging_v_idle:
+    cars: 10
+    median: 14.09
+    within_car: 0.015
+    between_car: 0.0
+    ratio: 0.0
+  warmup_s:
+    cars: 10
+    median: 858.007
+    within_car: 41.549
+    between_car: 3.019
+    ratio: 0.073
+  coolant_10min_c:
+    cars: 10
+    median: 72.001
+    within_car: 1.482
+    between_car: 0.001
+    ratio: 0.001
+  coolant_idle_peak_c:
+    cars: 10
+    median: 90.0
+    within_car: 1.483
+    between_car: 0.0
+    ratio: 0.0
+  overheat_s:
+    cars: 10
+    median: 0.0
+    within_car: 0.0
+    between_car: 0.0
+    ratio: null
+  trim_idle_b1:
+    cars: 10
+    median: 1.05
+    within_car: 0.297
+    between_car: 2.298
+    ratio: 7.75
+  trim_idle_b2:
+    cars: 4
+    median: 1.45
+    within_car: 0.222
+    between_car: 1.779
+    ratio: 8.0
+  trim_cruise_b1:
+    cars: 10
+    median: 1.1
+    within_car: 0.445
+    between_car: 2.224
+    ratio: 5.0
+  trim_cruise_b2:
+    cars: 4
+    median: 1.5
+    within_car: 0.371
+    between_car: 1.779
+    ratio: 4.8
+  ltft_b1:
+    cars: 10
+    median: 1.05
+    within_car: 0.0
+    between_car: 2.298
+    ratio: null
+  maf_idle_norm:
+    cars: 10
+    median: 2.537
+    within_car: 0.009
+    between_car: 0.05
+    ratio: 5.64
+  maf_vs_map:
+    cars: 8
+    median: 0.97
+    within_car: 0.014
+    between_car: 0.018
+    ratio: 1.287
+  idle_rpm_std:
+    cars: 10
+    median: 15.159
+    within_car: 0.534
+    between_car: 0.16
+    ratio: 0.3
+  km_since_clear:
+    cars: 10
+    median: 384.75
+    within_car: 304.674
+    between_car: 61.899
+    ratio: 0.203
+  high_rpm_share:
+    cars: 10
+    median: 0.0
+    within_car: 0.0
+    between_car: 0.0
+    ratio: null
+spread_ved:
+  trim_idle_b1:
+    cars: 188
+    median: 0.781
+    within_car: 2.317
+    between_car: 4.633
+    ratio: 2.0
+  trim_idle_b2:
+    cars: 69
+    median: 1.562
+    within_car: 1.737
+    between_car: 5.791
+    ratio: 3.333
+  trim_cruise_b1:
+    cars: 196
+    median: 0.781
+    within_car: 1.303
+    between_car: 4.633
+    ratio: 3.556
+  trim_cruise_b2:
+    cars: 69
+    median: 1.562
+    within_car: 1.737
+    between_car: 4.633
+    ratio: 2.667
+  ltft_b1:
+    cars: 214
+    median: 0.391
+    within_car: 1.158
+    between_car: 3.185
+    ratio: 2.75
+  maf_idle_norm:
+    cars: 148
+    median: 1.926
+    within_car: 0.108
+    between_car: 0.316
+    ratio: 2.919
+  idle_rpm_std:
+    cars: 199
+    median: 14.212
+    within_car: 6.315
+    between_car: 9.043
+    ratio: 1.432
+  high_rpm_share:
+    cars: 219
+    median: 0.0
+    within_car: 0.0
+    between_car: 0.0
+    ratio: null
+note: 'SEED - validate: gates H1-H3, tolerances and priors; see ml/reports/phase5_indicators.md'
