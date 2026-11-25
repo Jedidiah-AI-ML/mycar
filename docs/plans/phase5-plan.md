@@ -1,4 +1,12 @@
-# Phase 5 plan: Layer 3 health indicators and anomaly detection (DRAFT, awaiting approval)
+# Phase 5 plan: Layer 3 health indicators and anomaly detection (APPROVED 2026-11-25)
+
+**Decisions (Wisdom, 2026-11-25):** all six open questions approved as recommended:
+- **Q1:** Mode 06 O2 response and catalyst margins replace "upstream O2 switching rate"
+- **Q2:** Isolation Forest is evaluated in notebook 04 and promoted only if it earns its place
+- **Q3:** priors from VED (fuel trim, airflow, idle) and the simulator (the rest, lower confidence)
+- **Q4:** the PRD's three targets, measured on simulated faults and VED with injected faults
+- **Q5:** banded indicator states only in the DTC context
+- **Q6:** lead time reported against pending and confirmed codes; the 500 km target is set against pending
 
 **PRD 13, Phase 5:** notebooks on VED / Barreto / simulator → indicators → baselines →
 scoring → evaluation report; promote to the backend; Mode 06 parsing (CAN).
